@@ -1,3 +1,6 @@
 docker/mysql/data/*
 !.gitkeep
 /node_modules
+npm-debug.log*
+/node_modules_win
+.npm/
