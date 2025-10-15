@@ -1,0 +1,125 @@
+/* ===========================================
+カード全体
+   =========================================== */
+
+.form-card {
+    width: clamp(280px, 50vw, 680px);
+    margin: 3rem auto;
+    padding: 2rem 2rem;
+    background: #fff;
+    border: var(--form-card-border);
+    border-radius: 1.2rem;
+    box-shadow: var(--form-card-shadow);
+}
+
+/* タイトル */
+.form-card__title {
+    margin: 0 0 24px;
+    font-size: clamp(2rem, 2vw, 4rem);
+    font-weight: 700;
+    text-align: center;
+}
+
+/* フォーム本体 */
+.form-card__contents {
+    display: grid;
+    gap: 1.6rem;
+}
+
+/* ラベル */
+span {
+    font-size: clamp(1.4rem, 2vw, 2.4rem);
+    font-weight: 700;
+    display: inline-block;
+    margin-bottom: 0.5rem;
+    margin-top: 1.8rem;
+}
+
+/* 入力欄 */
+.form-card__inputs {
+    display: grid;
+    gap: 1.5rem;
+    margin: 2rem 0rem;
+}
+
+.form-card input[type="text"],
+.form-card input[type="email"],
+.form-card input[type="password"],
+.form-card input[type="number"],
+.form-card textarea,
+.form-card select {
+    width: 100%;
+    height: 4.4rem;
+    border: solid 1px #5f5f5f;
+    border-radius: 0.5rem;
+    background: #fff;
+    line-height: 1.4;
+    outline: none;
+    font-size: clamp(1.6rem, 2vw, 2rem);
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.form-card textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+/* フォーカス時 */
+.form-card input:focus-visible,
+.form-card textarea:focus-visible,
+.form-card select:focus-visible {
+    border: 0.2rem solid #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+/* ボタンエリア */
+.form-card__actions {
+    width: 100%;
+    margin-top: 8px;
+    display: grid;
+}
+
+/* ボタン共通 */
+.form-card .btn {
+    height: 4.8rem;
+    border: none;
+    border-radius: 0.5rem;
+    background: #ff5555;
+    color: #fff;
+    font-size: clamp(1.5rem, 2vw, 2.2rem);
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    width: 100%;
+    transition:
+        transform 0.02s ease,
+        background-color 0.15s ease;
+}
+
+.form-card .btn:hover {
+    background: #ff5757;
+}
+
+.form-card .btn:active {
+    transform: translateY(1px);
+}
+
+/* 最下部リンク */
+.form-card .link {
+    text-decoration: none;
+    color: #0073cc;
+    font-size: clamp(1.5rem, 2vw, 2rem);
+    font-weight: 400;
+    text-align: center;
+    margin-top: 2rem;
+}
+
+/* メディアクエリ */
+@media (max-width: 768px) {
+    .form-card {
+        width: 90%;
+        max-width: 480px;
+    }
+}
