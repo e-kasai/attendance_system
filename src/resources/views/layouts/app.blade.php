@@ -15,6 +15,7 @@
                     {{ session("message") }}
                 </div>
             @endif
+
             @yield("content")
         </main>
     </body>
