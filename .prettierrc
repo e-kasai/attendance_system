@@ -1,0 +1,5 @@
+{
+  "plugins": ["prettier-plugin-blade"],
+  "printWidth": 130,
+  "singleAttributePerLine": false
+}
