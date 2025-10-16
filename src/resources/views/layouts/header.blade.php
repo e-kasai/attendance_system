@@ -10,7 +10,7 @@
                 @if (auth()->user()->is_admin)
                     <a class="nav__link" href="{{ route("admin.attendances.index") }}">勤怠一覧</a>
                     <a class="nav__link" href="{{ route("admin.staff.index") }}">スタッフ一覧</a>
-                    <a class="nav__link" href="{{ route("admin.requests.index") }}">申請一覧</a>
+                    <a class="nav__link" href="{{ route("requests.index") }}">申請一覧</a>
 
                     <form class="nav__logout-form" action="{{ route("logout") }}" method="POST">
                         @csrf
@@ -18,7 +18,7 @@
                     </form>
                 @else
                     {{-- スタッフ用ナビ --}}
-                    <a class="nav__link" href="{{ route("attendance.show") }}">勤怠</a>
+                    <a class="nav__link" href="{{ route("attendance.create") }}">勤怠</a>
                     <a class="nav__link" href="{{ route("attendances.index") }}">勤怠一覧</a>
                     <a class="nav__link" href="{{ route("requests.index") }}">申請</a>
                     <form class="nav__logout-form" action="{{ route("logout") }}" method="POST">
