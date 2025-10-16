@@ -18,12 +18,6 @@ Route::middleware('guest')->group(function () {
     Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
 });
 
-//ユーザーログイン
-Route::middleware('guest')->group(function () {
-    Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register.show');
-    Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
-});
-
 
 //勤怠登録ページ
 Route::prefix('attendance')
@@ -64,3 +58,8 @@ Route::post('/email/verification-notification', function (Request $request) {
 
 
 //管理者のルート
+
+//ログイン
+Route::get('/admin/login', function () {
+    return view('auth.admin.login', ['role' => 'admin']);
+})->name('admin.login');
