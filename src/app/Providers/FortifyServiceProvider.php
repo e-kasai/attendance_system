@@ -9,7 +9,9 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Fortify;
 use Laravel\Fortify\Http\Requests\LoginRequest; //fortifyの認証ロジック
-use App\Http\Requests\Auth\LoginUserRequest;    //自作のFormRequest
+use App\Http\Requests\Auth\LoginUserRequest;    //自作FormRequest
+use Laravel\Fortify\Contracts\LoginResponse;
+use App\Http\Responses\CustomLoginResponse;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
@@ -18,12 +20,13 @@ class FortifyServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        //
+        //FortifyのLoginResponse処理を自作のもの(CustomLoginResponse)に差し替えて登録
+        $this->app->singleton(LoginResponse::class, CustomLoginResponse::class);
     }
 
     public function boot(): void
     {
-        // Fortifyが使う LoginRequest を自作のFR：UserLoginRequestに差し替える
+        // Fortifyが使うLoginRequest を自作FR(UserLoginRequest)に差し替える
         $this->app->bind(LoginRequest::class, LoginUserRequest::class);
 
         Fortify::authenticateUsing(function ($request) {
@@ -46,7 +49,6 @@ class FortifyServiceProvider extends ServiceProvider
                 }
                 return $user;
             }
-
             return null; // 認証失敗
         });
 

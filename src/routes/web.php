@@ -5,9 +5,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\Staff\AttendanceController;
-use App\Http\Controllers\Staff\AttendanceDetailController;
-use App\Http\Controllers\Staff\AttendanceListController;
+use App\Http\Controllers\Staff\StaffAttendanceController;
+use App\Http\Controllers\Staff\StaffAttendanceDetailController;
+use App\Http\Controllers\Staff\StaffAttendanceListController;
+use App\Http\Controllers\Staff\StaffRequestListController;
+use App\Http\Controllers\Admin\AdminAttendanceListController;
+
+
 
 
 //スタッフのルート
@@ -23,18 +27,18 @@ Route::middleware('guest')->group(function () {
 Route::prefix('attendance')
     ->middleware(['auth', 'verified'])
     ->group(function () {
-        Route::get('/', [AttendanceController::class, 'showAttendanceStatus'])->name('attendance.create');
-        Route::post('/', [AttendanceController::class, 'storeAttendanceStatus'])->name('attendance.store');
-        Route::get('/list', [AttendanceListController::class, 'showAttendances'])->name('attendances.index');
-        Route::get('/detail/{id}', [AttendanceDetailController::class, 'showAttendanceDetail'])->name('attendance.detail');
-        Route::patch('/detail/{id}', [AttendanceDetailController::class, 'updateAttendanceStatus'])->name('attendance.update');
+        Route::get('/', [StaffAttendanceController::class, 'showAttendanceStatus'])->name('attendance.create');
+        Route::post('/', [StaffAttendanceController::class, 'storeAttendanceStatus'])->name('attendance.store');
+        Route::get('/list', [StaffAttendanceListController::class, 'showAttendances'])->name('attendances.index');
+        Route::get('/detail/{id}', [StaffAttendanceDetailController::class, 'showAttendanceDetail'])->name('attendance.detail');
+        Route::patch('/detail/{id}', [StaffAttendanceDetailController::class, 'updateAttendanceStatus'])->name('attendance.update');
     });
 
 
 //申請一覧画面
 Route::middleware(['auth', 'verified'])
     ->group(function () {
-        Route::get('/stamp_correction_request/list', [RequestListController::class, 'showRequests'])->name('requests.index');
+        Route::get('/stamp_correction_request/list', [StaffRequestListController::class, 'showRequests'])->name('requests.index');
     });
 
 
@@ -63,3 +67,9 @@ Route::post('/email/verification-notification', function (Request $request) {
 Route::get('/admin/login', function () {
     return view('auth.admin.login', ['role' => 'admin']);
 })->name('admin.login');
+
+//勤怠一覧表示
+Route::middleware('auth')
+    ->group(function () {
+        Route::get('/admin/attendance/list', [AdminAttendanceListController::class, 'showDailyAttendances'])->name('admin.attendances.index');
+    });
