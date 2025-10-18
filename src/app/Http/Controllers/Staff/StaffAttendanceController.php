@@ -6,33 +6,47 @@ use Illuminate\View\View;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use App\Services\AttendanceService;
 
 
 class StaffAttendanceController extends Controller
 {
+    protected $attendanceService;
+
+    public function __construct(AttendanceService $attendanceService)
+    {
+        $this->attendanceService = $attendanceService;
+    }
+
     public function showAttendanceStatus(): View
     {
-        Carbon::setLocale('ja');
-        $today = Carbon::now()->isoFormat('YYYY年M月D日(ddd)');
-        $time = Carbon::now()->format('H:i');
-
-        $user = auth()->user();
-        $attendance = $user->todayAttendance();
-
-        $status = $attendance->status ?? 1;
-
-        $statusLabel = [
-            1 => '勤務外',
-            2 => '出勤中',
-            3 => '休憩中',
-            4 => '退勤済',
-        ];
-        return view('staff.attendance_create', compact('today', 'time', 'status', 'statusLabel'));
+        $currentData = $this->getCurrentData();
+        return view('staff.attendance_create', $currentData);
     }
 
 
     public function storeAttendanceStatus(Request $request)
     {
+        $user = auth()->user();
+        $action = $request->input('action');
+        $this->attendanceService->handleAction($user, $action);
+
+        // 更新後に再取得して表示
+        $currentData = $this->getCurrentData();
+        return view('staff.attendance_create', $currentData);
+    }
+
+
+    //プライベートメソッド:日時やラベルなど、UI共通データをまとめる
+    private function getCurrentData(): array
+    {
+        Carbon::setLocale('ja');
+        $today = Carbon::now()->isoFormat('YYYY年M月D日(ddd)');
+        $time = Carbon::now()->format('H:i');
+        $user = auth()->user();
+        $attendance = $user->todayAttendance();
+        $status = optional($attendance)->status ?? 1;
+
         $statusLabel = [
             1 => '勤務外',
             2 => '出勤中',
@@ -40,27 +54,6 @@ class StaffAttendanceController extends Controller
             4 => '退勤済',
         ];
 
-        Carbon::setLocale('ja');
-        $today = Carbon::now()->isoFormat('YYYY年M月D日(ddd)');
-        $time = Carbon::now()->format('H:i');
-        $user = auth()->user();
-        $attendance = $user->todayAttendance();
-
-
-        $action = $request->input('action');
-        match ($action) {
-            'work_start'    => $user->startWork(),
-            'work_end'      => $user->endWork(),
-            'break_in'      => $user->startBreak(),
-            'break_out'     => $user->endBreak(),
-
-            default => null,
-        };
-
-        // 更新後に再取得して表示
-        $attendance = $user->todayAttendance();
-        $status = $attendance->status ?? 1;
-
-        return view('staff.attendance_create', compact('today', 'time', 'status', 'statusLabel'));
+        return compact('today', 'time', 'status', 'statusLabel', 'user', 'attendance');
     }
 }
