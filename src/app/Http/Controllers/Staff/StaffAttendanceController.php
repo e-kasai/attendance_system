@@ -37,7 +37,7 @@ class StaffAttendanceController extends Controller
             1 => '勤務外',
             2 => '出勤中',
             3 => '休憩中',
-            4 => '退勤後',
+            4 => '退勤済',
         ];
 
         Carbon::setLocale('ja');
