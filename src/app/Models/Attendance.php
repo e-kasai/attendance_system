@@ -13,6 +13,8 @@ class Attendance extends Model
 
     protected $fillable = [
         //user_idとapproved_id = コントローラ側で自動決定&安全性考慮で$fillableに入れない
+        'date',
+        'status',
         'clock_in',
         'clock_out',
         'comment'
@@ -22,6 +24,7 @@ class Attendance extends Model
         'date' => 'date',
         'clock_in' => 'datetime:H:i',   //時刻計算・整形出力しやすくする為
         'clock_out' => 'datetime:H:i',
+        'status' => 'integer',         //文字列混入に備える
         'is_approved' => 'boolean',    //if文で正確に条件分岐するため
         'approved_at' => 'datetime',
     ];
@@ -31,7 +34,7 @@ class Attendance extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function breaktimes()
+    public function breakTimes()
     {
         return $this->hasMany(BreakTime::class, 'attendance_id');
     }

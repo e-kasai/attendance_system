@@ -49,11 +49,10 @@ class StaffAttendanceController extends Controller
 
         $action = $request->input('action');
         match ($action) {
-            'work_start' => $user->startWork(),
-            'work_end' => $user->endWork(),
-
-            'break_start' => $attendance?->startBreak(),
-            'break_end' => $attendance?->endBreak(),
+            'work_start'    => $user->startWork(),
+            'work_end'      => $user->endWork(),
+            'break_in'      => $user->startBreak(),
+            'break_out'     => $user->endBreak(),
 
             default => null,
         };

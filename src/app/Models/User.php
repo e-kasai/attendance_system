@@ -83,7 +83,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $attendance = $this->todayAttendance();
 
-        //今日既に出勤済みならスキップ
+        //今日既に退勤済みならスキップ
         if ($this->hasClockedOutToday()) {
             return $attendance;
         }
@@ -96,5 +96,46 @@ class User extends Authenticatable implements MustVerifyEmail
         }
 
         return $attendance;
+    }
+
+    //休憩開始
+    public function startBreak()
+    {
+        $attendance = $this->todayAttendance();
+        //今日既に退勤済みならスキップ
+        if ($this->hasClockedOutToday()) {
+            return $attendance;
+        }
+
+        if ($attendance && !$attendance->clock_out) {
+            $attendance->breakTimes()->create([
+                'break_in' => now(),
+            ]);
+            $attendance->update(['status' => 3]);
+        }
+        return $attendance;
+    }
+
+    //休憩終了
+    public function endBreak()
+    {
+
+        $attendance = $this->todayAttendance();
+
+        if ($attendance && !$attendance->clock_out) {
+            // 未終了の休憩を取得
+            $activeBreak = $attendance->breakTimes()
+                ->whereNull('break_out')
+                ->latest()
+                ->first();
+        }
+        if ($activeBreak) {
+            $activeBreak->update(['break_out' => now()]);
+            $attendance->update(['status' => 2]);
+            return $activeBreak;
+        }
+
+        // 未終了の休憩がない場合
+        return null;
     }
 }

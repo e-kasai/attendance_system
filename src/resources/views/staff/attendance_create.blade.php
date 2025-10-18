@@ -26,6 +26,7 @@
                         <input type="hidden" name="action" value="work_start" />
                         <button type="submit" class="btn btn--work_start" formnovalidate>出勤</button>
                     </form>
+
                     @break
                 @case(2)
                     {{-- 退勤・休憩入ボタン --}}
@@ -36,7 +37,7 @@
                     </form>
                     <form action="{{ route("attendance.store") }}" method="POST">
                         @csrf
-                        <input type="hidden" name="action" value="break_start" />
+                        <input type="hidden" name="action" value="break_in" />
                         <button type="submit" class="btn btn--break_start" formnovalidate>休憩入</button>
                     </form>
 
@@ -45,7 +46,7 @@
                     {{-- 休憩戻ボタン --}}
                     <form action="{{ route("attendance.store") }}" method="POST">
                         @csrf
-                        <input type="hidden" name="action" value="break_end" />
+                        <input type="hidden" name="action" value="break_out" />
                         <button type="submit" class="btn btn--break_end" formnovalidate>休憩戻</button>
                     </form>
 
