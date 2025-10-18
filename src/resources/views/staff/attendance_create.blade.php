@@ -7,20 +7,8 @@
 @section("content")
     <h1>スタッフ用勤怠登録画面</h1>
     <section class="attendance">
-        @if (session("message"))
-            <p class="attendance__alert attendance__alert--success">
-                {{ session("message") }}
-            </p>
-        @endif
-
-        @if (session("error"))
-            <p class="attendance__alert attendance__alert--error">
-                {{ session("error") }}
-            </p>
-        @endif
-
         <div class="attendance__status">
-            {{-- <p class="attendance__status">{{ $statusLabel[$status] ?? '不明' }}</p> --}}
+            <p class="attendance__status">{{ $statusLabel[$status] ?? "不明" }}</p>
         </div>
 
         <div class="attendance__current">
@@ -31,16 +19,15 @@
         {{-- 状態によってボタンを切り替え --}}
         <div class="attendance__actions">
             @switch($status)
-                @case("off_duty")
+                @case(1)
                     {{-- 出勤ボタン --}}
                     <form action="{{ route("attendance.store") }}" method="POST">
                         @csrf
                         <input type="hidden" name="action" value="work_start" />
                         <button type="submit" class="btn btn--work_start" formnovalidate>出勤</button>
                     </form>
-
                     @break
-                @case("working")
+                @case(2)
                     {{-- 退勤・休憩入ボタン --}}
                     <form action="{{ route("attendance.store") }}" method="POST">
                         @csrf
@@ -54,7 +41,7 @@
                     </form>
 
                     @break
-                @case("on_break")
+                @case(3)
                     {{-- 休憩戻ボタン --}}
                     <form action="{{ route("attendance.store") }}" method="POST">
                         @csrf
@@ -63,7 +50,7 @@
                     </form>
 
                     @break
-                @case("finished")
+                @case(4)
                     {{-- お疲れさまでしたメッセージ --}}
                     <p class="attendance__message">お疲れ様でした。</p>
 
