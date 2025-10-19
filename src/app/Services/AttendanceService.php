@@ -76,10 +76,11 @@ class AttendanceService
     {
         $attendance = $user->todayAttendance();
 
-        if ($this->hasClockedOutToday($user)) {
+        //すでに休憩中なら新しい休憩を作らない
+        if ($attendance->breakTimes()->whereNull('break_out')->exists()) {
             return $attendance;
         }
-
+        //休憩中でも退勤済みでもない = 新しい休憩を開始
         if ($attendance && !$attendance->clock_out) {
             $attendance->breakTimes()->create([
                 'break_in' => now(),
