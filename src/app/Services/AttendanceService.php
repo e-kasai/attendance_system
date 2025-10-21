@@ -107,7 +107,8 @@ class AttendanceService
 
         if (!empty($activeBreak)) {
             $activeBreak->update(['break_out' => now()]);
-            $attendance->update(['status' => 2]);
+            $attendance->status = 2;
+            $attendance->save();
             return $activeBreak;
         }
         return null;

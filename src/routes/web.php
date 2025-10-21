@@ -73,3 +73,4 @@ Route::middleware('auth')
     ->group(function () {
         Route::get('/admin/attendance/list', [AdminAttendanceListController::class, 'showDailyAttendances'])->name('admin.attendances.index');
     });
+
