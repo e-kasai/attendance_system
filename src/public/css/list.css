@@ -1,0 +1,123 @@
+/* ==============================
+   勤怠一覧ページ全体
+============================== */
+.index-container {
+    background-color: #f5f5f8;
+    padding: 2rem;
+    max-width: 960px;
+    margin: 2rem auto;
+    border-radius: 4px;
+}
+
+.index-container__title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    border-left: 4px solid #000;
+    padding-left: 0.6rem;
+    margin-bottom: 1.5rem;
+}
+
+/* ==============================
+   月選択フォーム
+============================== */
+.index-container__month {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.month-select {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.month-select__button {
+    background: none;
+    border: none;
+    color: #000;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.month-select__button:hover {
+    opacity: 0.6;
+}
+
+.month-select__display {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: bold;
+}
+
+.month-select__icon {
+    color: #555;
+}
+
+/* ==============================
+   一覧テーブル
+============================== */
+.index-container__table {
+    background-color: #fff;
+    border-radius: 4px;
+    overflow-x: auto;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.index-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.index-table__head {
+    background-color: #f0f0f0;
+}
+
+.index-table__header {
+    padding: 0.6rem;
+    font-weight: 600;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.index-table__row:nth-child(even) {
+    background-color: #fafafa;
+}
+
+.index-table__cell {
+    padding: 0.6rem;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+}
+
+.index-table__link {
+    color: #000;
+    text-decoration: underline;
+    font-size: 0.85rem;
+}
+
+.index-table__link:hover {
+    opacity: 0.7;
+}
+
+/* ==============================
+   レスポンシブ
+============================== */
+@media (max-width: 768px) {
+    .index-container {
+        padding: 1.2rem;
+    }
+
+    .index-table {
+        font-size: 0.8rem;
+    }
+
+    .month-select {
+        flex-direction: column;
+        gap: 0.4rem;
+    }
+}
