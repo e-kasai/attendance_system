@@ -40,7 +40,6 @@ class StaffAttendanceController extends Controller
     //プライベートメソッド:日時やラベルなど、UI共通データをまとめる
     private function getCurrentData(): array
     {
-        Carbon::setLocale('ja');
         $today = Carbon::now()->isoFormat('YYYY年M月D日(ddd)');
         $time = Carbon::now()->format('H:i');
         $user = auth()->user();
