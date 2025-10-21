@@ -23,11 +23,11 @@ class StaffAttendanceListController extends Controller
         $nextMonth = $carbonObj->copy()->addMonth()->format('Y/m');
 
         $attendances = $user->attendances()
-            ->whereYear('date', substr($targetYm, 0, 4))
-            ->whereMonth('date', substr($targetYm, 5, 2))
+            ->whereYear('date', $carbonObj->year)
+            ->whereMonth('date', $carbonObj->month)
             ->orderBy('date', 'asc')
             ->get();
 
-        return view('staff.attendance_index', compact('attendances', 'targetYm', 'selectedMonth', 'prevMonth', 'nextMonth'));
+        return view('common.attendance_index', compact('attendances', 'targetYm', 'selectedMonth', 'prevMonth', 'nextMonth'));
     }
 }
