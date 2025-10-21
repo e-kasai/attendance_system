@@ -18,7 +18,8 @@ class CreateAttendancesTable extends Migration
             $table->date('date');
             $table->time('clock_in')->nullable();
             $table->time('clock_out')->nullable();
-            $table->integer('work_time')->nullable(); //実働時間＝分単位
+            $table->integer('work_time')->nullable();  //実働時間＝分単位
+            $table->integer('break_time')->nullable(); //休憩時間、DBには分単位保存
             $table->text('comment')->nullable();
 
             $table->tinyInteger('status')->default(1); //1:勤務外, 2:出勤中, 3:休憩中, 4:退勤済
