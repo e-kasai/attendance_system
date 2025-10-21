@@ -8,12 +8,12 @@
     <x-index.container title="勤怠一覧">
         <x-slot name="monthNav">
             <form class="month-select" method="GET" action="{{ route("attendances.index") }}">
-                <button class="month-select__button" type="submit" name="month" value="{{ $prevMonth }}">← 前月</button>
+                <button class="month-select__button" type="submit" name="target_ym" value="{{ $prevMonth }}">← 前月</button>
                 <div class="month-select__display">
                     <i class="month-select__icon fa-solid fa-calendar"></i>
                     <span class="month-select__text">{{ $selectedMonth }}</span>
                 </div>
-                <button class="month-select__button" type="submit" name="month" value="{{ $nextMonth }}">翌月 →</button>
+                <button class="month-select__button" type="submit" name="target_ym" value="{{ $nextMonth }}">翌月 →</button>
             </form>
         </x-slot>
 

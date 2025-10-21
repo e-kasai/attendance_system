@@ -8,12 +8,12 @@
     <h1>スタッフ用勤怠登録画面</h1>
     <section class="attendance">
         <div class="attendance__status">
-            <p class="attendance__status">{{ $statusLabel[$status] ?? "不明" }}</p>
+            <p class="attendance__status-text">{{ $statusLabel[$status] ?? "不明" }}</p>
         </div>
 
         <div class="attendance__current">
             <p class="attendance__date" id="today">{{ $today }}</p>
-            <p class="attendance__time" id="clock">{{ $time }}</p>
+            <p class="attendance__time js-clock" id="clock">{{ $time }}</p>
         </div>
 
         {{-- 状態によってボタンを切り替え --}}
@@ -24,7 +24,7 @@
                     <form action="{{ route("attendance.store") }}" method="POST">
                         @csrf
                         <input type="hidden" name="action" value="work_start" />
-                        <button type="submit" class="btn btn--work_start" formnovalidate>出勤</button>
+                        <button type="submit" class="attendance__btn attendance__btn--primary" formnovalidate>出勤</button>
                     </form>
 
                     @break
@@ -33,12 +33,12 @@
                     <form action="{{ route("attendance.store") }}" method="POST">
                         @csrf
                         <input type="hidden" name="action" value="work_end" />
-                        <button type="submit" class="btn btn--work_end" formnovalidate>退勤</button>
+                        <button type="submit" class="attendance__btn attendance__btn--primary" formnovalidate>退勤</button>
                     </form>
                     <form action="{{ route("attendance.store") }}" method="POST">
                         @csrf
                         <input type="hidden" name="action" value="break_in" />
-                        <button type="submit" class="btn btn--break_start" formnovalidate>休憩入</button>
+                        <button type="submit" class="attendance__btn attendance__btn--secondary" formnovalidate>休憩入</button>
                     </form>
 
                     @break
@@ -47,12 +47,11 @@
                     <form action="{{ route("attendance.store") }}" method="POST">
                         @csrf
                         <input type="hidden" name="action" value="break_out" />
-                        <button type="submit" class="btn btn--break_end" formnovalidate>休憩戻</button>
+                        <button type="submit" class="attendance__btn attendance__btn--secondary" formnovalidate>休憩戻</button>
                     </form>
 
                     @break
                 @case(4)
-                    {{-- お疲れさまでしたメッセージ --}}
                     <p class="attendance__message">お疲れ様でした。</p>
 
                     @break
