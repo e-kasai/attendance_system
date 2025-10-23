@@ -33,6 +33,17 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Attendance::class, 'user_id');
     }
 
+    //モデルにユーザーのrole判定メソッドを用意
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isStaff(): bool
+    {
+        return $this->role === 'staff';
+    }
+
     //ログイン中ユーザーの"今日の"勤怠データ
     public function todayAttendance()
     {

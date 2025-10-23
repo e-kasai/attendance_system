@@ -12,6 +12,8 @@ use Laravel\Fortify\Http\Requests\LoginRequest; //fortifyの認証ロジック
 use App\Http\Requests\Auth\LoginUserRequest;    //自作FormRequest
 use Laravel\Fortify\Contracts\LoginResponse;
 use App\Http\Responses\CustomLoginResponse;
+use Laravel\Fortify\Contracts\LogoutResponse;
+use App\Http\Responses\CustomLogoutResponse;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
@@ -20,8 +22,10 @@ class FortifyServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        //FortifyのLoginResponse処理を自作のもの(CustomLoginResponse)に差し替えて登録
+        //FortifyのLoginResponse処理を自作の(CustomLoginResponse)に差し替えて登録
         $this->app->singleton(LoginResponse::class, CustomLoginResponse::class);
+        //FortifyのLogoutResponse処理を自作の(CustomLogoutResponse)に差し替えて登録
+        $this->app->singleton(LogoutResponse::class, CustomLogoutResponse::class);
     }
 
     public function boot(): void
@@ -33,20 +37,18 @@ class FortifyServiceProvider extends ServiceProvider
             $user = User::where('email', $request->email)->first();
 
             if ($user && Hash::check($request->password, $user->password)) {
-                if ($request->role === 'admin' && !$user->is_admin) {
-                    throw ValidationException::withMessages(
-                        [
-                            'email' => ['管理者アカウントではありません。'],
-                        ]
-                    );
+                if ($request->role === 'admin' && $user->role !== 'admin') {
+                    throw \Illuminate\Validation\ValidationException::withMessages([
+                        'email' => ['管理者アカウントではありません。'],
+                    ]);
                 }
-                if ($request->role !== 'admin' && $user->is_admin) {
-                    throw ValidationException::withMessages(
-                        [
-                            'email' => ['スタッフアカウントではありません。'],
-                        ]
-                    );
+
+                if ($request->role !== 'admin' && $user->role === 'admin') {
+                    throw \Illuminate\Validation\ValidationException::withMessages([
+                        'email' => ['スタッフアカウントではありません。'],
+                    ]);
                 }
+
                 return $user;
             }
             return null; // 認証失敗

@@ -10,10 +10,14 @@ class CustomLoginResponse implements LoginResponseContract   //ログイン成�
     {
         $user = $request->user();
 
-        return redirect()->intended(
-            $user->is_admin
-                ? route('admin.attendances.index') //ログイン先を分岐
-                : route('attendance.create')
-        );
+        // 役割で分岐（admin / staff など）
+        $redirectUrl = match (true) {
+            $user->role === 'admin' => route('admin.attendances.index'),
+            $user->role === 'staff' => route('attendance.create'),
+            default                 => route('attendance.create'), // どちらにも当てはまらないときはstaffページへ
+        };
+
+        // intended対応：ログイン前に見たかったページを覚えておき、ログイン後にそこへ戻してあげる
+        return redirect()->intended($redirectUrl);
     }
 }
