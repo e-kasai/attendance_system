@@ -24,6 +24,7 @@ class FortifyServiceProvider extends ServiceProvider
     {
         //FortifyのLoginResponse処理を自作の(CustomLoginResponse)に差し替えて登録
         $this->app->singleton(LoginResponse::class, CustomLoginResponse::class);
+
         //FortifyのLogoutResponse処理を自作の(CustomLogoutResponse)に差し替えて登録
         $this->app->singleton(LogoutResponse::class, CustomLogoutResponse::class);
     }
