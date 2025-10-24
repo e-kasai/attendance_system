@@ -12,11 +12,9 @@ use Laravel\Fortify\Http\Requests\LoginRequest; //fortifyの認証ロジック
 use App\Http\Requests\Auth\LoginUserRequest;    //自作FormRequest
 use Laravel\Fortify\Contracts\LoginResponse;
 use App\Http\Responses\CustomLoginResponse;
-use Laravel\Fortify\Contracts\LogoutResponse;
-use App\Http\Responses\CustomLogoutResponse;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
+
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -24,9 +22,6 @@ class FortifyServiceProvider extends ServiceProvider
     {
         //FortifyのLoginResponse処理を自作の(CustomLoginResponse)に差し替えて登録
         $this->app->singleton(LoginResponse::class, CustomLoginResponse::class);
-
-        //FortifyのLogoutResponse処理を自作の(CustomLogoutResponse)に差し替えて登録
-        $this->app->singleton(LogoutResponse::class, CustomLogoutResponse::class);
     }
 
     public function boot(): void

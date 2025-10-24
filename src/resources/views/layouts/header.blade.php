@@ -7,25 +7,28 @@
         @auth
             <nav class="nav">
                 {{-- 管理者と一般ユーザーでナビを切り替え --}}
-                {{--
-                    @if (auth()->user()->admin)
-                    <a class="nav__link" href="{{ route("admin.attendances.index") }}">勤怠一覧</a>
-                    <a class="nav__link" href="{{ route("admin.staff.index") }}">スタッフ一覧</a>
-                    <a class="nav__link" href="{{ route("requests.index") }}">申請一覧</a>
-                --}}
-                {{-- @else --}}
-                {{-- スタッフ用ナビ --}}
-                {{--
+
+                @if (auth()->user()->role === "admin")
+                    {{--
+                        <a class="nav__link" href="{{ route("admin.attendances.index") }}">勤怠一覧</a>
+                        <a class="nav__link" href="{{ route("admin.staff.index") }}">スタッフ一覧</a>
+                        <a class="nav__link" href="{{ route("requests.index") }}">申請一覧</a>
+                    --}}
+                    <form class="nav__logout-form" action="{{ route("logout") }}" method="POST">
+                        @csrf
+                        <button class="nav__logout-btn" type="submit">ログアウト</button>
+                    </form>
+                @else
+                    {{-- スタッフ用ナビ --}}
                     <a class="nav__link" href="{{ route("attendance.create") }}">勤怠</a>
                     <a class="nav__link" href="{{ route("attendances.index") }}">勤怠一覧</a>
-                    <a class="nav__link" href="{{ route("requests.index") }}">申請</a>
-                --}}
-                <form class="nav__logout-form" action="{{ route("logout") }}" method="POST">
-                    @csrf
-                    <button class="nav__logout-btn" type="submit">ログアウト</button>
-                    --}}
-                </form>
-                {{-- @endif --}}
+                    {{-- <a class="nav__link" href="{{ route("requests.index") }}">申請</a> --}}
+
+                    <form class="nav__logout-form" action="{{ route("logout") }}" method="POST">
+                        @csrf
+                        <button class="nav__logout-btn" type="submit">ログアウト</button>
+                    </form>
+                @endif
             </nav>
         @endauth
     @endunless

@@ -147,4 +147,10 @@ return [
         Features::emailVerification(),
     ],
 
+    //ログアウト後リダイレクト先を"/"→"/login"に変更
+    'redirects' => [
+        'logout' => '/login',
+    ],
+
+
 ];
