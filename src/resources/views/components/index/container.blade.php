@@ -10,7 +10,6 @@
 
     {{-- テーブル --}}
     <div class="index-container__table">
-        {{-- {{ $slot }} --}}
         {{ $table ?? $slot }}
     </div>
 </div>
