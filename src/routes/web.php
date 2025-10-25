@@ -22,27 +22,6 @@ Route::middleware('guest')->group(function () {
     Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
 });
 
-
-//勤怠登録ページ
-Route::prefix('attendance')
-    ->middleware(['auth', 'verified'])
-    ->group(function () {
-        Route::get('/', [StaffAttendanceController::class, 'showAttendanceStatus'])->name('attendance.create');
-        Route::post('/', [StaffAttendanceController::class, 'storeAttendanceStatus'])->name('attendance.store');
-        Route::get('/list', [StaffAttendanceListController::class, 'showAttendances'])->name('attendances.index');
-        Route::get('/detail/{id}', [StaffAttendanceDetailController::class, 'showAttendanceDetail'])->name('attendance.detail');
-        Route::patch('/detail/{id}', [StaffAttendanceDetailController::class, 'updateAttendanceStatus'])->name('attendance.update');
-    });
-
-
-//申請一覧画面
-Route::middleware(['auth', 'verified'])
-    ->group(function () {
-        Route::get('/stamp_correction_request/list', [StaffRequestListController::class, 'showRequests'])->name('requests.index');
-    });
-
-
-
 //メール認証案内ページ
 Route::get('/email/verify', function () {
     return view('auth.verify_email');
@@ -61,16 +40,44 @@ Route::post('/email/verification-notification', function (Request $request) {
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 
+//勤怠登録ページ
+Route::prefix('attendance')
+    ->middleware(['auth', 'verified', 'role:staff'])
+    ->group(function () {
+        Route::get('/', [StaffAttendanceController::class, 'showAttendanceStatus'])->name('attendance.create');
+        Route::post('/', [StaffAttendanceController::class, 'storeAttendanceStatus'])->name('attendance.store');
+        Route::get('/list', [StaffAttendanceListController::class, 'showAttendances'])->name('attendances.index');
+        Route::get('/detail/{id}', [StaffAttendanceDetailController::class, 'showAttendanceDetail'])->name('attendance.detail');
+        Route::patch('/detail/{id}', [StaffAttendanceDetailController::class, 'updateAttendanceStatus'])->name('attendance.update');
+    });
+
+
+//申請一覧画面
+Route::middleware(['auth', 'verified', 'role:staff'])
+    ->group(function () {
+        Route::get('/stamp_correction_request/list', [StaffRequestListController::class, 'showRequests'])->name('requests.index');
+    });
+
+
+
+
 //管理者のルート
 
 //ログイン
 Route::get('/admin/login', function () {
     return view('auth.admin.login', ['role' => 'admin']);
-})->name('admin.login');
+})->middleware('guest')->name('admin.login');
+
+
 
 //勤怠一覧表示
-Route::middleware('auth')
+Route::middleware(['auth', 'role:admin'])
     ->group(function () {
         Route::get('/admin/attendance/list', [AdminAttendanceListController::class, 'showDailyAttendances'])->name('admin.attendances.index');
     });
 
+//申請一覧画面
+// Route::middleware(['auth', 'role:admin'])
+//     ->group(function () {
+//         Route::get('/stamp_correction_request/list', [AdminRequestListController::class, 'showRequests'])->name('requests.index');
+//     });

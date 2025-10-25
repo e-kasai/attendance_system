@@ -13,7 +13,7 @@ class Attendance extends Model
     use HasFactory;
 
     protected $fillable = [
-        //user_idとapproved_id = コントローラ側で自動決定&安全性考慮で$fillableに入れない
+        //user_idとis_approved = コントローラ側で自動決定&安全性考慮で$fillableに入れない
         'date',
         'clock_in',
         'clock_out',
