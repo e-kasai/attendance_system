@@ -7,13 +7,27 @@
 @section("content")
     <x-index.container title="申請一覧">
         <x-slot name="table">
+            {{-- 状態切り替えタブ --}}
+            <div class="tabs">
+                <a
+                    href="{{ route("requests.index", ["status" => "pending"]) }}"
+                    class="tab {{ $status === "pending" ? "active" : "" }}"
+                >
+                    承認待ち
+                </a>
+
+                <a
+                    href="{{ route("requests.index", ["status" => "approved"]) }}"
+                    class="tab {{ $status === "approved" ? "active" : "" }}"
+                >
+                    承認済み
+                </a>
+            </div>
             <x-index.table :headers="['状態', '名前', '対象日時', '申請理由', '申請日時', '詳細']">
                 @forelse ($updateRequests as $updateRequest)
                     @php
                         $attendance = $updateRequest->attendance;
                     @endphp
-
-                    {{-- 状態切り替えタブ --}}
 
                     <tr class="index-table__row">
                         {{-- 状態 --}}
@@ -52,8 +66,20 @@
 
                         {{-- 詳細リンク --}}
                         <td class="index-table__cell">
-                            <a href="{{ route("attendance.detail", $updateRequest->attendance_id) }}" class="index-table__link">
+                            {{-- <a href="{{ route("attendance.detail", $updateRequest->attendance_id) }}" class="index-table__link">
                                 詳細
+                            </a> --}}
+
+                            <a
+                                href="{{
+                                    route("attendance.detail", [
+                                        "id" => $updateRequest->attendance_id,
+                                        "from" => "request",
+                                        "update_id" => $updateRequest->id,
+                                    ])
+                                }}"
+                            >
+                                詳細を見る
                             </a>
                         </td>
                     </tr>
