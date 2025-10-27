@@ -9,6 +9,9 @@ class UpdateRequest extends Model
 {
     use HasFactory;
 
+    const STATUS_PENDING  = 1;
+    const STATUS_APPROVED = 2;
+
     protected $fillable = [
         'comment',
         'new_clock_in',
