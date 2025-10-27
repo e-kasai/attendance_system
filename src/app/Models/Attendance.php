@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use App\Models\User;
+use App\Models\UpdateRequest;
 use App\Models\BreakTime;
 
 class Attendance extends Model
@@ -37,6 +38,11 @@ class Attendance extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function updateRequests()
+    {
+        return $this->hasMany(UpdateRequest::class);
     }
 
     public function breakTimes()
