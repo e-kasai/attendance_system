@@ -59,22 +59,30 @@ class Attendance extends Model
         static::saving(function ($attendance) {
             // 出退勤が両方あれば勤務時間を自動計算
             if ($attendance->clock_in && $attendance->clock_out) {
-                $workMinutes = Carbon::parse($attendance->clock_in)
-                    ->diffInMinutes(Carbon::parse($attendance->clock_out));
+                // $workMinutes = Carbon::parse($attendance->clock_in)
+                //     ->diffInMinutes(Carbon::parse($attendance->clock_out));
 
+                $totalWorkSeconds = Carbon::parse($attendance->clock_in)
+                    ->diffInSeconds(Carbon::parse($attendance->clock_out));
+
+                $workMinutes = $totalWorkSeconds / 60;
 
                 // 休憩時間の合計
                 // 休憩が無い場合は0とする
                 $breakMinutes = 0;
 
-                $breakMinutes = $attendance->breakTimes()
+                $totalBreakSeconds = $attendance->breakTimes()
                     ->whereNotNull('break_in')
                     ->whereNotNull('break_out')
                     ->get()
                     ->sum(function ($break) {
                         return Carbon::parse($break->break_in)
-                            ->diffInMinutes(Carbon::parse($break->break_out));
+                            ->diffInSeconds(Carbon::parse($break->break_out));
                     });
+
+
+                $breakMinutes = $totalBreakSeconds / 60;
+
                 $attendance->break_time = $breakMinutes;
                 $attendance->work_time = max($workMinutes - $breakMinutes, 0); //マイナス防止
             }

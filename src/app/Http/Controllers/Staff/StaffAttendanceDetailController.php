@@ -24,24 +24,22 @@ class StaffAttendanceDetailController extends Controller
             ->with(['breakTimes', 'updateRequests.breakTimeUpdates'])
             ->firstOrFail();
 
-        // 申請一覧から開かれた場合（?from=request&update_id=◯）
-        // if ($request->query('from') === 'request' && $updateId = $request->query('update_id')) {
-        //     $update = $attendance->updateRequests->firstWhere('id', $updateId);
-
-        // URLクエリから申請情報を取得（ある場合のみ）
+        // "update_id" => $updateRequest->id
         $updateId = $request->query('update_id');
         $update = null;
 
+        // Blade側のリンクで渡されたクエリパラメータ（from=request & update_id）を受け取る
+        // 申請一覧から勤怠詳細を開いたときだけ、該当のUpdateRequestを取得する
         if ($request->query('from') === 'request' && $updateId) {
             $update = UpdateRequest::find($updateId);
         }
 
         if ($update) {
-            // 出退勤を上書き
+            // 出退勤の修正をプレビュー表示（DB保存はしない）
             $attendance->clock_in  = $update->new_clock_in  ?? $attendance->clock_in;
             $attendance->clock_out = $update->new_clock_out ?? $attendance->clock_out;
 
-            // 休憩修正版を上書き
+            // 休憩の修正をプレビュー表示（DB保存はしない）
             foreach ($attendance->breakTimes as $break) {
                 $breakUpdate = $update->breakTimeUpdates
                     ->firstWhere('break_time_id', $break->id);
@@ -63,7 +61,7 @@ class StaffAttendanceDetailController extends Controller
 
         $validated = $request->validated();
 
-        // 対象勤怠を取得（自分以外はエラー）
+        // 自分の対象勤怠を取得
         $attendance = Attendance::where('id', $id)
             ->where('user_id', $user->id)
             ->firstOrFail();
@@ -116,8 +114,5 @@ class StaffAttendanceDetailController extends Controller
         return redirect()
             ->route('requests.index')
             ->with('message', '修正申請を送信しました。');
-
-        // return redirect()->route('attendance.detail', ['id' => $id])
-        //     ->with('message', '修正申請を送信しました。');
     }
 }

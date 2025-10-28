@@ -9,10 +9,9 @@
                 {{-- 管理者と一般ユーザーでナビを切り替え --}}
 
                 @if (auth()->user()->role === "admin")
-                    {{--
-                        <a class="nav__link" href="{{ route("admin.attendances.index") }}">勤怠一覧</a>
-                        <a class="nav__link" href="{{ route("admin.staff.index") }}">スタッフ一覧</a>
-                    --}}
+                    <a class="nav__link" href="{{ route("admin.attendances.index") }}">勤怠一覧</a>
+                    {{-- <a class="nav__link" href="{{ route("admin.staff.index") }}">スタッフ一覧</a> --}}
+
                     <a class="nav__link" href="{{ route("requests.index") }}">申請一覧</a>
 
                     <form class="nav__logout-form" action="{{ route("logout") }}" method="POST">
