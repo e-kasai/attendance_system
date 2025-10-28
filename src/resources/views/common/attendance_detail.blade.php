@@ -35,8 +35,19 @@
                 "type" => "time-range",
                 "name" => ["breaks[$index][break_in]", "breaks[$index][break_out]"],
                 "value" => [$break->break_in?->format("H:i"), $break->break_out?->format("H:i")],
+                //これを追加
+                "id" => $break->id,
             ];
         }
+        // 休憩の予備行
+        $nextIndex = $attendance->breakTimes->count();
+        $rows[] = [
+            "label" => "休憩" . ($nextIndex + 1),
+            "type" => "time-range",
+            "name" => ["breaks[$nextIndex][break_in]", "breaks[$nextIndex][break_out]"],
+            "value" => ["", ""], // 空欄で新しい入力行
+        ];
+
         // 備考
         $rows[] = ["label" => "備考", "name" => "comment", "type" => "textarea", "value" => $update->comment ?? ""];
     @endphp
@@ -46,7 +57,7 @@
         method="POST"
         action="{{
             auth()->user()->role === "admin"
-                ? route("admin.attendances.update", $attendance->id)
+                ? route("admin.attendance.update", $attendance->id)
                 : route("attendance.update", $attendance->id)
         }}"
     >

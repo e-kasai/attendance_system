@@ -19,6 +19,7 @@ class UpdateAttendanceRequest extends FormRequest
             'clock_out' => ['required', 'date_format:H:i', 'after:clock_in'],
 
             // 休憩（break_in / break_out）
+            'breaks.*.id' => ['nullable', 'integer', 'exists:break_times,id'],
             'breaks.*.break_in' => [
                 'nullable',
                 'date_format:H:i',

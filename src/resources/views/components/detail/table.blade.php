@@ -20,6 +20,13 @@
                             @if ($row["type"] === "time-range")
                                 <div class="detail-table__time-range">
                                     {{-- <input type="time" name="{{ $row["name"][0] }}" value="{{ $row["value"][0] }}" /> --}}
+
+                                    {{-- 休憩用のhidden IDフィールド --}}
+
+                                    @if (isset($row["id"]))
+                                        <input type="hidden" name="breaks[{{ $loop->index }}][id]" value="{{ $row["id"] }}" />
+                                    @endif
+
                                     <input
                                         type="time"
                                         name="{{ $row["name"][0] }}"

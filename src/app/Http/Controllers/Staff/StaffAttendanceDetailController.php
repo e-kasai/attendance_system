@@ -66,7 +66,6 @@ class StaffAttendanceDetailController extends Controller
             ->where('user_id', $user->id)
             ->firstOrFail();
 
-
         DB::transaction(function () use ($validated, $user, $attendance) {
             // 新しい修正申請を登録
             $updateRequest = new UpdateRequest();
@@ -83,15 +82,44 @@ class StaffAttendanceDetailController extends Controller
             $updateRequest->save();
 
             // 休憩修正申請（複数対応）
-            $breaks = $validated['breaks'] ?? [];
+            // $breaks = $validated['breaks'] ?? [];
+            // foreach ($breaks as $input) {
+            //     $breakTimeId = $input['id'] ?? null;
+            //     if (!$breakTimeId) {
+            //         continue; // idがなければスキップ
+            //     }
 
+            $rawBreaks = $validated['breaks'] ?? [];
+
+            $mergedBreaks = [];
+            $temp = [];
+
+            foreach ($rawBreaks as $key => $row) {
+                // idだけの行なら一時保存
+                if (isset($row['id']) && count($row) === 1) {
+                    $temp['id'] = $row['id'];
+                    continue;
+                }
+
+                // break_in/out の行なら、直前のidをくっつけて保存
+                if (!empty($temp)) {
+                    $row = array_merge($temp, $row);
+                    $temp = []; // 次のためにリセット
+                }
+
+                $mergedBreaks[] = $row;
+            }
+
+            $breaks = $mergedBreaks;
+
+
+            // ここから保存処理
             foreach ($breaks as $input) {
                 $breakTimeId = $input['id'] ?? null;
                 if (!$breakTimeId) {
-                    continue; // idがなければスキップ
+                    continue;
                 }
 
-                // 勤怠に紐づく休憩の中から対象を取得
                 $originalBreak = $attendance->breakTimes()->find($breakTimeId);
                 if (!$originalBreak) {
                     continue;
@@ -100,7 +128,7 @@ class StaffAttendanceDetailController extends Controller
                 $breakUpdate = new BreakTimeUpdate();
                 $breakUpdate->break_time_id     = $originalBreak->id;
                 $breakUpdate->update_request_id = $updateRequest->id;
-                $breakUpdate->new_break_in = $input['break_in'] !== null && $input['break_in'] !== ''
+                $breakUpdate->new_break_in  = $input['break_in']  !== null && $input['break_in']  !== ''
                     ? $input['break_in']
                     : $originalBreak->break_in;
                 $breakUpdate->new_break_out = $input['break_out'] !== null && $input['break_out'] !== ''
