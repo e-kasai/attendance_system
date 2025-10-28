@@ -25,23 +25,30 @@ class StaffAttendanceDetailController extends Controller
             ->firstOrFail();
 
         // 申請一覧から開かれた場合（?from=request&update_id=◯）
-        if ($request->query('from') === 'request' && $updateId = $request->query('update_id')) {
-            $update = $attendance->updateRequests->firstWhere('id', $updateId);
+        // if ($request->query('from') === 'request' && $updateId = $request->query('update_id')) {
+        //     $update = $attendance->updateRequests->firstWhere('id', $updateId);
 
-            if ($update) {
-                // 出退勤を上書き
-                $attendance->clock_in  = $update->new_clock_in  ?? $attendance->clock_in;
-                $attendance->clock_out = $update->new_clock_out ?? $attendance->clock_out;
+        // URLクエリから申請情報を取得（ある場合のみ）
+        $updateId = $request->query('update_id');
+        $update = null;
 
-                // 休憩修正版を上書き
-                foreach ($attendance->breakTimes as $break) {
-                    $breakUpdate = $update->breakTimeUpdates
-                        ->firstWhere('break_time_id', $break->id);
+        if ($request->query('from') === 'request' && $updateId) {
+            $update = UpdateRequest::find($updateId);
+        }
 
-                    if ($breakUpdate) {
-                        $break->break_in  = $breakUpdate->new_break_in  ?? $break->break_in;
-                        $break->break_out = $breakUpdate->new_break_out ?? $break->break_out;
-                    }
+        if ($update) {
+            // 出退勤を上書き
+            $attendance->clock_in  = $update->new_clock_in  ?? $attendance->clock_in;
+            $attendance->clock_out = $update->new_clock_out ?? $attendance->clock_out;
+
+            // 休憩修正版を上書き
+            foreach ($attendance->breakTimes as $break) {
+                $breakUpdate = $update->breakTimeUpdates
+                    ->firstWhere('break_time_id', $break->id);
+
+                if ($breakUpdate) {
+                    $break->break_in  = $breakUpdate->new_break_in  ?? $break->break_in;
+                    $break->break_out = $breakUpdate->new_break_out ?? $break->break_out;
                 }
             }
         }
@@ -106,11 +113,11 @@ class StaffAttendanceDetailController extends Controller
         });
 
         // リダイレクト
-        // return redirect()
-        //     ->route('requests.index', ['status' => 'pending'])
-        //     ->with('message', '修正申請を送信しました。');
-
-        return redirect()->route('attendance.detail', ['id' => $id])
+        return redirect()
+            ->route('requests.index')
             ->with('message', '修正申請を送信しました。');
+
+        // return redirect()->route('attendance.detail', ['id' => $id])
+        //     ->with('message', '修正申請を送信しました。');
     }
 }
