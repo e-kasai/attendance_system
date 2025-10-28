@@ -9,8 +9,32 @@ use App\Http\Controllers\Staff\StaffAttendanceController;
 use App\Http\Controllers\Staff\StaffAttendanceDetailController;
 use App\Http\Controllers\Staff\StaffAttendanceListController;
 use App\Http\Controllers\Staff\StaffRequestListController;
-use App\Http\Controllers\Admin\AdminAttendanceListController;
 
+use App\Http\Controllers\Admin\AdminAttendanceListController;
+use App\Http\Controllers\Admin\AdminRequestListController;
+use App\Http\Controllers\Admin\AdminAttendanceDetailController;
+use App\Http\Controllers\Admin\AdminRequestApprovalController;
+
+
+
+//申請一覧画面（スタッフ、管理者で分岐）
+Route::get('/stamp_correction_request/list', function () {
+    $user = auth()->user();
+
+    if (! $user) {
+        abort(403, 'ログインが必要です。');
+    }
+
+    if ($user->role === 'admin') {
+        return app(AdminRequestListController::class)->showRequests(request());
+    }
+
+    if ($user->role === 'staff') {
+        return app(StaffRequestListController::class)->showRequests(request());
+    }
+
+    abort(403, 'アクセス権限がありません。');
+})->name('requests.index')->middleware(['auth', 'verified']);
 
 
 
@@ -52,14 +76,6 @@ Route::prefix('attendance')
     });
 
 
-//申請一覧画面
-Route::middleware(['auth', 'verified', 'role:staff'])
-    ->group(function () {
-        Route::get('/stamp_correction_request/list', [StaffRequestListController::class, 'showRequests'])->name('requests.index');
-    });
-
-
-
 
 //管理者のルート
 
@@ -76,8 +92,24 @@ Route::middleware(['auth', 'role:admin'])
         Route::get('/admin/attendance/list', [AdminAttendanceListController::class, 'showDailyAttendances'])->name('admin.attendances.index');
     });
 
-//申請一覧画面
-// Route::middleware(['auth', 'role:admin'])
-//     ->group(function () {
-//         Route::get('/stamp_correction_request/list', [AdminRequestListController::class, 'showRequests'])->name('requests.index');
-//     });
+//勤怠詳細画面
+Route::middleware(['auth', 'role:admin'])
+    ->prefix('admin/attendance')
+    ->group(function () {
+        Route::get('{id}', [AdminAttendanceDetailController::class, 'showAttendanceDetail'])
+            ->name('admin.attendance.detail');
+        Route::patch('{id}', [AdminAttendanceDetailController::class, 'updateAttendanceStatus'])
+            ->name('admin.attendance.update');
+    });
+
+
+//修正申請承認画面
+Route::middleware(['auth', 'role:admin'])
+    ->prefix('stamp_correction_request/approve')
+    ->group(function () {
+        Route::get('{attendance_correct_request_id}', [AdminRequestApprovalController::class, 'showApprovalPage'])
+            ->name('admin.request.approve.show');
+
+        Route::patch('{attendance_correct_request_id}', [AdminRequestApprovalController::class, 'approveUpdatedRequest'])
+            ->name('admin.request.approve.update');
+    });
