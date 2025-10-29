@@ -35,7 +35,6 @@
                 "type" => "time-range",
                 "name" => ["breaks[$index][break_in]", "breaks[$index][break_out]"],
                 "value" => [$break->break_in?->format("H:i"), $break->break_out?->format("H:i")],
-                //これを追加
                 "id" => $break->id,
             ];
         }

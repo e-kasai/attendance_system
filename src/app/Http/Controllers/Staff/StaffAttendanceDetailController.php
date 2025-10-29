@@ -49,6 +49,17 @@ class StaffAttendanceDetailController extends Controller
                     $break->break_out = $breakUpdate->new_break_out ?? $break->break_out;
                 }
             }
+            // break_time_id が null の休憩（新規追加）もプレビュー表示
+            $newBreaks = $update->breakTimeUpdates->whereNull('break_time_id');
+            foreach ($newBreaks as $new) {
+                $attendance->breakTimes->push(
+                    (object) [
+                        'id' => null,
+                        'break_in' => $new->new_break_in,
+                        'break_out' => $new->new_break_out,
+                    ]
+                );
+            }
         }
 
         return view('common.attendance_detail', compact('attendance', 'user', 'update'));
@@ -81,16 +92,9 @@ class StaffAttendanceDetailController extends Controller
             $updateRequest->comment         = $validated['comment'];
             $updateRequest->save();
 
-            // 休憩修正申請（複数対応）
-            // $breaks = $validated['breaks'] ?? [];
-            // foreach ($breaks as $input) {
-            //     $breakTimeId = $input['id'] ?? null;
-            //     if (!$breakTimeId) {
-            //         continue; // idがなければスキップ
-            //     }
 
+            //別々の配列を１つにまとめる処理（type=hiddenのbreak_time_idだけ配列が分かれてしまう為）
             $rawBreaks = $validated['breaks'] ?? [];
-
             $mergedBreaks = [];
             $temp = [];
 
@@ -106,34 +110,41 @@ class StaffAttendanceDetailController extends Controller
                     $row = array_merge($temp, $row);
                     $temp = []; // 次のためにリセット
                 }
-
                 $mergedBreaks[] = $row;
             }
 
+            //休憩の修正
             $breaks = $mergedBreaks;
 
-
-            // ここから保存処理
             foreach ($breaks as $input) {
                 $breakTimeId = $input['id'] ?? null;
-                if (!$breakTimeId) {
-                    continue;
-                }
+                $breakIn     = $input['break_in'] ?? null;
+                $breakOut    = $input['break_out'] ?? null;
 
-                $originalBreak = $attendance->breakTimes()->find($breakTimeId);
-                if (!$originalBreak) {
+                // 休憩開始と終了どちらも空ならスキップ
+                if (empty($breakIn) && empty($breakOut)) {
                     continue;
                 }
 
                 $breakUpdate = new BreakTimeUpdate();
-                $breakUpdate->break_time_id     = $originalBreak->id;
                 $breakUpdate->update_request_id = $updateRequest->id;
-                $breakUpdate->new_break_in  = $input['break_in']  !== null && $input['break_in']  !== ''
-                    ? $input['break_in']
-                    : $originalBreak->break_in;
-                $breakUpdate->new_break_out = $input['break_out'] !== null && $input['break_out'] !== ''
-                    ? $input['break_out']
-                    : $originalBreak->break_out;
+
+                // 既存休憩（idあり）
+                if ($breakTimeId) {
+                    $originalBreak = $attendance->breakTimes()->find($breakTimeId);
+                    if (!$originalBreak) {
+                        continue;
+                    }
+
+                    $breakUpdate->break_time_id = $originalBreak->id;
+                    $breakUpdate->new_break_in  = $breakIn  ?: $originalBreak->break_in;
+                    $breakUpdate->new_break_out = $breakOut ?: $originalBreak->break_out;
+                } else {
+                    // 新規休憩（idなし）→ break_time_id は null
+                    $breakUpdate->break_time_id = null;
+                    $breakUpdate->new_break_in  = $breakIn;
+                    $breakUpdate->new_break_out = $breakOut;
+                }
                 $breakUpdate->save();
             }
         });
