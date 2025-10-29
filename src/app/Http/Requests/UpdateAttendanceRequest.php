@@ -53,6 +53,8 @@ class UpdateAttendanceRequest extends FormRequest
             'clock_out.after' => '出勤時間もしくは退勤時間が不適切な値です。',
 
             // 休憩
+            'breaks.*.id.integer' => '休憩IDの形式が正しくありません。',
+            'breaks.*.id.exists' => '指定された休憩データが存在しません。',
             'breaks.*.break_in.date_format' => '休憩開始時間の形式が正しくありません（例：12:00）',
             'breaks.*.break_in.required_with' => '休憩終了時間を入力する場合は、休憩開始時間も入力してください。',
             'breaks.*.break_in.after_or_equal' => '休憩時間が勤務時間外です。',
