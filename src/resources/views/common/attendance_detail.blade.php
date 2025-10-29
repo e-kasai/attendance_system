@@ -8,7 +8,7 @@
     @php
         // 名前、日付、出退勤行
         $rows = [
-            ["label" => "名前", "value" => $user->name],
+            ["label" => "名前", "value" => $attendance->user->name],
             ["label" => "日付", "value" => $attendance->date->format("Y年n月j日")],
             [
                 "label" => "出勤・退勤",
