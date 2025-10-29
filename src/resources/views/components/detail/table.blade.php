@@ -19,8 +19,6 @@
                             {{-- 出退勤・休憩 --}}
                             @if ($row["type"] === "time-range")
                                 <div class="detail-table__time-range">
-                                    {{-- <input type="time" name="{{ $row["name"][0] }}" value="{{ $row["value"][0] }}" /> --}}
-
                                     {{-- 休憩用のhidden IDフィールド --}}
 
                                     @if (isset($row["id"]))
@@ -30,15 +28,14 @@
                                     <input
                                         type="time"
                                         name="{{ $row["name"][0] }}"
-                                        value="{{ old($row["name"][0], $row["value"][0]) }}"
+                                        value="{{ old(str_replace(["[", "]"], [".", ""], $row["name"][0]), $row["value"][0]) }}"
                                     />
 
                                     <span class="detail-table__tilde">〜</span>
-                                    {{-- <input type="time" name="{{ $row["name"][1] }}" value="{{ $row["value"][1] }}" /> --}}
                                     <input
                                         type="time"
                                         name="{{ $row["name"][1] }}"
-                                        value="{{ old($row["name"][1], $row["value"][1]) }}"
+                                        value="{{ old(str_replace(["[", "]"], [".", ""], $row["name"][1]), $row["value"][1]) }}"
                                     />
                                 </div>
 
