@@ -62,7 +62,14 @@ class StaffAttendanceDetailController extends Controller
             }
         }
 
-        return view('common.attendance_detail', compact('attendance', 'user', 'update'));
+        $isEditable = true;
+        $message = null;
+
+        if ($update && $update->approval_status === UpdateRequest::STATUS_PENDING) {
+            $isEditable = false;
+            $message = '*承認待ちのため修正はできません。';
+        }
+        return view('common.attendance_detail', compact('attendance', 'user', 'update', 'isEditable', 'message'));
     }
 
     public function updateAttendanceStatus(UpdateAttendanceRequest $request, $id)

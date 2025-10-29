@@ -5,16 +5,6 @@
 @endpush
 
 @section("content")
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
     @php
         // 名前、日付、出退勤行
         $rows = [
@@ -38,14 +28,16 @@
                 "id" => $break->id,
             ];
         }
-        // 休憩の予備行
-        $nextIndex = $attendance->breakTimes->count();
-        $rows[] = [
-            "label" => "休憩" . ($nextIndex + 1),
-            "type" => "time-range",
-            "name" => ["breaks[$nextIndex][break_in]", "breaks[$nextIndex][break_out]"],
-            "value" => ["", ""], // 空欄で新しい入力行
-        ];
+        // 休憩の予備行(編集可能時のみ作成)
+        if ($isEditable) {
+            $nextIndex = $attendance->breakTimes->count();
+            $rows[] = [
+                "label" => "休憩" . ($nextIndex + 1),
+                "type" => "time-range",
+                "name" => ["breaks[$nextIndex][break_in]", "breaks[$nextIndex][break_out]"],
+                "value" => ["", ""], // 空欄で新しい入力行
+            ];
+        }
 
         // 備考
         $rows[] = ["label" => "備考", "name" => "comment", "type" => "textarea", "value" => $update->comment ?? ""];
@@ -65,8 +57,15 @@
         @method("PATCH")
 
         <x-index.container title="勤怠詳細">
-            <x-detail.table :rows="$rows" isEditable="true" />
-            <button type="submit" class="detail-table__btn">修正</button>
+            <x-detail.table :rows="$rows" :isEditable="$isEditable" />
+            @if ($isEditable)
+                <button type="submit" class="detail-table__btn">修正</button>
+            @endif
         </x-index.container>
     </form>
+
+    {{-- 修正不可メッセージ --}}
+    @if ($message)
+        <p class="detail-table__notice">{{ $message }}</p>
+    @endif
 @endsection
