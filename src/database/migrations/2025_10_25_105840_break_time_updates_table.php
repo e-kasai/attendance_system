@@ -12,8 +12,9 @@ class BreakTimeUpdatesTable extends Migration
         Schema::create('break_time_updates', function (Blueprint $table) {
             $table->id();
 
-            // 修正対象の休憩（必須）
+            // 修正対象の休憩
             $table->foreignId('break_time_id')
+                ->nullable()
                 ->constrained('break_times')
                 ->cascadeOnDelete();
 
