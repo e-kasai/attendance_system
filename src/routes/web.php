@@ -14,7 +14,7 @@ use App\Http\Controllers\Admin\AdminAttendanceListController;
 use App\Http\Controllers\Admin\AdminRequestListController;
 use App\Http\Controllers\Admin\AdminAttendanceDetailController;
 use App\Http\Controllers\Admin\AdminRequestApprovalController;
-
+use App\Http\Controllers\Admin\AdminStaffAttendanceController;
 
 
 //申請一覧画面（スタッフ、管理者で分岐）
@@ -101,6 +101,16 @@ Route::middleware(['auth', 'role:admin'])
         Route::patch('{id}', [AdminAttendanceDetailController::class, 'updateAttendanceStatus'])
             ->name('admin.attendance.update');
     });
+
+//スタッフ一覧,スタッフ別月次勤怠一覧
+Route::middleware(['auth', 'role:admin'])
+    ->group(function () {
+        Route::get('/admin/staff/list', [AdminStaffAttendanceController::class, 'showStaffList'])->name('admin.staff.index');
+        Route::get('/admin/attendance/staff/{id}', [AdminStaffAttendanceController::class, 'showMonthlyAttendances'])
+            ->name('admin.staff.attendance.index');
+    });
+
+
 
 
 //修正申請承認画面

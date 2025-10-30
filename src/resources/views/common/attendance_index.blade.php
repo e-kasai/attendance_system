@@ -5,9 +5,27 @@
 @endpush
 
 @section("content")
-    <x-index.container title="勤怠一覧">
+    {{-- roleによってタイトルを切り替え --}}
+    @if (auth()->user()->role === "admin")
+        @php
+            $title = $user->name . "さんの勤怠";
+        @endphp
+    @else
+        @php
+            $title = "勤怠一覧";
+        @endphp
+    @endif
+    <x-index.container :title="$title">
         <x-slot name="monthNav">
-            <form class="month-select" method="GET" action="{{ route("attendances.index") }}">
+            <form
+                class="month-select"
+                method="GET"
+                action="{{
+                    auth()->user()->role === "admin"
+                        ? route("admin.staff.attendance.index", $user->id)
+                        : route("attendances.index")
+                }}"
+            >
                 <button class="month-select__button" type="submit" name="target_ym" value="{{ $prevMonth }}">← 前月</button>
                 <div class="month-select__display">
                     <i class="month-select__icon fa-solid fa-calendar"></i>
