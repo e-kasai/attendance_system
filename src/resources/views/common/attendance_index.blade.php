@@ -81,7 +81,13 @@
                         </td>
                         {{-- 詳細リンク --}}
                         <td class="index-table__cell">
-                            <a href="{{ route("attendance.detail", $attendance->id) }}" class="index-table__link">詳細</a>
+                            @if (auth()->user()->role === "admin")
+                                <a href="{{ route("admin.attendance.detail", $attendance->id) }}" class="index-table__link">
+                                    詳細
+                                </a>
+                            @else
+                                <a href="{{ route("attendance.detail", $attendance->id) }}" class="index-table__link">詳細</a>
+                            @endif
                         </td>
                     </tr>
                 @endforeach
