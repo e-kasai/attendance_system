@@ -20,8 +20,17 @@
                             @if ($row["type"] === "time-range")
                                 {{-- 休憩（既存データ）の場合は hidden id --}}
                                 <div class="detail-table__time-range">
-                                    @if (isset($row["id"]))
+                                    {{--
+                                        @if (isset($row["id"]))
                                         <input type="hidden" name="breaks[{{ $loop->index }}][id]" value="{{ $row["id"] }}" />
+                                        @endif
+                                    --}}
+                                    @if (isset($row["id"]))
+                                        <input
+                                            type="hidden"
+                                            name="{{ str_replace(["[break_in]"], "[id]", $row["name"][0]) }}"
+                                            value="{{ $row["id"] }}"
+                                        />
                                     @endif
 
                                     {{-- 時間入力（開始〜終了） --}}

@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Models\Attendance;
 use App\Models\UpdateRequest;
 use Illuminate\View\View;
+use App\Http\Requests\UpdateAttendanceRequest;
 
 
 class AdminAttendanceDetailController extends Controller
@@ -80,39 +82,88 @@ class AdminAttendanceDetailController extends Controller
                 'comment'   => $validated['comment'] ?? $attendance->comment,
             ]);
 
+            //別々の配列を１つにまとめる処理（type=hiddenのbreak_time_idだけ配列が分かれてしまう為）
+            $rawBreaks = $validated['breaks'] ?? [];
+            // dd($rawBreaks);
+
+            // idだけの要素と、break_in/outだけの要素を分ける
+            $ids = array_values(array_filter($rawBreaks, fn($row) => isset($row['id'])));
+            $breaks = array_values(array_filter($rawBreaks, fn($row) => isset($row['break_in'])));
+
+            $mergedBreaks = [];
+            // $temp = [];
+
+            // 既存休憩idをbreak順に結びつける
+            foreach ($breaks as $i => $break) {
+                $break['id'] = $ids[$i]['id'] ?? null;
+                $mergedBreaks[] = $break;
+            }
+
+            // dd($mergedBreaks);
+
+            // foreach ($rawBreaks as $key => $row) {
+            // idだけの行なら一時保存
+            // if (isset($row['id']) && count($row) === 1) {
+            //     $temp['id'] = $row['id'];
+            //     continue;
+            // }
+
+            // break_in/out の行なら、直前のidをくっつけて保存
+            // if (!empty($temp)) {
+            //     $row = array_merge($temp, $row);
+            // $temp = []; // 次のためにリセット
+            // }
+            // $mergedBreaks[] = $row;
+            // dd($mergedBreaks);
+            // dd($temp);
+            // }
+
             // 休憩更新（複数対応）
-            $breaks = $validated['breaks'] ?? [];
+            // $breaks = $validated['breaks'] ?? [];
+            $breaks = $mergedBreaks;
 
             foreach ($breaks as $input) {
                 $breakTimeId = $input['id'] ?? null;
+                // dd($breakTimeId);
 
                 // 既存の休憩を更新 or 空欄なら新規追加
                 if ($breakTimeId) {
+                    // 既存休憩を更新
                     $break = $attendance->breakTimes()->find($breakTimeId);
-                    if (!$break) {
-                        continue;
+                    // dd($break);
+                    if ($break) {
+                        $break->update([
+                            'break_in'  => $input['break_in'] !== null && $input['break_in'] !== ''
+                                ? $input['break_in']
+                                : $break->break_in,
+                            'break_out' => $input['break_out'] !== null && $input['break_out'] !== ''
+                                ? $input['break_out']
+                                : $break->break_out,
+                        ]);
                     }
-
-                    $break->update([
-                        'break_in'  => $input['break_in'] !== null && $input['break_in'] !== ''
-                            ? $input['break_in']
-                            : $break->break_in,
-                        'break_out' => $input['break_out'] !== null && $input['break_out'] !== ''
-                            ? $input['break_out']
-                            : $break->break_out,
-                    ]);
-                } elseif (!empty($input['break_in']) || !empty($input['break_out'])) {
+                }
+                // 新規休憩追加
+                elseif (!empty($input['break_in']) && !empty($input['break_out'])) {
                     // 予備の空行に入力があれば新規休憩レコードを追加
-                    $attendance->breakTimes()->create([
+                    // dd('here');
+                    $newBreak = $attendance->breakTimes()->create([
                         'break_in'  => $input['break_in'],
                         'break_out' => $input['break_out'],
                     ]);
+                    // 追加休憩にidを付与
+                    $input['id'] = $newBreak->id;
+                    // dd($newBreak);
                 }
             }
+            $attendance->save();
+            // dd($attendance);
+            $attendance->load('breakTimes');
+            // dd($attendance);
         });
 
+        // $attendance->refresh();
         return redirect()
-            ->route('admin.attendances.index')
+            ->route('admin.attendance.update', $attendance->id)
             ->with('message', '勤怠を更新しました。');
     }
 }
