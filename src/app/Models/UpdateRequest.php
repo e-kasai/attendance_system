@@ -25,6 +25,21 @@ class UpdateRequest extends Model
         'approved_at' => 'datetime',
     ];
 
+
+    //approval_statusが承認済みになったらis_approvedをtrueにする
+    protected static function booted()
+    {
+        static::updated(function ($updateRequest) {
+            if ($updateRequest->approval_status === 2) {
+                $attendance = $updateRequest->attendance;
+                if ($attendance && $attendance->is_approved === false) {
+                    $attendance->update(['is_approved' => true]);
+                }
+            }
+        });
+    }
+
+
     /** 勤怠レコード */
     public function attendance()
     {

@@ -123,3 +123,5 @@ Route::middleware(['auth', 'role:admin'])
         Route::patch('{attendance_correct_request_id}', [AdminRequestApprovalController::class, 'approveUpdatedRequest'])
             ->name('admin.request.approve.update');
     });
+
+  

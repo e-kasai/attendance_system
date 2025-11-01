@@ -85,7 +85,7 @@ class StaffAttendanceDetailController extends Controller
             ->firstOrFail();
 
         DB::transaction(function () use ($validated, $user, $attendance) {
-            // 新しい修正申請を登録
+            // 新しい修正申請を登録（出退勤と備考の更新）
             $updateRequest = new UpdateRequest();
             $updateRequest->attendance_id   = $attendance->id;
             $updateRequest->requested_by    = $user->id;
@@ -100,60 +100,46 @@ class StaffAttendanceDetailController extends Controller
             $updateRequest->save();
 
 
-            //別々の配列を１つにまとめる処理（type=hiddenのbreak_time_idだけ配列が分かれてしまう為）
+            //別々の配列を１つにまとめる（type=hiddenのbreak_time_idだけ配列が分かれてしまう為）
             $rawBreaks = $validated['breaks'] ?? [];
+            // dd($rawBreaks);
+
+            // idだけの要素と、break_in/outだけの要素を分ける
+            $ids = array_values(array_filter($rawBreaks, fn($row) => isset($row['id'])));
+            $breaks = array_values(array_filter($rawBreaks, fn($row) => isset($row['break_in'])));
             $mergedBreaks = [];
-            $temp = [];
 
-            foreach ($rawBreaks as $key => $row) {
-                // idだけの行なら一時保存
-                if (isset($row['id']) && count($row) === 1) {
-                    $temp['id'] = $row['id'];
-                    continue;
-                }
-
-                // break_in/out の行なら、直前のidをくっつけて保存
-                if (!empty($temp)) {
-                    $row = array_merge($temp, $row);
-                    $temp = []; // 次のためにリセット
-                }
-                $mergedBreaks[] = $row;
+            // 既存休憩idをbreak順に結びつける
+            foreach ($breaks as $i => $break) {
+                $break['id'] = $ids[$i]['id'] ?? null;
+                $mergedBreaks[] = $break;
             }
 
-            //休憩の修正
+            // dd($mergedBreaks);
+
+            // 休憩更新（複数対応）
             $breaks = $mergedBreaks;
 
             foreach ($breaks as $input) {
-                $breakTimeId = $input['id'] ?? null;
-                $breakIn     = $input['break_in'] ?? null;
-                $breakOut    = $input['break_out'] ?? null;
-
-                // 休憩開始と終了どちらも空ならスキップ
-                if (empty($breakIn) && empty($breakOut)) {
-                    continue;
+                if ($input['id']) {
+                    // 既存休憩の修正
+                    $breakUpdate = new BreakTimeUpdate();
+                    $breakUpdate->break_time_id     = $input['id'] ?? null;
+                    $breakUpdate->update_request_id = $updateRequest->id;
+                    $breakUpdate->new_break_in      = $input['break_in'];
+                    $breakUpdate->new_break_out     = $input['break_out'];
+                    $breakUpdate->save();
+                } elseif (!empty($input['break_in']) && !empty($input['break_out'])) {
+                    // 新規休憩追加
+                    $breakUpdate = new BreakTimeUpdate();
+                    $breakUpdate->break_time_id     = null;
+                    $breakUpdate->update_request_id = $updateRequest->id;
+                    $breakUpdate->new_break_in      = $input['break_in'];
+                    $breakUpdate->new_break_out     = $input['break_out'];
+                    $breakUpdate->save();
                 }
-
-                $breakUpdate = new BreakTimeUpdate();
-                $breakUpdate->update_request_id = $updateRequest->id;
-
-                // 既存休憩（idあり）
-                if ($breakTimeId) {
-                    $originalBreak = $attendance->breakTimes()->find($breakTimeId);
-                    if (!$originalBreak) {
-                        continue;
-                    }
-
-                    $breakUpdate->break_time_id = $originalBreak->id;
-                    $breakUpdate->new_break_in  = $breakIn  ?: $originalBreak->break_in;
-                    $breakUpdate->new_break_out = $breakOut ?: $originalBreak->break_out;
-                } else {
-                    // 新規休憩（idなし）→ break_time_id は null
-                    $breakUpdate->break_time_id = null;
-                    $breakUpdate->new_break_in  = $breakIn;
-                    $breakUpdate->new_break_out = $breakOut;
-                }
-                $breakUpdate->save();
             }
+            // $breakUpdate->save();
         });
 
         // リダイレクト

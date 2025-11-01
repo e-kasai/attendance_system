@@ -29,12 +29,24 @@
         ];
 
         // 休憩行を動的に追加（複数休憩対応）
-        foreach ($attendance->breakTimes as $index => $break) {
+        // foreach ($attendance->breakTimes as $index => $break) {
+        //     $rows[] = [
+        //         "label" => $index === 0 ? "休憩" : "休憩" . ($index + 1),
+        //         "type" => "time-range",
+        //         "name" => ["breaks[$index][break_in]", "breaks[$index][break_out]"],
+        //         "value" => [$break->break_in?->format("H:i"), $break->break_out?->format("H:i")],
+        //     ];
+        // }
+
+        foreach ($allBreaks as $index => $break) {
             $rows[] = [
                 "label" => $index === 0 ? "休憩" : "休憩" . ($index + 1),
                 "type" => "time-range",
                 "name" => ["breaks[$index][break_in]", "breaks[$index][break_out]"],
-                "value" => [$break->break_in?->format("H:i"), $break->break_out?->format("H:i")],
+                "value" => [
+                    $break->break_in ? \Carbon\Carbon::parse($break->break_in)->format("H:i") : null,
+                    $break->break_out ? \Carbon\Carbon::parse($break->break_out)->format("H:i") : null,
+                ],
             ];
         }
         // 備考
@@ -42,21 +54,18 @@
     @endphp
 
     {{-- テーブル全体を1回で描画 --}}
-    <form
-        method="POST"
-        action="{{
-            auth()->user()->role === "admin"
-                ? route("admin.attendance.update", $attendance->id)
-                : route("attendance.update", $attendance->id)
-        }}"
-    >
+    <form method="POST" action="{{ route("admin.request.approve.update", $update->id) }}">
         @csrf
         <input type="hidden" name="attendance_id" value="{{ $attendance->id }}" />
         @method("PATCH")
 
         <x-index.container title="勤怠詳細">
-            <x-detail.table :rows="$rows" isEditable="true" />
-            <button type="submit" class="detail-table__btn">承認</button>
+            <x-detail.table :rows="$rows" :isEditable="$isEditable" />
+            @if ($isEditable)
+                <button type="submit" class="detail-table__btn">承認</button>
+            @else
+                <button type="submit" class="detail-table__btn" disabled>承認済み</button>
+            @endif
         </x-index.container>
     </form>
 @endsection

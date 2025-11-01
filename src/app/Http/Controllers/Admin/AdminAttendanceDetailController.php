@@ -82,16 +82,14 @@ class AdminAttendanceDetailController extends Controller
                 'comment'   => $validated['comment'] ?? $attendance->comment,
             ]);
 
-            //別々の配列を１つにまとめる処理（type=hiddenのbreak_time_idだけ配列が分かれてしまう為）
+            //別々の配列を１つにまとめる（type=hiddenのbreak_time_idだけ配列が分かれてしまう為）
             $rawBreaks = $validated['breaks'] ?? [];
             // dd($rawBreaks);
 
             // idだけの要素と、break_in/outだけの要素を分ける
             $ids = array_values(array_filter($rawBreaks, fn($row) => isset($row['id'])));
             $breaks = array_values(array_filter($rawBreaks, fn($row) => isset($row['break_in'])));
-
             $mergedBreaks = [];
-            // $temp = [];
 
             // 既存休憩idをbreak順に結びつける
             foreach ($breaks as $i => $break) {
@@ -101,32 +99,14 @@ class AdminAttendanceDetailController extends Controller
 
             // dd($mergedBreaks);
 
-            // foreach ($rawBreaks as $key => $row) {
-            // idだけの行なら一時保存
-            // if (isset($row['id']) && count($row) === 1) {
-            //     $temp['id'] = $row['id'];
-            //     continue;
-            // }
-
-            // break_in/out の行なら、直前のidをくっつけて保存
-            // if (!empty($temp)) {
-            //     $row = array_merge($temp, $row);
-            // $temp = []; // 次のためにリセット
-            // }
-            // $mergedBreaks[] = $row;
-            // dd($mergedBreaks);
-            // dd($temp);
-            // }
-
             // 休憩更新（複数対応）
-            // $breaks = $validated['breaks'] ?? [];
             $breaks = $mergedBreaks;
 
             foreach ($breaks as $input) {
                 $breakTimeId = $input['id'] ?? null;
                 // dd($breakTimeId);
 
-                // 既存の休憩を更新 or 空欄なら新規追加
+                // 既存の休憩を更新
                 if ($breakTimeId) {
                     // 既存休憩を更新
                     $break = $attendance->breakTimes()->find($breakTimeId);
