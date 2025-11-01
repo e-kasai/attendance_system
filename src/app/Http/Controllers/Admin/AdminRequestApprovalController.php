@@ -82,7 +82,7 @@ class AdminRequestApprovalController extends Controller
                 $update->approved_at = now();
                 $update->save();
 
-                // 出退勤を反映
+                // 出退勤のupdate
                 $updateData = [];
                 if ($update->new_clock_in) {
                     $updateData['clock_in'] = $update->new_clock_in;
@@ -94,7 +94,7 @@ class AdminRequestApprovalController extends Controller
                     $attendance->update($updateData);
                 }
 
-                // 休憩を反映
+                // 休憩のupdate
                 foreach ($update->breakTimeUpdates as $breakUpdate) {
                     if ($breakUpdate->break_time_id) {
                         // 既存休憩の更新
@@ -116,10 +116,11 @@ class AdminRequestApprovalController extends Controller
                         $breakUpdate->break_time_id = $newBreak->id;
                         $breakUpdate->save();
                     }
-                    // 勤怠を承認済みに
-                    $attendance->is_approved = true;
-                    $attendance->save();
                 }
+
+                // 全ての反映後に承認フラグと再計算を実行
+                $attendance->is_approved = true;
+                $attendance->save(); // savingイベント発火で work_time / break_time 再計算
             });
 
             return redirect()
