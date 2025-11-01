@@ -28,16 +28,6 @@
             ],
         ];
 
-        // 休憩行を動的に追加（複数休憩対応）
-        // foreach ($attendance->breakTimes as $index => $break) {
-        //     $rows[] = [
-        //         "label" => $index === 0 ? "休憩" : "休憩" . ($index + 1),
-        //         "type" => "time-range",
-        //         "name" => ["breaks[$index][break_in]", "breaks[$index][break_out]"],
-        //         "value" => [$break->break_in?->format("H:i"), $break->break_out?->format("H:i")],
-        //     ];
-        // }
-
         foreach ($allBreaks as $index => $break) {
             $rows[] = [
                 "label" => $index === 0 ? "休憩" : "休憩" . ($index + 1),
@@ -60,8 +50,8 @@
         @method("PATCH")
 
         <x-index.container title="勤怠詳細">
-            <x-detail.table :rows="$rows" :isEditable="$isEditable" />
-            @if ($isEditable)
+            <x-detail.table :rows="$rows" :isEditable="$isEditable" :btnActivate="$btnActivate" />
+            @if ($btnActivate)
                 <button type="submit" class="detail-table__btn">承認</button>
             @else
                 <button type="submit" class="detail-table__btn" disabled>承認済み</button>

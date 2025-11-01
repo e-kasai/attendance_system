@@ -45,25 +45,17 @@ class AdminRequestApprovalController extends Controller
                 'break_out' => \Carbon\Carbon::parse($breakUpdate->new_break_out)->format('H:i'),
             ];
         });
-        // dd($newBreaks);
-
 
         //新規、既存休憩両方
         $allBreaks = $mergedBreaks->concat($newBreaks);
 
-        // 休憩データの申請内容を反映（DBに保存はしない）
-        // foreach ($attendance->breakTimes as $break) {
-        //     $breakUpdate = $update->breakTimeUpdates->firstWhere('break_time_id', $break->id);
-        //     if ($breakUpdate) {
-        //         $break->break_in  = $breakUpdate->new_break_in  ?? $break->break_in;
-        //         $break->break_out = $breakUpdate->new_break_out ?? $break->break_out;
-        //     }
-        // }
-
+        //フォームは編集不可
+        $isEditable = false;
+        //承認ボタン切り替えフラグ
         if ($update->approval_status === UpdateRequest::STATUS_PENDING) {
-            $isEditable = true;
+            $btnActivate = true;
         } else {
-            $isEditable = false;
+            $btnActivate = false;
         }
 
         //修正申請を反映して修正申請承認画面を表示
@@ -72,7 +64,8 @@ class AdminRequestApprovalController extends Controller
             'user' => $attendance->user,
             'update' => $update,
             'isEditable' => $isEditable,
-            'allBreaks' => $allBreaks
+            'allBreaks' => $allBreaks,
+            'btnActivate' => $btnActivate
         ]);
     }
 
@@ -123,7 +116,7 @@ class AdminRequestApprovalController extends Controller
                         $breakUpdate->break_time_id = $newBreak->id;
                         $breakUpdate->save();
                     }
-                    // ④ 勤怠を承認済みに
+                    // 勤怠を承認済みに
                     $attendance->is_approved = true;
                     $attendance->save();
                 }
@@ -134,7 +127,6 @@ class AdminRequestApprovalController extends Controller
                 ->with('message', '申請を承認しました。');
         } catch (\Throwable $e) {
             report($e);
-            dd($e);
             return back()->withErrors('承認処理中にエラーが発生しました。');
         }
     }
