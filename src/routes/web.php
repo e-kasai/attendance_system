@@ -102,14 +102,15 @@ Route::middleware(['auth', 'role:admin'])
             ->name('admin.attendance.update');
     });
 
-//スタッフ一覧,スタッフ別月次勤怠一覧
+//スタッフ一覧,スタッフ別月次勤怠一覧,CSV出力
 Route::middleware(['auth', 'role:admin'])
     ->group(function () {
         Route::get('/admin/staff/list', [AdminStaffAttendanceController::class, 'showStaffList'])->name('admin.staff.index');
         Route::get('/admin/attendance/staff/{id}', [AdminStaffAttendanceController::class, 'showMonthlyAttendances'])
             ->name('admin.staff.attendance.index');
+        Route::get('/admin/attendance/staff/{id}/export', [AdminStaffAttendanceController::class, 'exportCsv'])
+            ->name('admin.staff.attendance.export');
     });
-
 
 
 
@@ -123,5 +124,3 @@ Route::middleware(['auth', 'role:admin'])
         Route::patch('{attendance_correct_request_id}', [AdminRequestApprovalController::class, 'approveUpdatedRequest'])
             ->name('admin.request.approve.update');
     });
-
-  

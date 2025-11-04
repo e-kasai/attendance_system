@@ -94,4 +94,13 @@
             </x-index.table>
         </x-slot>
     </x-index.container>
+    {{-- 管理者のみCSV出力ボタンを表示 --}}
+    @if (auth()->user()->role === "admin")
+        <div class="export-buttons">
+            <form method="GET" action="{{ route("admin.staff.attendance.export", ["id" => $user->id]) }}">
+                <input type="hidden" name="target_ym" value="{{ $targetYmForUrl }}" />
+                <button class="btn btn--export">CSV出力</button>
+            </form>
+        </div>
+    @endif
 @endsection
