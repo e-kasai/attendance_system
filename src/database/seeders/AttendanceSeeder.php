@@ -22,11 +22,18 @@ class AttendanceSeeder extends Seeder
 
         $staffs = User::where('role', 'staff')->get();
 
+        $today = Carbon::today();
+
         // 直近3か月分（今月・先月・先々月）
         for ($monthOffset = 0; $monthOffset < 3; $monthOffset++) {   //$monthOffset を 0(今月)〜2(先々月)
             $targetMonth = Carbon::now()->subMonths($monthOffset);  //現在の日時から $monthOffset ヶ月前を取得する
             $start = $targetMonth->copy()->startOfMonth();  //$targetMonth のコピーを作って、その月の「1日」に移動
             $end   = $targetMonth->copy()->endOfMonth();
+
+            // 今月なら「今日より前」までに制限する
+            if ($monthOffset === 0) {
+                $end = $today->copy()->subDay();
+            }
 
             foreach ($staffs as $staffIndex => $staff) {
                 $date = $start->copy();   //月始め１日
