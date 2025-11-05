@@ -26,7 +26,7 @@ class UpdateAttendanceRequest extends FormRequest
                 'date_format:H:i',
                 'required_with:breaks.*.break_out',
                 'after_or_equal:clock_in',
-                'before_or_equal:clock_out',
+                'before:clock_out',
             ],
             'breaks.*.break_out' => [
                 'nullable',
@@ -93,7 +93,7 @@ class UpdateAttendanceRequest extends FormRequest
             'breaks.*.break_in.date_format' => '休憩開始時間の形式が正しくありません（例：12:00）',
             'breaks.*.break_in.required_with' => '休憩終了時間を入力する場合は、休憩開始時間も入力してください',
             'breaks.*.break_in.after_or_equal' => '休憩時間が不適切な値です',
-            'breaks.*.break_in.before_or_equal' => '休憩時間が不適切な値です',
+            'breaks.*.break_in.before' => '休憩時間が不適切な値です',
 
             'breaks.*.break_out.date_format' => '休憩終了時間の形式が正しくありません（例：13:00）',
             'breaks.*.break_out.required_with' => '休憩開始時間を入力する場合は、休憩終了時間も入力してください',
