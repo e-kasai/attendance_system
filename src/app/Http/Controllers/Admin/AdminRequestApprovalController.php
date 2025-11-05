@@ -49,13 +49,15 @@ class AdminRequestApprovalController extends Controller
         //新規、既存休憩両方
         $allBreaks = $mergedBreaks->concat($newBreaks);
 
-        //フォームは編集不可
+        // フォーム入力は常に編集不可（申請一覧経由の画面のため）
         $isEditable = false;
         //承認ボタン切り替えフラグ
         if ($update->approval_status === UpdateRequest::STATUS_PENDING) {
             $btnActivate = true;
+            $message = '*承認待ちのため修正はできません。';
         } else {
             $btnActivate = false;
+            $message = null;
         }
 
         //修正申請を反映して修正申請承認画面を表示
@@ -65,7 +67,8 @@ class AdminRequestApprovalController extends Controller
             'update' => $update,
             'isEditable' => $isEditable,
             'allBreaks' => $allBreaks,
-            'btnActivate' => $btnActivate
+            'btnActivate' => $btnActivate,
+            'message' => $message
         ]);
     }
 

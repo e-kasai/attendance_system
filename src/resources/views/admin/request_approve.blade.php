@@ -58,4 +58,8 @@
             @endif
         </x-index.container>
     </form>
+    {{-- 修正不可メッセージ --}}
+    @if ($message)
+        <p class="detail-table__notice">{{ $message }}</p>
+    @endif
 @endsection
