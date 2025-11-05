@@ -31,6 +31,8 @@ class StaffAttendanceController extends Controller
         $action = $request->input('action');
         $this->attendanceService->handleAction($user, $action);
 
+
+
         // 更新後に再取得して表示
         $currentData = $this->getCurrentData();
         return view('staff.attendance_create', $currentData);

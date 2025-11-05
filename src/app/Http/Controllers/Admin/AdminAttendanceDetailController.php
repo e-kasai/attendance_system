@@ -61,6 +61,7 @@ class AdminAttendanceDetailController extends Controller
         return view('common.attendance_detail', compact('attendance', 'update', 'isEditable', 'message'));
     }
 
+
     //勤怠修正処理
     public function updateAttendanceStatus(UpdateAttendanceRequest $request, $id)
     {
