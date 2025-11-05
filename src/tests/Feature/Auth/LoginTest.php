@@ -22,17 +22,10 @@ class LoginTest extends TestCase
             'email' => '',
             'password' => 'password123',
         ]);
-
-        //期待：メールアドレスを入力してくださいというエラーメッセージが返る
-        // $response->assertSessionHasErrors([
-        //     'email' => 'メールアドレスを入力してください',
-        // ]);
-
-        $response->assertSessionHasErrors(['email']);
-        $this->assertEquals(
-            'メールアドレスを入力してください',
-            session('errors')->first('email')
-        );
+        // 期待：メールアドレスを入力してくださいというエラーメッセージが返る
+        $response->assertSessionHasErrors([
+            'email' => 'メールアドレスを入力してください',
+        ]);
     }
 
     public function test_login_fails_if_password_is_empty()
@@ -42,19 +35,11 @@ class LoginTest extends TestCase
             'email' => 'test@example.com',
             'password' => '',
         ]);
-
-        //期待：パスワードを入力してくださいというエラーメッセージが返る
-        // $response->assertSessionHasErrors([
-        //     'password' => 'パスワードを入力してください',
-        // ]);
-
-        $response->assertSessionHasErrors(['password']);
-        $this->assertEquals(
-            'パスワードを入力してください',
-            session('errors')->first('password')
-        );
+        // 期待：パスワードを入力してくださいというエラーメッセージが返る
+        $response->assertSessionHasErrors([
+            'password' => 'パスワードを入力してください',
+        ]);
     }
-
 
     public function test_login_fails_if_email_is_not_registered()
     {

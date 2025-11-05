@@ -28,12 +28,10 @@ class RegisterTest extends TestCase
             'password_confirmation' => 'password123',
         ]);
 
-        // 期待：お名前をを入力してくださいというエラーメッセージが返る
-        $response->assertSessionHasErrors(['name']);
-        $this->assertEquals(
-            'お名前を入力してください',
-            session('errors')->first('name')
-        );
+        // 期待：お名前を入力してくださいというエラーメッセージが返る
+        $response->assertSessionHasErrors([
+            'name' => 'お名前を入力してください',
+        ]);
     }
 
 
@@ -49,11 +47,9 @@ class RegisterTest extends TestCase
 
 
         // 期待：メールアドレスを入力してくださいというエラーメッセージが返る
-        $response->assertSessionHasErrors(['email']);
-        $this->assertEquals(
-            'メールアドレスを入力してください',
-            session('errors')->first('email')
-        );
+        $response->assertSessionHasErrors([
+            'email' => 'メールアドレスを入力してください',
+        ]);
     }
 
 
@@ -68,11 +64,9 @@ class RegisterTest extends TestCase
         ]);
 
         // 期待：パスワードを入力してくださいというエラーメッセージが返る
-        $response->assertSessionHasErrors(['password']);
-        $this->assertEquals(
-            'パスワードを入力してください',
-            session('errors')->first('password')
-        );
+        $response->assertSessionHasErrors([
+            'password' => 'パスワードを入力してください',
+        ]);
     }
 
 
