@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Staff;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -28,6 +28,7 @@ class AcquireDateTest extends TestCase
 
         //期待1:勤怠打刻画面にアクセスできる
         $response->assertOk();
+
         // Bladeで表示されるフォーマットに合わせて現在日時を生成
         $today = Carbon::now()->isoFormat('YYYY年M月D日(ddd)');
         $time = Carbon::now()->format('H:i');

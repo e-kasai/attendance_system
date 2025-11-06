@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Staff;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -9,7 +9,6 @@ use App\Models\Attendance;
 
 class AttendanceStatusTest extends TestCase
 {
-
     use RefreshDatabase;
 
     public function test_status_displays_as_off_duty()
