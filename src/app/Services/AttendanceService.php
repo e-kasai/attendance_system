@@ -87,8 +87,8 @@ class AttendanceService
             ]);
             $attendance->update(['status' => 3]);
         }
-
         return $attendance;
+
     }
 
 

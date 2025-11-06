@@ -18,7 +18,7 @@ class AcquireDateTest extends TestCase
         $user = User::factory()->create([
             'role' => 'staff',
         ]);
-        //仮の時刻を固定（テスト実行の瞬間と Blade の now() のズレ対策）
+        //仮の時刻を固定（テスト実行の瞬間とBladeのnow()のズレ対策）
         Carbon::setTestNow(Carbon::parse('2025-11-05 15:45'));
 
         // ログインして勤怠打刻画面を開く
