@@ -1,0 +1,128 @@
+/* ===========================================
+勤怠登録画面CSS
+   =========================================== */
+
+/* 全体 */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #f0eff2;
+}
+
+/* コンテンツ全体 */
+.attendance {
+    margin: 40px auto;
+    padding: 60px 20px;
+    max-width: 700px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+/* ステータス */
+.attendance__status-text {
+    display: inline-block;
+    width: clamp(2rem, 20vw, 10rem);
+    height: clamp(1rem, 10vw, 4rem);
+    background-color: #c8c8c8;
+    color: #696969;
+    padding: clamp(0.3rem, 1vw, 0.6rem) clamp(0.8rem, 2vw, 1.6rem);
+    border-radius: 50px;
+    font-size: clamp(1rem, 2vw, 1.8rem);
+    margin-bottom: 24px;
+}
+
+/* 日付・時刻 */
+.attendance__date {
+    font-size: clamp(1.4rem, 20vw, 4rem);
+    margin: 8px 0;
+    color: #000000;
+}
+
+.attendance__time {
+    font-size: clamp(2rem, 40vw, 8rem);
+    font-weight: bold;
+    margin: 10px 0 40px;
+}
+
+/* 出勤・退勤・休憩ボタン */
+.attendance__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+}
+
+.attendance__btn {
+    width: 160px;
+    padding: 12px 0;
+    border: none;
+    border-radius: 20px;
+    font-size: clamp(1.4rem, 10vw, 3.2rem);
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.attendance__btn--primary {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+.attendance__btn--primary:hover {
+    background-color: #d5d5d5;
+    color: #000000;
+}
+
+.attendance__btn--secondary {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+.attendance__btn--secondary:hover {
+    background-color: #d5d5d5;
+}
+
+/* メッセージ（退勤後） */
+.attendance__message {
+    font-size: clamp(1.4rem, 10vw, 2.6rem);
+    font-weight: bold;
+    color: #000000;
+    margin-top: 40px;
+}
+
+/* メディアクエリ */
+@media (max-width: 768px) {
+    .attendance__status-text {
+        font-size: clamp(0.8rem, 1.8vw, 1.4rem);
+        padding: 4px 12px;
+    }
+
+    .attendance__date {
+        font-size: clamp(1.2rem, 8vw, 4rem);
+        margin-top: clamp(2rem, 5vw, 4rem);
+    }
+
+    .attendance__time {
+        font-size: clamp(1.6rem, 15vw, 6rem);
+    }
+
+    .attendance__btn {
+        width: 140px;
+        font-size: clamp(1.2rem, 5vw, 2.2rem);
+        padding: 10px 0;
+    }
+
+    .attendance__message {
+        font-size: clamp(1.2rem, 6vw, 2rem);
+    }
+
+    .attendance__status-text {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        width: 80px;
+        height: 30px;
+        font-size: clamp(1rem, 2vw, 1.8rem);
+    }
+}

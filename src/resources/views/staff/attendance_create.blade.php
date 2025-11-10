@@ -1,11 +1,10 @@
 @extends("layouts.app")
 
 @push("styles")
-    <link rel="stylesheet" href="{{ asset("css/attendance.css") }}" />
+    <link rel="stylesheet" href="{{ asset("css/attendance_create.css") }}" />
 @endpush
 
 @section("content")
-    <h1>スタッフ用勤怠登録画面</h1>
     <section class="attendance">
         <div class="attendance__status">
             <p class="attendance__status-text">{{ $statusLabel[$status] ?? "不明" }}</p>

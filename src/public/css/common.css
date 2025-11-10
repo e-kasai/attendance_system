@@ -116,6 +116,8 @@ HEADER
     cursor: pointer;
 }
 
+
+/* メディアクエリ */
 @media (max-width: 768px) {
     .header {
         display: grid;
