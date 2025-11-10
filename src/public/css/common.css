@@ -111,11 +111,10 @@ HEADER
 
 .nav__logout-btn:hover,
 .nav__link:hover {
-    color: #0056b3;
+    color: lightgray;
     text-decoration: none;
     cursor: pointer;
 }
-
 
 /* メディアクエリ */
 @media (max-width: 768px) {
