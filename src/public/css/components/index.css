@@ -18,7 +18,7 @@ body {
 }
 
 .index-container__title {
-    font-size: clamp(1rem, 10vw, 3rem);
+    font-size: clamp(1.4rem, 4vw, 3rem);
     font-weight: 700;
     border-left: 8px solid #000000;
     padding-left: clamp(0.3rem, 3vw, 2rem);
@@ -37,7 +37,7 @@ body {
     border-radius: 10px;
     justify-content: center;
     align-items: center;
-    margin-bottom: 1.5rem;
+    margin: clamp(20px, 4vw, 40px) 0;
     background-color: #ffffff;
 }
 
@@ -55,14 +55,16 @@ body {
     font-weight: 700;
 }
 
+/* カレンダーアイコン */
 .month-select__calender-icon {
-    width: 25px;
-    height: 25px;
+    width: clamp(1rem, 2vw, 2.5rem);
+    height: clamp(1rem, 2vw, 2.5rem);
 }
 
+/* 矢印アイコン */
 .month-select__arrow-icon {
-    width: 20px;
-    height: 15px;
+    width: clamp(1rem, 2vw, 2rem);
+    height: clamp(1rem, 2vw, 1.5rem);
     opacity: 0.3;
 }
 
@@ -70,12 +72,13 @@ body {
     transform: rotate(180deg);
 }
 
+/* 前月・翌月ボタン */
 .month-select__button {
     background: none;
     border: none;
     color: #737373;
     letter-spacing: 0.15em;
-    font-size: clamp(1.2rem, 5vw, 1.6rem);
+    font-size: clamp(1.2rem, 4vw, 1.6rem);
     cursor: pointer;
     transition: opacity 0.2s;
 }
@@ -106,7 +109,7 @@ body {
     border-collapse: collapse;
     font-size: clamp(1rem, 2vw, 1.6rem);
     color: #737373;
-    letter-spacing: 0.15rem;
+    letter-spacing: clamp(0.05rem, 1vw, 0.15rem);
     font-weight: 700;
     table-layout: fixed;
     word-break: break-all;
@@ -119,10 +122,9 @@ body {
 }
 
 .index-table__header {
-    padding: clamp(3px, 0.5vw, 6px) clamp(16px, 4vw, 40px);
+    padding: clamp(3px, 0.5vw, 6px) clamp(12px, 4vw, 40px);
     font-weight: 600;
     text-align: center;
-    border-bottom: 1px solid #ddd;
 }
 
 .index-table__header:first-child {
@@ -139,7 +141,6 @@ body {
 }
 
 .index-table__cell {
-    padding: 0.6rem;
     text-align: center;
     padding: clamp(6px, 1vw, 10px) clamp(2px, 0.8vw, 4px);
 }
@@ -155,6 +156,26 @@ body {
     opacity: 0.7;
 }
 
+.index-container__btn {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: clamp(1rem, 2vw, 4.5rem);
+}
+
+.btn {
+    background-color: #000000;
+    color: #ffffff;
+    font-size: clamp(1.3rem, 2vw, 2.2rem);
+    padding: clamp(0.6rem, 1.5vw, 1.4rem) clamp(1.6rem, 3vw, 3.2rem);
+    letter-spacing: 0.15rem;
+    font-weight: 700;
+    height: auto;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
 /* ==============================
 レスポンシブ
 ============================== */
@@ -165,15 +186,26 @@ body {
 
     .index-container__title {
         font-size: clamp(1.4rem, 4vw, 3rem);
+    }
 
-        .index-table {
-            width: 70%;
-            font-size: 0.8rem;
-        }
+    .index-table {
+        width: 100%;
+        font-size: clamp(0.8rem, 2vw, 1.4rem);
+    }
 
-        .month-select {
-            flex-direction: column;
-            gap: 0.4rem;
-        }
+    .month-select {
+        gap: 0.4rem;
+    }
+
+    .btn {
+        padding: clamp(0.4rem, 2vw, 0.8rem) clamp(1rem, 2vw, 2rem);
+        font-size: clamp(1rem, 2vw, 1.6rem);
+    }
+
+    .btn.btn--export {
+        width: auto;
+        min-width: clamp(5rem, 30vw, 10rem);
+        white-space: nowrap;
+        text-align: center;
     }
 }

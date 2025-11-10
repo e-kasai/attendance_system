@@ -12,4 +12,9 @@
     <div class="index-container__table">
         {{ $table ?? $slot }}
     </div>
+
+    {{-- ボタン --}}
+    <div class="index-container__btn">
+        {{$btn}}
+    </div>
 </div>

@@ -101,8 +101,9 @@
                 @endforeach
             </x-index.table>
         </x-slot>
-    </x-index.container>
-    {{-- 管理者のみCSV出力ボタンを表示 --}}
+
+         {{-- 管理者のみCSV出力ボタンを表示 --}}
+    <x-slot name="btn">
     @if (auth()->user()->role === "admin")
         <div class="export-buttons">
             <form method="GET" action="{{ route("admin.staff.attendance.export", ["id" => $user->id]) }}">
@@ -111,4 +112,6 @@
             </form>
         </div>
     @endif
+    </x-slot>
+    </x-index.container>
 @endsection
