@@ -2,6 +2,8 @@
 
 @push("styles")
     <link rel="stylesheet" href="{{ asset("css/list.css") }}" />
+    <link rel="stylesheet" href="{{ asset("css/attendance_index.css") }}" />
+    <link rel="stylesheet" href="{{ asset("css/components/index.css") }}" />
 @endpush
 
 @section("content")
@@ -26,12 +28,18 @@
                         : route("attendances.index")
                 }}"
             >
-                <button class="month-select__button" type="submit" name="target_ym" value="{{ $prevMonth }}">← 前月</button>
+                <button class="month-select__button" type="submit" name="target_ym" value="{{ $prevMonth }}">
+                    <img class="month-select__arrow-icon" src="{{ asset("img/arrow_icon.png") }}" alt="logo" />
+                    前月
+                </button>
                 <div class="month-select__display">
-                    <i class="month-select__icon fa-solid fa-calendar"></i>
+                    <img class="month-select__calender-icon" src="{{ asset("img/calender_icon.png") }}" alt="logo" />
                     <span class="month-select__text">{{ $selectedMonth }}</span>
                 </div>
-                <button class="month-select__button" type="submit" name="target_ym" value="{{ $nextMonth }}">翌月 →</button>
+                <button class="month-select__button" type="submit" name="target_ym" value="{{ $nextMonth }}">
+                    翌月
+                    <img class="month-select__arrow-icon next" src="{{ asset("img/arrow_icon.png") }}" alt="logo" />
+                </button>
             </form>
         </x-slot>
 

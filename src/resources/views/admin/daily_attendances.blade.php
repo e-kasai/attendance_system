@@ -1,7 +1,7 @@
 @extends("layouts.app")
 
 @push("styles")
-    <link rel="stylesheet" href="{{ asset("css/list.css") }}" />
+    <link rel="stylesheet" href="{{ asset("css/components/list.css") }}" />
 @endpush
 
 @section("content")
