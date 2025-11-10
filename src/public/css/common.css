@@ -15,7 +15,7 @@ CSS VARIABLES
 /*---------------------------------
 ENTIRE PAGE SETTING
 ---------------------------------*/
-/* 1rem = 10pxに設定しわかりやすくする */
+/* 1rem = 10pxに設定 */
 html {
     font-size: 62.5%;
     margin: 0;
@@ -27,17 +27,6 @@ body {
     font-variant-numeric: normal;
     margin: 0;
     padding: 0;
-}
-
-/* カテゴリタグ */
-.chip {
-    display: inline-block;
-    padding: clamp(0.4rem, 1.5vw, 0.6rem) clamp(1rem, 5vw, 2rem);
-    border: 2px solid transparent;
-    border-radius: 16px;
-    font-size: clamp(1rem, 2vw, 1.3rem);
-    font-weight: 500;
-    transition: all 0.2s ease;
 }
 
 /*---------------------------------
@@ -76,57 +65,31 @@ HEADER
 ---------------------------------*/
 .header {
     width: 100%;
-    min-height: 8rem;
     min-height: clamp(8rem, 12vh, 12rem);
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: auto 1fr;
     grid-template-rows: 1fr;
     align-items: center;
-    padding: 0.3rem 0;
-    border: 1px solid #e0dfde;
-    /* 各セル内のインライン要素を左右中央に配置 */
-    text-align: center;
+    text-align: left;
     background-color: black;
 }
 
-.header__logo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 .logo-image {
-    padding: clamp(1rem, 4vw, 2rem) clamp(0.5rem, 3vw, 1.5rem);
-    width: clamp(10rem, 25vw, 35rem);
+    padding: clamp(1rem, 4vw, 2.2rem) clamp(0.5rem, 3vw, 2.5rem);
+    width: clamp(15rem, 40vw, 37rem);
     height: auto;
 }
 
-.header__search-input {
-    width: 90%;
-    width: clamp(12rem, 40vw, 60rem);
-    grid-column: 2;
-    grid-row: 1;
-    border: solid 1px white;
-    border-radius: 5px;
-    background-color: white;
-    padding: 1rem 2rem;
-    font-size: clamp(1.6rem, 3vw, 3rem);
-}
-
-.header__search-input::placeholder {
-    color: #000000;
-    opacity: 1;
-}
-
 .nav {
-    width: 95%;
     grid-column: 3;
     grid-row: 1;
     display: flex;
+    flex-direction: row;
     align-items: center;
     justify-content: flex-end;
-    gap: clamp(1rem, 1vw, 2rem);
-    font-size: clamp(0.7rem, 1.5vw, 2.5rem);
+    gap: clamp(1rem, 4vw, 3rem);
+    font-size: clamp(1rem, 2vw, 2.4rem);
+    margin-right: clamp(0.7rem, 10vw, 4rem);
 }
 
 .nav__logout-form {
@@ -146,31 +109,8 @@ HEADER
     text-decoration: none;
 }
 
-.nav__link--mypage {
-    grid-column: 2;
-    grid-row: 1;
-}
-
-.nav__link--sell {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: clamp(0.2rem, 1vw, 1.2rem) clamp(1.5rem, 2vw, 1.6rem);
-    min-height: clamp(2.8rem, 5vw, 3.6rem);
-    box-sizing: border-box;
-    line-height: 1;
-    color: #000;
-    background: #fff;
-    border: 1px solid #fff;
-    border-radius: 4px;
-    border: 1px solid #ffffff;
-    border-radius: 4px;
-    background-color: #ffffff;
-}
-
 .nav__logout-btn:hover,
-.nav__link--mypage:hover,
-.nav__link--sell:hover {
+.nav__link:hover {
     color: #0056b3;
     text-decoration: none;
     cursor: pointer;
@@ -178,43 +118,38 @@ HEADER
 
 @media (max-width: 768px) {
     .header {
-        grid-template-columns: auto 1fr;
+        display: grid;
+        grid-template-columns: 1fr; /* 1列 */
+        grid-template-rows: auto auto; /* ロゴ行＋ナビ行 */
         padding: 20px;
         min-height: clamp(6rem, 12vh, 10rem);
+        justify-items: center;
     }
 
     .header__logo {
-        grid-column: 1;
-        grid-row: 1;
+        grid-row: 1; /* ロゴは上段 */
+        justify-content: center;
     }
 
     .logo-image {
-        width: 40vw;
-        max-width: 20rem;
-    }
-    .nav {
-        grid-column: 2;
-        grid-row: 1;
-        justify-content: flex-end;
-    }
-    .header__search {
-        grid-column: 1 / -1;
-        grid-row: 2;
+        width: 60vw;
+        max-width: 25rem;
+        height: auto;
     }
 
-    .header__search-input {
-        width: min(92vw, 64rem);
+    .nav {
+        grid-column: 1;
+        grid-row: 2; /* navは下段 */
+        justify-content: center;
+        text-align: flex-start;
+        gap: clamp(0.7rem, 3vw, 1.8rem);
+        width: 100%;
+        display: flex;
         margin: 0 auto;
-        font-size: clamp(1.5rem, 4vw, 1.9rem);
-        padding: clamp(0.4rem, 1vw, 0.6rem) clamp(1.2rem, 3vw, 2rem);
     }
 
     .nav__link,
     .nav__logout-form {
-        font-size: clamp(0.8rem, 2vw, 1.5rem);
-    }
-
-    .nav__link--sell {
-        padding: 0 20px;
+        font-size: clamp(1.2rem, 2vw, 1.6rem);
     }
 }
