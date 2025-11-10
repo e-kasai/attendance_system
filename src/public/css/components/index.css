@@ -1,0 +1,179 @@
+/* ==============================
+勤怠一覧ページ
+============================== */
+
+/* 全体 */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #f0eff2;
+}
+
+.index-container {
+    background-color: #f0eff2;
+    padding: 2rem;
+    max-width: 900px;
+    margin: 2rem auto;
+    border-radius: 4px;
+}
+
+.index-container__title {
+    font-size: clamp(1rem, 10vw, 3rem);
+    font-weight: 700;
+    border-left: 8px solid #000000;
+    padding-left: clamp(0.3rem, 3vw, 2rem);
+    margin-bottom: 1.5rem;
+    color: #000000;
+}
+
+/* ==============================
+月選択フォーム
+============================== */
+.index-container__month {
+    width: 100%;
+    height: 60px;
+    display: flex;
+    border: none;
+    border-radius: 10px;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    background-color: #ffffff;
+}
+
+.month-select {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 clamp(0.5rem, 2vw, 2rem);
+}
+
+.month-select__text {
+    font-size: clamp(1rem, 5vw, 2rem);
+    color: #000000;
+    font-weight: 700;
+}
+
+.month-select__calender-icon {
+    width: 25px;
+    height: 25px;
+}
+
+.month-select__arrow-icon {
+    width: 20px;
+    height: 15px;
+    opacity: 0.3;
+}
+
+.month-select__arrow-icon.next {
+    transform: rotate(180deg);
+}
+
+.month-select__button {
+    background: none;
+    border: none;
+    color: #737373;
+    letter-spacing: 0.15em;
+    font-size: clamp(1.2rem, 5vw, 1.6rem);
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.month-select__button:hover {
+    opacity: 0.6;
+}
+
+.month-select__display {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* ==============================
+一覧テーブル
+============================== */
+.index-container__table {
+    background-color: #ffffff;
+    border-radius: 10px;
+    overflow-x: auto;
+    margin: 0 auto;
+}
+
+.index-table {
+    width: 100%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    font-size: clamp(1rem, 2vw, 1.6rem);
+    color: #737373;
+    letter-spacing: 0.15rem;
+    font-weight: 700;
+    table-layout: fixed;
+    word-break: break-all;
+}
+
+.index-table__head {
+    background-color: #ffffff;
+    height: 31px;
+    border-bottom: #e1e1e1 3px solid;
+}
+
+.index-table__header {
+    padding: clamp(3px, 0.5vw, 6px) clamp(16px, 4vw, 40px);
+    font-weight: 600;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.index-table__header:first-child {
+    padding-right: clamp(1rem, 4vw, 4rem);
+}
+
+.index-table__row {
+    border-top: #e1e1e1 2px solid;
+    border-bottom: #e1e1e1 2px solid;
+}
+
+.index-table__row:last-child {
+    border-bottom: none;
+}
+
+.index-table__cell {
+    padding: 0.6rem;
+    text-align: center;
+    padding: clamp(6px, 1vw, 10px) clamp(2px, 0.8vw, 4px);
+}
+
+.index-table__link {
+    color: #000000;
+    font-size: clamp(1rem, 2vw, 1.6rem);
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.index-table__link:hover {
+    opacity: 0.7;
+}
+
+/* ==============================
+レスポンシブ
+============================== */
+@media (max-width: 768px) {
+    .index-container {
+        padding: 1.2rem;
+    }
+
+    .index-container__title {
+        font-size: clamp(1.4rem, 4vw, 3rem);
+
+        .index-table {
+            width: 70%;
+            font-size: 0.8rem;
+        }
+
+        .month-select {
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+    }
+}
