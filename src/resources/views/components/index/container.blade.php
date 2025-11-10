@@ -15,6 +15,6 @@
 
     {{-- ボタン --}}
     <div class="index-container__btn">
-        {{$btn}}
+        {{ $btn ?? "" }}
     </div>
 </div>
