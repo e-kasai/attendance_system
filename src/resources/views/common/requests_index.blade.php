@@ -77,12 +77,14 @@
                         <td class="index-table__cell">
                             @if (auth()->user()->role === "admin")
                                 <a
+                                    class="index-table__link"
                                     href="{{ route("admin.request.approve.show", ["attendance_correct_request_id" => $updateRequest->id]) }}"
                                 >
                                     詳細
                                 </a>
                             @else
                                 <a
+                                    class="index-table__link"
                                     href="{{
                                         route("attendance.detail", [
                                             "id" => $updateRequest->attendance_id,
