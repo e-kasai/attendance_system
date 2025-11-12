@@ -54,15 +54,26 @@ class AdminAttendanceDetailController extends Controller
                 );
             }
         }
-        // $isEditable = true;
 
-        // 承認済みの勤怠のみ編集可能（未承認はロック）
-        $isEditable = $attendance->is_approved === true;
-        // $message = null;
+        //詳細画面（勤怠一覧経由）：修正申請未→編集可&メッセージなし
+        //詳細画面（勤怠一覧経由）：修正申請済→承認済みの場合：編集可&メッセージなし
+        $isEditable = true;
+        $message = null;
 
-        $message = $isEditable
-            ? null
-            : '*承認待ちの為修正はできません。';
+        //詳細画面（申請一覧経由）：未承認の場合 = 編集不可
+        if ($update && $update->approval_status === UpdateRequest::STATUS_PENDING) {
+            $isEditable = false;
+        }
+
+        //詳細画面（勤怠一覧経由）：修正申請済→未承認の場合：編集不可&メッセージ表示
+        elseif (
+            ! $update && $attendance->updateRequests()
+            ->where('approval_status', UpdateRequest::STATUS_PENDING)
+            ->exists()
+        ) {
+            $isEditable = false;
+            $message = '*承認待ちのため修正はできません。';
+        }
 
         // スタッフと同じビューを使う
         return view('common.attendance_detail', compact('attendance', 'update', 'isEditable', 'message'));
