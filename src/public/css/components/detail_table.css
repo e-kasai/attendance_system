@@ -1,0 +1,258 @@
+/* ==============================
+勤怠詳細ページ
+============================== */
+
+/* 全体 */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #f0eff2;
+}
+
+/* container（ページ全体） */
+.index-container {
+    max-width: 1200px;
+    background-color: #f0eff2;
+    padding: 0px;
+    margin: 2rem auto;
+    border: 1px solid red;
+    border-radius: 4px;
+}
+
+.index-container__title {
+    font-size: clamp(1.4rem, 4vw, 3rem);
+    font-weight: 700;
+    border-left: 8px solid #000000;
+    padding-left: clamp(0.3rem, 3vw, 2rem);
+    margin-bottom: 4rem;
+    margin-top: 6rem;
+    color: #000000;
+}
+
+/* ==============================
+詳細テーブル
+============================== */
+.detail-table {
+    background-color: #ffffff;
+    border-radius: 10px;
+    /* max-width: 900px; */
+    margin: 0 auto;
+}
+
+.detail-table__inner {
+    width: 100%;
+}
+
+/* ==============================
+詳細テーブル(ヘッダー）
+============================== */
+.detail-table th,
+.detail-table td {
+    font-size: clamp(1.3rem, 2vw, 1.6rem);
+    border-bottom: 2px solid #e1e1e1;
+    vertical-align: middle;
+    font-weight: 700;
+    white-space: nowrap;
+    letter-spacing: clamp(0.05rem, 1vw, 0.15rem);
+    text-align: left;
+}
+
+/* 行 */
+index-table__row {
+    width: 50%;
+}
+
+/* ラベル（テーブル左側）*/
+.detail-table__label {
+    width: 25%;
+    padding: clamp(2rem, 3vw, 3rem) clamp(2.5rem, 4vw, 6rem);
+    color: #737373;
+}
+
+/* value（テーブル右側）*/
+.detail-table__value {
+    width: 40%;
+    /* padding: clamp(2rem, 3vw, 3rem) clamp(4rem, 8vw, 10rem); */
+    color: #000000;
+}
+
+/* 名前表示 */
+.detail-table__value.name {
+    text-indent: 1rem;
+}
+
+/* 日付表示 */
+.date-display {
+    display: flex;
+    width: 100%;
+    gap: clamp(4rem, 2vw, 6rem);
+    align-items: center;
+}
+
+.date-display__year {
+    min-width: 8rem;
+    text-align: center;
+    margin-left: 10px;
+}
+
+.date-display__monthday {
+    min-width: 10rem;
+    text-align: center;
+    margin-left: 75px;
+}
+
+/* 時間入力欄 */
+.detail-table__time-range {
+    display: flex;
+    align-items: center;
+    gap: clamp(4rem, 2vw, 6rem);
+    width: 100%;
+    justify-content: flex-start;
+}
+
+.detail-table__value input[type="time"] {
+    width: 15%;
+    border: 1px #e1e1e1 solid;
+    border-radius: 4px;
+    padding: 0.5rem 0.5rem;
+    font-size: clamp(1rem, 2vw, 1.4rem);
+    font-weight: 700;
+    letter-spacing: clamp(0.05rem, 1vw, 0.15rem);
+    text-align: center;
+
+    /* 時計アイコンを消す（firefoxなどのGecko系） */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: textfield;
+}
+
+/* 時計アイコンを消す（chrome, edgeなどのWebkit系） */
+.detail-table__value input[type="time"]::-webkit-calendar-picker-indicator {
+    display: none;
+    -webkit-appearance: none;
+}
+
+/* ～ */
+.detail-table__tilde {
+    color: #000000;
+}
+
+/* 備考 */
+.detail-table__value textarea {
+    width: 45%;
+    height: 3rem;
+    padding: 5rem 0.8rem;
+    margin: 2rem 0rem;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    font-size: clamp(1rem, 2vw, 1.4rem);
+    font-weight: 700;
+    letter-spacing: clamp(0.05rem, 1vw, 0.15rem);
+
+    overflow: hidden;
+}
+
+/* ==============================
+ボタン
+============================== */
+
+.index-container__btn {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: clamp(1rem, 2vw, 4.5rem);
+}
+
+.btn {
+    background-color: #000000;
+    color: #ffffff;
+    font-size: clamp(1.3rem, 2vw, 2.2rem);
+    padding: clamp(0.6rem, 1.5vw, 1.4rem) clamp(1.6rem, 3vw, 3.2rem);
+    letter-spacing: clamp(0.05rem, 1vw, 0.15rem);
+    font-weight: 700;
+    height: auto;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.detail-table__btn {
+    margin-top: 2rem;
+    background-color: #000;
+    color: #fff;
+    padding: 0.8rem 2.4rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 700;
+    letter-spacing: clamp(0.05rem, 1vw, 0.15rem);
+    display: block;
+    margin-left: auto;
+    transition: opacity 0.2s ease;
+}
+
+.detail-table__btn:hover {
+    opacity: 0.8;
+}
+
+/* ==============================
+エラーメッセージ
+============================== */
+
+/* validation errorメッセージ */
+.form-error {
+    color: #d33;
+    font-size: 1.2rem;
+    margin-top: 0.3rem;
+}
+
+/* "承認待ち修正不可"メッセージ */
+.detail-table__notice {
+    margin-top: 1.2rem;
+    color: #666;
+    text-align: center;
+}
+
+/* ==============================
+入力フィールド調整
+============================== */
+
+/* time入力欄の内部テキスト部分にもInterを適用 */
+input[type="time"]::-webkit-datetime-edit,
+input[type="time"]::-webkit-datetime-edit-fields-wrapper,
+input[type="time"]::-webkit-datetime-edit-text,
+input[type="time"]::-webkit-datetime-edit-hour-field,
+input[type="time"]::-webkit-datetime-edit-minute-field {
+    font-family: "Inter", sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+}
+
+/* ==============================
+レスポンシブ
+============================== */
+
+/* スマホ (〜767.98px) */
+@media (max-width: 767.98px) {
+    .index-container {
+        padding: 1.2rem;
+    }
+}
+
+/* タブレット (768px〜1023.98px) */
+@media (min-width: 768px) and (max-width: 1023.98px) {
+}
+
+/* PC (1024px〜1539.98px) */
+@media (min-width: 1024px) and (max-width: 1539.98px) {
+}
+
+/* ワイドスクリーン (1540px〜) */
+@media (min-width: 1540px) {
+    .index-container {
+        width: 1400px;
+    }
+    .index-container__table {
+        width: 100%;
+    }
+}
