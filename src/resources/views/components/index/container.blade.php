@@ -8,6 +8,9 @@
         </div>
     @endif
 
+    {{-- 切り替えタブ --}}
+    {{ $tabs ?? '' }}
+
     {{-- テーブル --}}
     <div class="index-container__table">
         {{ $table ?? $slot }}
