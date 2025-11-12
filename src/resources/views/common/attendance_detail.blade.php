@@ -1,14 +1,15 @@
 @extends("layouts.app")
 
 @push("styles")
-    <link rel="stylesheet" href="{{ asset("css/list.css") }}" />
+    <link rel="stylesheet" href="{{ asset("css/components/detail_table.css") }}" />
 @endpush
+
 
 @section("content")
     @php
         // 名前、日付、出退勤行
         $rows = [
-            ["label" => "名前", "value" => $attendance->user->name],
+            ["label" => "名前", "value" => $attendance->user->name, "class" => "name"],
             ["label" => "日付", "value" => $attendance->date->format("Y年n月j日")],
             [
                 "label" => "出勤・退勤",
@@ -58,9 +59,12 @@
 
         <x-index.container title="勤怠詳細">
             <x-detail.table :rows="$rows" :isEditable="$isEditable" />
-            @if ($isEditable)
-                <button type="submit" class="detail-table__btn">修正</button>
-            @endif
+
+            <x-slot name="btn">
+                @if ($isEditable)
+                    <button class="btn btn--modify" type="submit">修正</button>
+                @endif
+            </x-slot>
         </x-index.container>
     </form>
 
