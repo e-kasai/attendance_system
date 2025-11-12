@@ -39,6 +39,7 @@ body {
     background-color: #ffffff;
 }
 
+/* 選択月 */
 .month-select {
     width: 100%;
     display: flex;
@@ -133,7 +134,7 @@ body {
     width: 100%;
     margin: 0 auto;
     border-collapse: collapse;
-    font-size: clamp(1rem, 2vw, 1.6rem);
+    font-size: clamp(1.2rem, 2vw, 1.6rem);
     color: #737373;
     letter-spacing: clamp(0.05rem, 1vw, 0.15rem);
     font-weight: 700;
@@ -142,6 +143,9 @@ body {
     white-space: normal;
 }
 
+/* ==============================
+一覧テーブルヘッダー
+============================== */
 .index-table__head {
     background-color: #ffffff;
     height: clamp(3.5rem, 6vw, 4.5rem);
@@ -149,26 +153,29 @@ body {
 }
 
 .index-table__header {
-    padding: clamp(0.3rem, 5vw, 0.6rem) clamp(1.2rem, 2vw, 3rem);
+    /* padding: clamp(0.3rem, 5vw, 0.6rem) clamp(1.2rem, 2vw, 3rem); */
     font-weight: 600;
-    text-align: left;
-}
-
-.index-table__header:first-child {
-    padding-left: clamp(1rem, 4vw, 4rem);
+    text-align: center;
 }
 
 .index-table__header:last-child {
-    padding-right: clamp(1rem, 4vw, 4rem);
+    /* margin-right: clamp(4rem, 4vw, 8rem); */
 }
 
+/* .index-table__header:last-child {
+    padding-right: clamp(1rem, 4vw, 4rem);
+} */
+
+/* ==============================
+一覧テーブル（行、セル）
+============================== */
 .index-table__row {
     border-top: #e1e1e1 2px solid;
     border-bottom: #e1e1e1 2px solid;
 }
 
 .index-table__row th:nth-child(4) {
-    text-align: left;
+    text-align: center;
 }
 
 .index-table__row:last-child {
@@ -176,17 +183,16 @@ body {
 }
 
 .index-table__cell {
-    text-align: left;
+    text-align: center;
     padding: clamp(6px, 1vw, 10px) clamp(0.2rem, 0.8vw, 0.3rem);
 }
 
-.index-table__cell:first-child {
-    padding-left: clamp(1rem, 4vw, 4rem);
-}
-
+/* ==============================
+詳細リンク
+============================== */
 .index-table__link {
     color: #000000;
-    font-size: clamp(1rem, 2vw, 1.6rem);
+    font-size: clamp(1.2rem, 2vw, 1.6rem);
     text-decoration: none;
     font-weight: 700;
     text-align: left;
@@ -195,6 +201,10 @@ body {
 .index-table__link:hover {
     opacity: 0.7;
 }
+
+/* ==============================
+ボタン
+============================== */
 
 .index-container__btn {
     display: flex;
@@ -205,8 +215,8 @@ body {
 .btn {
     background-color: #000000;
     color: #ffffff;
-    font-size: clamp(1.3rem, 2vw, 2.2rem);
-    padding: clamp(0.6rem, 1.5vw, 1.4rem) clamp(1.6rem, 3vw, 3.2rem);
+    font-size: clamp(1.6rem, 2vw, 2.2rem);
+    padding: clamp(0.6rem, 1.5vw, 1rem) clamp(1.6rem, 3vw, 3.2rem);
     letter-spacing: clamp(0.05rem, 1vw, 0.15rem);
     font-weight: 700;
     height: auto;
@@ -220,7 +230,7 @@ body {
 レスポンシブ
 ============================== */
 
-/* スマホ用スタイル */
+/* スマホ (〜767.98px) */
 @media (max-width: 767.98px) {
     .index-container {
         padding: 1.2rem;
@@ -234,7 +244,6 @@ body {
         width: 100%;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
-        font-size: clamp(0.8rem, 2vw, 1.4rem);
         table-layout: auto;
         word-break: keep-all;
         white-space: normal;
@@ -249,35 +258,23 @@ body {
         padding: clamp(0.3rem, 5vw, 0.6rem) clamp(1.2rem, 1vw, 2rem);
     }
 
-    .index-table__row td:nth-child(4) {
-        text-align: left;
-        width: 20%;
-    }
-
     .month-select {
         gap: 0.4rem;
     }
 
     .btn {
-        padding: clamp(0.4rem, 2vw, 0.8rem) clamp(1rem, 2vw, 2rem);
-        font-size: clamp(1rem, 2vw, 1.6rem);
-    }
-
-    .btn.btn--export {
-        width: auto;
-        min-width: clamp(5rem, 30vw, 10rem);
-        white-space: nowrap;
-        text-align: center;
+        padding: 0.5rem 1rem;
+        font-size: clamp(1rem, 2vw, 2.2rem);
+        min-width: clamp(4rem, 30vw, 8rem);
     }
 }
 
-/* タブレット用スタイル */
+/* タブレット(768px〜1023.98px) */
 @media (min-width: 768px) and (max-width: 1023.98px) {
     .index-table {
         width: 100%;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
-        font-size: clamp(0.8rem, 2vw, 1.4rem);
         table-layout: auto;
         word-break: keep-all;
         white-space: normal;
@@ -290,27 +287,17 @@ body {
     .index-table__cell {
         padding: clamp(0.6rem, 1vw, 1rem) clamp(0.2rem, 0.8vw, 0.3rem);
     }
-
-    .index-table__row td:nth-child(4) {
-        text-align: left;
-        width: 20%;
-    }
 }
 
-/* PC */
+/* PC (1024px〜1539.98px) */
 @media (min-width: 1024px) and (max-width: 1539.98px) {
     .index-table {
-        margin: 0 auto;
+        width: 100%;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
-        font-size: clamp(0.8rem, 2vw, 1.4rem);
         table-layout: auto;
         word-break: keep-all;
         white-space: normal;
-    }
-
-    .index-table__row td:nth-child(4) {
-        width: 20%;
     }
 
     .index-table__cell {
@@ -322,7 +309,7 @@ body {
     }
 }
 
-/* ワイドスクリーン用 */
+/* ワイドスクリーン (1540px〜) */
 @media (min-width: 1540px) {
     .index-container {
         width: 1400px;
@@ -333,15 +320,9 @@ body {
         margin: 0 auto;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
-        font-size: clamp(1.2rem, 4vw, 2rem);
         table-layout: auto;
         word-break: keep-all;
         white-space: normal;
-    }
-
-    .index-table__row td:nth-child(4) {
-        text-align: left;
-        width: 20%;
     }
 
     .index-table__cell {

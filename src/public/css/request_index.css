@@ -1,0 +1,64 @@
+/* ==============================
+申請一覧画面
+============================== */
+
+/* 備考欄設定 */
+.index-table__cell:nth-child(4),
+.index-table__header:nth-child(4) {
+    white-space: normal;
+    word-break: break-word;
+    text-align: left;
+    width: 20%;
+}
+
+/* ==============================
+スマホ (〜767.98px)
+============================== */
+
+@media (max-width: 767.98px) {
+    /* テーブルを横スクロール可能に */
+    .index-container__table {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .index-table {
+        min-width: 600px; /* テーブルが狭すぎて文字が縦になるのを防ぐ */
+        table-layout: auto;
+        white-space: nowrap; /* 改行を禁止（自然な横書き維持） */
+    }
+
+    /* 備考欄（申請理由）は折り返し許可 */
+    .index-table__cell:nth-child(4),
+    .index-table__header:nth-child(4) {
+        white-space: normal; /* 改行OK */
+        word-break: break-word;
+        text-align: left;
+        min-width: 180px; /* 幅確保 */
+    }
+}
+
+/* ==============================
+タブレット(768px〜1023.98px)
+============================== */
+
+@media (min-width: 768px) and (max-width: 1023.98px) {
+    .index-container__table {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .index-table {
+        min-width: 600px;
+        table-layout: auto;
+        white-space: nowrap;
+    }
+
+    .index-table__cell:nth-child(4),
+    .index-table__header:nth-child(4) {
+        white-space: normal;
+        word-break: break-word;
+        text-align: left;
+        min-width: 180px;
+    }
+}

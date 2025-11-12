@@ -11,14 +11,11 @@ body {
 
 /* container（ページ全体） */
 .index-container {
-    /* max-width: 1200px; */
+    max-width: 1200px;
     background-color: #f0eff2;
-    padding: 0px;
+    padding: 20px;
     margin: 2rem auto;
     border-radius: 4px;
-
-    width: 100%;
-    max-width: 92vw;
 }
 
 .index-container__title {
@@ -67,7 +64,7 @@ index-table__row {
 
 /* ラベル（テーブル左側）*/
 .detail-table__label {
-    width: 25%;
+    width: 15%;
     padding: clamp(2rem, 3vw, 3rem) clamp(2.5rem, 4vw, 6rem);
     color: #737373;
 }
@@ -156,31 +153,18 @@ index-table__row {
 ボタン
 ============================== */
 
-.index-container__btn {
+/* .index-container__btn {
     display: flex;
     justify-content: flex-end;
     margin-top: clamp(1rem, 2vw, 4.5rem);
-}
-
-.btn {
-    background-color: #000000;
-    color: #ffffff;
-    font-size: clamp(1.3rem, 2vw, 2.2rem);
-    padding: clamp(0.6rem, 1.5vw, 1.4rem) clamp(1.6rem, 3vw, 3.2rem);
-    letter-spacing: clamp(0.05rem, 1vw, 0.15rem);
-    font-weight: 700;
-    height: auto;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: opacity 0.2s;
-}
+} */
 
 .detail-table__btn {
     margin-top: 2rem;
+    font-size: clamp(1.5rem, 5vw, 2.2rem);
     background-color: #000;
-    color: #fff;
-    padding: 0.8rem 2.4rem;
+    color: #ffffff;
+    padding: 1rem 2.4rem;
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -195,14 +179,19 @@ index-table__row {
     opacity: 0.8;
 }
 
+.detail-table__btn.approved {
+    background-color: #696969;
+}
+
 /* ==============================
 承認待ち修正不可メッセージ
 ============================== */
 
 .detail-table__notice {
+    max-width: 1200px;
+    margin: 0 auto;
     font-size: clamp(1.2rem, 2vw, 1.8rem);
     font-weight: 800;
-    margin-top: 1.2rem;
     color: #ff0000;
     text-align: right;
     letter-spacing: clamp(0.05rem, 1vw, 0.15rem);
@@ -243,7 +232,7 @@ input[type="time"]::-webkit-datetime-edit-minute-field {
     .detail-table td {
         white-space: normal;
         word-break: break-word;
-        font-size: clamp(1rem, 3vw, 1.4rem);
+        font-size: clamp(1rem, 3vw, 1.6rem);
         padding: clamp(0.8rem, 1.5vw, 1.2rem);
     }
 
@@ -290,16 +279,22 @@ input[type="time"]::-webkit-datetime-edit-minute-field {
         min-height: clamp(10rem, 5vw, 14rem);
         padding: clamp(1rem, 1.5vw, 2rem) clamp(1rem, 2vw, 2rem);
     }
- 
 }
 
 /* ワイドスクリーン (1540px〜) */
 
 @media (min-width: 1540px) {
+    .detail-table__value {
+        width: 100%;
+    }
     /* 備考欄 */
     .detail-table__value textarea {
-        width: clamp(32rem, 40vw, 50rem);
+        width: 80%;
         min-height: clamp(12rem, 6vw, 16rem);
         padding: clamp(1.2rem, 1.8vw, 2rem) clamp(1.2rem, 2vw, 2rem);
+
+        white-space: pre-wrap;
+        word-break: break-word;
+        overflow-wrap: break-word;
     }
 }
