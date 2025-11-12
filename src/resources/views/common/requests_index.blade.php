@@ -1,13 +1,13 @@
 @extends("layouts.app")
 
 @push("styles")
-    <link rel="stylesheet" href="{{ asset("css/list.css") }}" />
+    <link rel="stylesheet" href="{{ asset("css/components/index.css") }}" />
 @endpush
 
 @section("content")
     <x-index.container title="申請一覧">
-        <x-slot name="table">
-            {{-- 状態切り替えタブ --}}
+        {{-- 状態切り替えタブ --}}
+        <x-slot name="tabs">
             <div class="tabs">
                 <a
                     href="{{ route("requests.index", ["status" => "pending"]) }}"
@@ -23,6 +23,9 @@
                     承認済み
                 </a>
             </div>
+        </x-slot>
+
+        <x-slot name="table">
             <x-index.table :headers="['状態', '名前', '対象日時', '申請理由', '申請日時', '詳細']">
                 @forelse ($updateRequests as $updateRequest)
                     @php
@@ -45,15 +48,9 @@
                                     <span>-</span>
                             @endswitch
                         </td>
-                        {{-- 名前 --}}
-                        {{--
-                            <td class="index-table__cell">
-                            {{ $attendance->user->name ?? "" }}
-                            </td>
-                        --}}
 
                         {{-- 管理者は申請者の名前、スタッフは自分の名前 --}}
-                        <td>
+                        <td class="index-table__cell">
                             @if (! empty($isAdmin))
                                 {{ $updateRequest->attendance->user->name ?? "-" }}
                             @else
@@ -78,26 +75,6 @@
 
                         {{-- 詳細リンク --}}
                         <td class="index-table__cell">
-                            {{--
-                                <a href="{{ route("attendance.detail", $updateRequest->attendance_id) }}" class="index-table__link">
-                                詳細
-                                </a>
-                            --}}
-
-                            {{--
-                                <a
-                                href="{{
-                                route("attendance.detail", [
-                                "id" => $updateRequest->attendance_id,
-                                "from" => "request",
-                                "update_id" => $updateRequest->id,
-                                ])
-                                }}"
-                                >
-                                詳細
-                                </a>
-                            --}}
-
                             @if (auth()->user()->role === "admin")
                                 <a
                                     href="{{ route("admin.request.approve.show", ["attendance_correct_request_id" => $updateRequest->id]) }}"

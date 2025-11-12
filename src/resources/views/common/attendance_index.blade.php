@@ -1,8 +1,6 @@
 @extends("layouts.app")
 
 @push("styles")
-    <link rel="stylesheet" href="{{ asset("css/list.css") }}" />
-    <link rel="stylesheet" href="{{ asset("css/attendance_index.css") }}" />
     <link rel="stylesheet" href="{{ asset("css/components/index.css") }}" />
 @endpush
 
@@ -102,16 +100,16 @@
             </x-index.table>
         </x-slot>
 
-         {{-- 管理者のみCSV出力ボタンを表示 --}}
-    <x-slot name="btn">
-    @if (auth()->user()->role === "admin")
-        <div class="export-buttons">
-            <form method="GET" action="{{ route("admin.staff.attendance.export", ["id" => $user->id]) }}">
-                <input type="hidden" name="target_ym" value="{{ $targetYmForUrl }}" />
-                <button class="btn btn--export">CSV出力</button>
-            </form>
-        </div>
-    @endif
-    </x-slot>
+        {{-- 管理者のみCSV出力ボタンを表示 --}}
+        <x-slot name="btn">
+            @if (auth()->user()->role === "admin")
+                <div class="export-buttons">
+                    <form method="GET" action="{{ route("admin.staff.attendance.export", ["id" => $user->id]) }}">
+                        <input type="hidden" name="target_ym" value="{{ $targetYmForUrl }}" />
+                        <button class="btn btn--export">CSV出力</button>
+                    </form>
+                </div>
+            @endif
+        </x-slot>
     </x-index.container>
 @endsection
