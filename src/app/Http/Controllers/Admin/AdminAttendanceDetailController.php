@@ -54,8 +54,15 @@ class AdminAttendanceDetailController extends Controller
                 );
             }
         }
-        $isEditable = true;
-        $message = null;
+        // $isEditable = true;
+
+        // 承認済みの勤怠のみ編集可能（未承認はロック）
+        $isEditable = $attendance->is_approved === true;
+        // $message = null;
+
+        $message = $isEditable
+            ? null
+            : '*承認待ちの為修正はできません。';
 
         // スタッフと同じビューを使う
         return view('common.attendance_detail', compact('attendance', 'update', 'isEditable', 'message'));
