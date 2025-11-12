@@ -62,13 +62,26 @@ class StaffAttendanceDetailController extends Controller
             }
         }
 
+        //詳細画面（勤怠一覧経由）：修正申請未→編集可&メッセージなし
+        //詳細画面（勤怠一覧経由）：修正申請済→承認済みの場合：編集可&メッセージなし
         $isEditable = true;
         $message = null;
 
+        //詳細画面（申請一覧経由）：未承認の場合 = 編集不可&メッセージ表示
         if ($update && $update->approval_status === UpdateRequest::STATUS_PENDING) {
             $isEditable = false;
             $message = '*承認待ちのため修正はできません。';
         }
+        //詳細画面（勤怠一覧経由）：修正申請済→未承認の場合：編集不可&メッセージ表示
+        elseif (
+            ! $update && $attendance->updateRequests()
+            ->where('approval_status', UpdateRequest::STATUS_PENDING)
+            ->exists()
+        ) {
+            $isEditable = false;
+            $message = '*承認待ちのため修正はできません。';
+        }
+
         return view('common.attendance_detail', compact('attendance', 'user', 'update', 'isEditable', 'message'));
     }
 
@@ -140,6 +153,7 @@ class StaffAttendanceDetailController extends Controller
                 }
             }
             // $breakUpdate->save();
+            $attendance->update(['is_approved' => false]);
         });
 
         // リダイレクト
