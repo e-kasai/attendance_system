@@ -16,7 +16,7 @@
         @endphp
     @endif
     <x-index.container :title="$title">
-        <x-slot name="monthNav">
+        <x-slot name="calendarNav">
             <form
                 class="month-select"
                 method="GET"
@@ -27,16 +27,18 @@
                 }}"
             >
                 <button class="month-select__button" type="submit" name="target_ym" value="{{ $prevMonth }}">
-                    <img class="month-select__arrow-icon" src="{{ asset("img/arrow_icon.png") }}" alt="logo" />
+                    <img class="select__arrow-icon" src="{{ asset("img/arrow_icon.png") }}" alt="logo" />
                     前月
                 </button>
+
                 <div class="month-select__display">
-                    <img class="month-select__calender-icon" src="{{ asset("img/calender_icon.png") }}" alt="logo" />
+                    <img class="select__calendar-icon" src="{{ asset("img/calendar_icon.png") }}" alt="logo" />
                     <span class="month-select__text">{{ $selectedMonth }}</span>
                 </div>
+
                 <button class="month-select__button" type="submit" name="target_ym" value="{{ $nextMonth }}">
                     翌月
-                    <img class="month-select__arrow-icon next" src="{{ asset("img/arrow_icon.png") }}" alt="logo" />
+                    <img class="select__arrow-icon next" src="{{ asset("img/arrow_icon.png") }}" alt="logo" />
                 </button>
             </form>
         </x-slot>
