@@ -1,0 +1,59 @@
+/* ==============================
+メール認証誘導画面CSS
+============================== */
+
+.verify__container {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 80vh;
+}
+
+/* ==============================
+メッセージ部分
+============================== */
+.verify__header {
+    font-size: clamp(1.4rem, 2vw, 2.4rem);
+    color: #000000;
+    font-weight: 700;
+    text-align: center;
+    margin-top: 50px;
+    padding: clamp(0.8rem, 2vw, 1.4rem) clamp(2rem, 6vw, 4rem);
+}
+
+/* ==============================
+認証ページリンク
+============================== */
+
+.verify__link {
+    width: auto;
+    min-width: clamp(160px, 40vw, 260px);
+    display: inline-block;
+    padding: clamp(0.8rem, 2vw, 1.4rem) clamp(2rem, 6vw, 4rem);
+    border: 1px solid #000000;
+    border-radius: 10px;
+    background-color: #d9d9d9;
+    color: #000000;
+    font-size: clamp(1.2rem, 2vw, 2.4rem);
+    text-align: center;
+    height: auto;
+    font-weight: 700;
+    text-decoration: none;
+    margin: 20px auto;
+}
+
+/* ==============================
+再送リンク
+============================== */
+.verify__resend {
+    margin-top: 20px;
+    font-size: clamp(1.4rem, 2vw, 2rem);
+    font-weight: 400;
+    color: #0073cc;
+    border: none;
+    background-color: #ffffff;
+    text-align: center;
+}
