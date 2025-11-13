@@ -2,6 +2,7 @@
 
 @push("styles")
     <link rel="stylesheet" href="{{ asset("css/components/index.css") }}" />
+    <link rel="stylesheet" href="{{ asset("css/request_index.css") }}" />
 @endpush
 
 @section("content")
