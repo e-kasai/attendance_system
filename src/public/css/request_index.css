@@ -1,14 +1,53 @@
 /* ==============================
 申請一覧画面
 ============================== */
+.index-table__cell {
+    text-align: center;
+    padding: clamp(6px, 1vw, 10px) clamp(0.2rem, 0.8vw, 0.3rem);
+    padding: clamp(6px, 1vw, 10px) clamp(0.3rem, 2vw, 0.6rem);
+}
 
-/* 備考欄設定 */
+/* 各列幅の調整 */
+.index-table th:nth-child(1),
+.index-table td:nth-child(1) {
+    width: 10%;
+}
+
+.index-table th:nth-child(2),
+.index-table td:nth-child(2) {
+    width: 15%;
+}
+
+.index-table th:nth-child(3),
+.index-table td:nth-child(3) {
+    width: 10%;
+}
+
+.index-table th:nth-child(4),
+.index-table td:nth-child(4) {
+    width: 15%;
+}
+
+.index-table th:nth-child(5),
+.index-table td:nth-child(5) {
+    width: 10%;
+}
+
+.index-table th:nth-child(6),
+.index-table td:nth-child(6) {
+    width: 10%;
+}
+
+/* 左寄せ・折り返し設定（対象日時／申請理由／申請日時） */
+.index-table__cell:nth-child(3),
 .index-table__cell:nth-child(4),
-.index-table__header:nth-child(4) {
+.index-table__cell:nth-child(5),
+.index-table__header:nth-child(3),
+.index-table__header:nth-child(4),
+.index-table__header:nth-child(5) {
     white-space: normal;
     word-break: break-word;
     text-align: left;
-    width: 20%;
 }
 
 /* ==============================
@@ -23,18 +62,46 @@
     }
 
     .index-table {
-        min-width: 600px; /* テーブルが狭すぎて文字が縦になるのを防ぐ */
+        min-width: 600px; /* 文字が縦になるのを防ぐ */
         table-layout: auto;
         white-space: nowrap; /* 改行を禁止（自然な横書き維持） */
     }
 
-    /* 備考欄（申請理由）は折り返し許可 */
+    /* 各列幅の調整 */
+    index-table th:nth-child(1),
+    .index-table td:nth-child(1) {
+        width: 10%;
+    }
+
+    .index-table th:nth-child(2),
+    .index-table td:nth-child(2) {
+        width: 15%;
+    }
+
+    .index-table th:nth-child(3),
+    .index-table td:nth-child(3) {
+        width: 20%;
+    }
+
+    .index-table th:nth-child(4),
+    .index-table td:nth-child(4) {
+        width: 15%;
+    }
+
+    .index-table th:nth-child(5),
+    .index-table td:nth-child(5) {
+        width: 20%;
+    }
+
+    .index-table th:nth-child(6),
+    .index-table td:nth-child(6) {
+        width: 5%;
+    }
+
+    /* 申請理由欄*/
     .index-table__cell:nth-child(4),
     .index-table__header:nth-child(4) {
-        white-space: normal; /* 改行OK */
-        word-break: break-word;
-        text-align: left;
-        min-width: 180px; /* 幅確保 */
+        min-width: 15em;
     }
 }
 
@@ -54,11 +121,39 @@
         white-space: nowrap;
     }
 
+    /* 各列幅の調整 */
+    index-table th:nth-child(1),
+    .index-table td:nth-child(1) {
+        width: 10%;
+    }
+
+    .index-table th:nth-child(2),
+    .index-table td:nth-child(2) {
+        width: 15%;
+    }
+
+    .index-table th:nth-child(3),
+    .index-table td:nth-child(3) {
+        width: 15%;
+    }
+
+    .index-table th:nth-child(4),
+    .index-table td:nth-child(4) {
+        width: 15%;
+    }
+
+    .index-table th:nth-child(5),
+    .index-table td:nth-child(5) {
+        width: 15%;
+    }
+
+    .index-table th:nth-child(6),
+    .index-table td:nth-child(6) {
+        width: 10%;
+    }
+
     .index-table__cell:nth-child(4),
     .index-table__header:nth-child(4) {
-        white-space: normal;
-        word-break: break-word;
-        text-align: left;
-        min-width: 180px;
+        min-width: 15em;
     }
 }
