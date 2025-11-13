@@ -76,7 +76,8 @@ HEADER
 
 .logo-image {
     padding: clamp(1rem, 4vw, 2.2rem) clamp(0.5rem, 3vw, 2.5rem);
-    width: clamp(15rem, 40vw, 37rem);
+    /* width: clamp(15rem, 40vw, 37rem); */
+    width: clamp(14rem, 28vw + 10rem, 37rem);
     height: auto;
 }
 
@@ -87,8 +88,8 @@ HEADER
     flex-direction: row;
     align-items: center;
     justify-content: flex-end;
-    gap: clamp(1rem, 4vw, 3rem);
-    font-size: clamp(1rem, 2vw, 2.4rem);
+    gap: clamp(1rem, 4vw, 2rem);
+    font-size: clamp(1.8rem, 2vw, 2.4rem);
     margin-right: clamp(0.7rem, 10vw, 4rem);
 }
 
@@ -116,14 +117,19 @@ HEADER
     cursor: pointer;
 }
 
-/* メディアクエリ */
-@media (max-width: 768px) {
+/*---------------------------------
+メディアクエリ
+---------------------------------*/
+
+/* スマホ (〜767.98px) */
+@media (max-width: 767.98px) {
     .header {
         display: grid;
         grid-template-columns: 1fr; /* 1列 */
-        grid-template-rows: auto auto; /* ロゴ行＋ナビ行 */
+        grid-template-rows: auto auto;
         padding: 20px;
-        min-height: clamp(6rem, 12vh, 10rem);
+        /* min-height: clamp(6rem, 12vh, 10rem); */
+        min-height: clamp(4rem, 12vh, 8rem);
         justify-items: center;
     }
 
@@ -133,20 +139,22 @@ HEADER
     }
 
     .logo-image {
-        width: 60vw;
+        width: 55vw;
         max-width: 25rem;
         height: auto;
     }
 
     .nav {
         grid-column: 1;
-        grid-row: 2; /* navは下段 */
+        grid-row: 2;
         justify-content: center;
         text-align: flex-start;
         gap: clamp(0.7rem, 3vw, 1.8rem);
         width: 100%;
         display: flex;
         margin: 0 auto;
+        font-size: clamp(1.6rem, 2vw, 2.4rem);
+        gap: clamp(0.6rem, 2.5vw, 1.6rem);
     }
 
     .nav__link,
