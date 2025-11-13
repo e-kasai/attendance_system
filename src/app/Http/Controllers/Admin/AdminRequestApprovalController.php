@@ -49,7 +49,7 @@ class AdminRequestApprovalController extends Controller
         //新規、既存休憩両方
         $allBreaks = $mergedBreaks->concat($newBreaks);
 
-        // フォーム入力は常に編集不可（申請一覧経由の画面のため）
+        // フォーム入力は常に編集不可（修正申請承認画面ではフォームの編集は不可の仕様）
         $isEditable = false;
         //承認ボタン切り替えフラグ
         if ($update->approval_status === UpdateRequest::STATUS_PENDING) {
