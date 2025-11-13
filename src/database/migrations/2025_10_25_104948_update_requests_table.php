@@ -17,12 +17,6 @@ class UpdateRequestsTable extends Migration
                 ->constrained('attendances')
                 ->cascadeOnDelete();
 
-            // 修正対象の休憩（出退勤修正時はないのでnullable）
-            $table->foreignId('break_time_id')
-                ->nullable()
-                ->constrained('break_times')
-                ->nullOnDelete();
-
             // 申請者
             $table->foreignId('requested_by')
                 ->constrained('users')
