@@ -2,22 +2,25 @@
 勤怠詳細ページ
 ============================== */
 
-/* 全体 */
 body {
-    margin: 0;
-    padding: 0;
     background-color: #f0eff2;
 }
 
-/* container（ページ全体） */
+/* ==============================
+container
+============================== */
 .index-container {
-    max-width: 1200px;
+    width: 100%;
+    max-width: 900px;
     background-color: #f0eff2;
-    padding: 20px;
+    padding: clamp(1rem, 2vw, 2rem);
     margin: 2rem auto;
     border-radius: 4px;
 }
 
+/* ==============================
+container title
+============================== */
 .index-container__title {
     font-size: clamp(1.4rem, 4vw, 3rem);
     font-weight: 700;
@@ -31,7 +34,6 @@ body {
 /* ==============================
 詳細テーブル
 ============================== */
-
 .detail-table {
     background-color: #ffffff;
     border-radius: 10px;
@@ -57,30 +59,42 @@ body {
     white-space: normal;
 }
 
-/* 行 */
+/* ==============================
+詳細テーブル（行）
+============================== */
 index-table__row {
     width: 50%;
 }
 
-/* ラベル（テーブル左側）*/
+/* ==============================
+ラベル（テーブル左側）
+============================== */
 .detail-table__label {
-    width: 15%;
-    padding: clamp(2rem, 3vw, 3rem) clamp(2.5rem, 4vw, 6rem);
+    width: 20%;
+    padding: clamp(1.2rem, 2vw, 2rem) clamp(2.5rem, 8vw, 6rem);
     color: #737373;
 }
 
-/* value（テーブル右側）*/
+/* ==============================
+value（テーブル右側）
+===============================*/
 .detail-table__value {
     width: 40%;
     color: #000000;
+    padding-left: clamp(1rem, 10vw, 17rem);
 }
 
-/* 名前 */
+/* ==============================
+名前
+============================== */
 .detail-table__value.name {
     text-indent: 1rem;
 }
 
-/* 日付 */
+/* ==============================
+日付
+============================== */
+
 .date-display {
     display: flex;
     width: 100%;
@@ -100,7 +114,9 @@ index-table__row {
     margin-left: 75px;
 }
 
-/* 時間入力欄 */
+/* ==============================
+時間入力欄
+============================== */
 .detail-table__time-range {
     display: flex;
     align-items: center;
@@ -109,8 +125,22 @@ index-table__row {
     justify-content: flex-start;
 }
 
+/* 閲覧モードの時間テキストにも幅を持たせる */
+.time-display {
+    display: inline-block;
+    min-width: clamp(3rem, 12vw, 8rem);
+    width: clamp(7rem, 12vw, 8rem);
+    text-align: left;
+    font-weight: 700;
+    letter-spacing: clamp(0.05rem, 1vw, 0.15rem);
+}
+
+.detail-table__time-range .time-display:last-child {
+    padding-left: 2.8rem; /* 好きな値に調整 */
+}
+
 .detail-table__value input[type="time"] {
-    width: clamp(8rem, 12vw, 15rem);
+    width: clamp(5rem, 12vw, 12rem);
     border: 1px #e1e1e1 solid;
     border-radius: 4px;
     padding: clamp(0.3rem, 1vw, 0.5rem) clamp(0.3rem, 1vw, 0.5rem);
@@ -131,34 +161,34 @@ index-table__row {
     -webkit-appearance: none;
 }
 
-/* ～ */
+/* ==============================
+チルダ
+============================== */
 .detail-table__tilde {
     color: #000000;
 }
 
-/* 備考 */
+/* ==============================
+備考
+============================== */
 .detail-table__value textarea {
     width: clamp(20rem, 30vw, 35rem);
-    height: 3rem;
-    padding: 5rem 0.8rem;
+    height: auto;
+    min-height: 10px;
+    /* padding: 4rem 0.8rem; */
+    padding: clamp(0.6rem, 1vw, 1rem) clamp(0.8rem, 2vw, 1.6rem);
     margin: 2rem 0rem;
     border: 1px solid #d9d9d9;
     border-radius: 4px;
     font-size: clamp(1.2rem, 2vw, 1.4rem);
     font-weight: 700;
     letter-spacing: clamp(0.05rem, 1vw, 0.15rem);
+    border: 1px solid aqua;
 }
 
 /* ==============================
 ボタン
 ============================== */
-
-/* .index-container__btn {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: clamp(1rem, 2vw, 4.5rem);
-} */
-
 .detail-table__btn {
     margin-top: 2rem;
     font-size: clamp(1.5rem, 5vw, 2.2rem);
@@ -188,7 +218,7 @@ index-table__row {
 ============================== */
 
 .detail-table__notice {
-    max-width: 1200px;
+    max-width: 900px;
     margin: 0 auto;
     font-size: clamp(1.2rem, 2vw, 1.8rem);
     font-weight: 800;
@@ -213,11 +243,15 @@ input[type="time"]::-webkit-datetime-edit-minute-field {
 }
 
 /* ==============================
-レスポンシブ
+スマホ (〜767.98px)
 ============================== */
 
-/* スマホ (〜767.98px) */
 @media (max-width: 767.98px) {
+
+    .index-container__title {
+        margin-left: clamp(0.5rem, 2vw, 1rem);
+    }
+
     .detail-table {
         width: 100%;
         overflow-x: auto;
@@ -233,7 +267,7 @@ input[type="time"]::-webkit-datetime-edit-minute-field {
         white-space: normal;
         word-break: break-word;
         font-size: clamp(1rem, 3vw, 1.6rem);
-        padding: clamp(0.8rem, 1.5vw, 1.2rem);
+        padding: clamp(0.6rem, 1.5vw, 1rem);
     }
 
     /* 時刻入力欄 */
@@ -242,59 +276,26 @@ input[type="time"]::-webkit-datetime-edit-minute-field {
         padding: clamp(0.3rem, 0.8vw, 0.5rem) clamp(0.4rem, 0.8vw, 0.8rem);
     }
 
-    /* 備考欄 */
-    .detail-table__value textarea {
-        width: 80%;
-        min-height: clamp(10rem, 6vw, 12rem);
-        padding: clamp(0.8rem, 1.2vw, 1.6rem) clamp(0.8rem, 2vw, 2rem);
+    /* 閲覧モードの時間テキストにも幅を持たせる */
+    .time-display {
+        display: inline-block;
+        width: clamp(8rem, 12vw, 10rem);
+        text-align: left;
+        font-weight: 700;
+        letter-spacing: clamp(0.05rem, 1vw, 0.15rem);
     }
 
-    .index-container__title {
-        margin-left: clamp(0.5rem, 2vw, 1rem);
-    }
+
 }
 
-/* タブレット (768px〜1023.98px) */
+/* ==============================
+タブレット (768px〜1023.98px)
+============================== */
+
 @media (min-width: 768px) and (max-width: 1023.98px) {
     /* 時刻入力欄 */
     .detail-table__value input[type="time"] {
         width: clamp(12rem, 9vw, 18rem);
         padding: clamp(0.3rem, 0.8vw, 0.5rem) clamp(0.4rem, 0.8vw, 0.8rem);
-    }
-
-    /* 備考欄 */
-    .detail-table__value textarea {
-        width: clamp(22rem, 45vw, 38rem);
-        min-height: clamp(10rem, 6vw, 12rem);
-        padding: clamp(0.8rem, 1.2vw, 1.6rem) clamp(0.8rem, 1vw, 2rem);
-        box-sizing: border-box;
-    }
-}
-
-/* PC (1024px〜1539.98px) */
-@media (min-width: 1024px) and (max-width: 1539.98px) {
-    /* 備考欄 */
-    .detail-table__value textarea {
-        width: clamp(28rem, 35vw, 42rem);
-        min-height: clamp(10rem, 5vw, 14rem);
-        padding: clamp(1rem, 1.5vw, 2rem) clamp(1rem, 2vw, 2rem);
-    }
-}
-
-/* ワイドスクリーン (1540px〜) */
-
-@media (min-width: 1540px) {
-    .detail-table__value {
-        width: 100%;
-    }
-    /* 備考欄 */
-    .detail-table__value textarea {
-        width: 80%;
-        min-height: clamp(12rem, 6vw, 16rem);
-        padding: clamp(1.2rem, 1.8vw, 2rem) clamp(1.2rem, 2vw, 2rem);
-
-        white-space: pre-wrap;
-        word-break: break-word;
-        overflow-wrap: break-word;
     }
 }
