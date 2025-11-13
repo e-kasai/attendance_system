@@ -1,9 +1,9 @@
 @extends("layouts.app")
 
 @push("styles")
-    <link rel="stylesheet" href="{{ asset("css/components/index.css") }}" />
     <link rel="stylesheet" href="{{ asset("css/components/detail_table.css") }}" />
 @endpush
+
 
 @section("content")
     @if ($errors->any())
@@ -52,15 +52,14 @@
 
         <x-index.container title="勤怠詳細">
             <x-detail.table :rows="$rows" :isEditable="$isEditable" :btnActivate="$btnActivate" />
-            @if ($btnActivate)
-                <button type="submit" class="detail-table__btn">承認</button>
-            @else
-                <button type="submit" class="detail-table__btn" disabled>承認済み</button>
-            @endif
+
+            <x-slot name="btn">
+                @if ($btnActivate)
+                    <button type="submit" class="detail-table__btn pending">承認</button>
+                @else
+                    <button type="submit" class="detail-table__btn approved" disabled>承認済み</button>
+                @endif
+            </x-slot>
         </x-index.container>
     </form>
-    {{-- 修正不可メッセージ --}}
-    @if ($message)
-        <p class="detail-table__notice">{{ $message }}</p>
-    @endif
 @endsection
