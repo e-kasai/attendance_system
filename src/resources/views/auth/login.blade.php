@@ -1,7 +1,7 @@
 @extends("layouts.app")
 
 @push("styles")
-    <link rel="stylesheet" href="{{ asset("css/form.css") }}" />
+    <link rel="stylesheet" href="{{ asset("css/components/form.css") }}" />
 @endpush
 
 @section("content")
