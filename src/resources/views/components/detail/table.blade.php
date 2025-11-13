@@ -1,6 +1,5 @@
 @props(["rows" => [], "button" => null, "isEditable" => false])
 
-{{-- <div class="detail-table"> --}}
 <table class="detail-table">
     <tbody>
         @foreach ($rows as $row)
@@ -92,7 +91,13 @@
                     @else
                         {{-- 編集不可モード（isEditable=false）のときの出力 --}}
                         @if (is_array($row["value"]))
-                            {{ ($row["value"][0] ?? "") . " 〜 " . ($row["value"][1] ?? "") }}
+                            {{--  時間欄 --}}
+                            <div class="detail-table__time-range">
+                                <span class="time-display">{{ $row["value"][0] }}</span>
+                                <span class="detail-table__tilde">〜</span>
+                                <span class="time-display">{{ $row["value"][1] }}</span>
+                            </div>
+                            {{-- {{ ($row["value"][0] ?? "") . " 〜 " . ($row["value"][1] ?? "") }} --}}
                         @else
                             {{ $row["value"] }}
                         @endif
@@ -102,4 +107,4 @@
         @endforeach
     </tbody>
 </table>
-{{-- </div> --}}
+
