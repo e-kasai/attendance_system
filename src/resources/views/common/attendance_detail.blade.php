@@ -4,7 +4,6 @@
     <link rel="stylesheet" href="{{ asset("css/components/detail_table.css") }}" />
 @endpush
 
-
 @section("content")
     @php
         // 名前、日付、出退勤行
@@ -60,11 +59,11 @@
         <x-index.container title="勤怠詳細">
             <x-detail.table :rows="$rows" :isEditable="$isEditable" />
 
-            <x-slot name="btn">
-                @if ($isEditable)
-                    <button class="btn btn--modify" type="submit">修正</button>
-                @endif
-            </x-slot>
+            @if ($isEditable)
+                <x-slot name="btn">
+                    <button class="detail-table__btn btn--modify" type="submit">修正</button>
+                </x-slot>
+            @endif
         </x-index.container>
     </form>
 
