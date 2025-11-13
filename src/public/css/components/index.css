@@ -1,8 +1,10 @@
 /* ==============================
-勤怠一覧ページ
+一覧ページ用CSS
 ============================== */
 
-/* 全体 */
+/* ==============================
+全体
+============================== */
 body {
     background-color: #f0eff2;
 }
@@ -39,7 +41,9 @@ body {
     background-color: #ffffff;
 }
 
-/* 選択月 */
+/* ==============================
+選択月
+============================== */
 .month-select {
     width: 100%;
     display: flex;
@@ -54,13 +58,17 @@ body {
     font-weight: 700;
 }
 
-/* カレンダーアイコン */
+/* ==============================
+カレンダーアイコン
+============================== */
 .month-select__calender-icon {
     width: clamp(1rem, 2vw, 2.5rem);
     height: clamp(1rem, 2vw, 2.5rem);
 }
 
-/* 矢印アイコン */
+/* ==============================
+矢印アイコン
+============================== */
 .month-select__arrow-icon {
     width: clamp(1rem, 2vw, 2rem);
     height: clamp(1rem, 2vw, 1.5rem);
@@ -71,7 +79,9 @@ body {
     transform: rotate(180deg);
 }
 
-/* 前月・翌月ボタン */
+/* ==============================
+前月・翌月ボタン
+============================== */
 .month-select__button {
     background: none;
     border: none;
@@ -95,7 +105,6 @@ body {
 /* ==============================
 切り替えタブ
 ============================== */
-
 .tabs {
     display: flex;
     justify-content: flex-start;
@@ -115,7 +124,9 @@ body {
     text-decoration: none;
 }
 
-/* 選択中のタブだけ太字 */
+/* ==============================
+選択中のタブ
+============================== */
 .tab.active {
     font-weight: 700;
 }
@@ -153,18 +164,9 @@ body {
 }
 
 .index-table__header {
-    /* padding: clamp(0.3rem, 5vw, 0.6rem) clamp(1.2rem, 2vw, 3rem); */
     font-weight: 600;
     text-align: center;
 }
-
-.index-table__header:last-child {
-    /* margin-right: clamp(4rem, 4vw, 8rem); */
-}
-
-/* .index-table__header:last-child {
-    padding-right: clamp(1rem, 4vw, 4rem);
-} */
 
 /* ==============================
 一覧テーブル（行、セル）
@@ -205,8 +207,7 @@ body {
 /* ==============================
 ボタン
 ============================== */
-
-.index-container__btn {
+.container__btn-area {
     display: flex;
     justify-content: flex-end;
     margin-top: clamp(1rem, 2vw, 4.5rem);
@@ -230,7 +231,9 @@ body {
 レスポンシブ
 ============================== */
 
-/* スマホ (〜767.98px) */
+/* ==============================
+スマホ (〜767.98px)
+============================== */
 @media (max-width: 767.98px) {
     .index-container {
         padding: 1.2rem;
@@ -269,7 +272,9 @@ body {
     }
 }
 
-/* タブレット(768px〜1023.98px) */
+/* ==============================
+タブレット (768px〜1023.98px)
+============================== */
 @media (min-width: 768px) and (max-width: 1023.98px) {
     .index-table {
         width: 100%;
@@ -289,7 +294,9 @@ body {
     }
 }
 
-/* PC (1024px〜1539.98px) */
+/* ==============================
+PC (1024px〜1539.98px)
+============================== */
 @media (min-width: 1024px) and (max-width: 1539.98px) {
     .index-table {
         width: 100%;
@@ -309,7 +316,9 @@ body {
     }
 }
 
-/* ワイドスクリーン (1540px〜) */
+/* ==============================
+ワイドスクリーン (1540px〜)
+============================== */
 @media (min-width: 1540px) {
     .index-container {
         width: 1400px;
