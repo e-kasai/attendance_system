@@ -9,7 +9,7 @@
     @endif
 
     {{-- 切り替えタブ --}}
-    {{ $tabs ?? '' }}
+    {{ $tabs ?? "" }}
 
     {{-- テーブル --}}
     <div class="index-container__table">
@@ -17,7 +17,9 @@
     </div>
 
     {{-- ボタン --}}
-    <div class="index-container__btn">
-        {{ $btn ?? "" }}
-    </div>
+    @if (! empty($btn))
+        <div class="container__btn-area">
+            {{ $btn ?? "" }}
+        </div>
+    @endif
 </div>
