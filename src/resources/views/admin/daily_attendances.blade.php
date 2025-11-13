@@ -12,7 +12,7 @@
                 {{-- 前日 --}}
                 <button class="date-select__button" type="submit" name="target_date" value="{{ $prevDate }}">
                     <img class="select__arrow-icon" src="{{ asset("img/arrow_icon.png") }}" alt="logo" />
-                    前月
+                    前日
                 </button>
 
                 {{-- 選択した日付 --}}
@@ -23,7 +23,7 @@
 
                 {{-- 翌日 --}}
                 <button class="date-select__button" type="submit" name="target_date" value="{{ $nextDate }}">
-                    翌月
+                    翌日
                     <img class="select__arrow-icon next" src="{{ asset("img/arrow_icon.png") }}" alt="logo" />
                 </button>
             </form>
