@@ -1,10 +1,12 @@
 <div class="index-container">
     <h1 class="index-container__title">{{ $title }}</h1>
 
-    {{-- 月選択 --}}
-    @if (! empty($monthNav))
-        <div class="index-container__month">
-            {{ $monthNav }}
+    {{-- 月日選択 --}}
+    @if (! empty($calendarNav))
+        {{-- <div class="index-container__month"> --}}
+        <div class="index-container__calendar">
+            {{-- {{ $monthNav }} --}}
+            {{ $calendarNav }}
         </div>
     @endif
 
