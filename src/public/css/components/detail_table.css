@@ -136,7 +136,7 @@ value（テーブル右側）
 }
 
 .detail-table__time-range .time-display:last-child {
-    padding-left: 2.8rem; /* 好きな値に調整 */
+    padding-left: 2.8rem;
 }
 
 .detail-table__value input[type="time"] {
@@ -183,7 +183,6 @@ value（テーブル右側）
     font-size: clamp(1.2rem, 2vw, 1.4rem);
     font-weight: 700;
     letter-spacing: clamp(0.05rem, 1vw, 0.15rem);
-    border: 1px solid aqua;
 }
 
 /* ==============================
@@ -247,7 +246,6 @@ input[type="time"]::-webkit-datetime-edit-minute-field {
 ============================== */
 
 @media (max-width: 767.98px) {
-
     .index-container__title {
         margin-left: clamp(0.5rem, 2vw, 1rem);
     }
@@ -284,8 +282,6 @@ input[type="time"]::-webkit-datetime-edit-minute-field {
         font-weight: 700;
         letter-spacing: clamp(0.05rem, 1vw, 0.15rem);
     }
-
-
 }
 
 /* ==============================
