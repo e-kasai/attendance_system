@@ -46,12 +46,6 @@ class UpdateRequest extends Model
         return $this->belongsTo(Attendance::class);
     }
 
-    /** 対象の休憩（出退勤修正時はnull） */
-    public function breakTime()
-    {
-        return $this->belongsTo(BreakTime::class);
-    }
-
     /** 申請者（ログインユーザー） */
     public function requester()
     {
