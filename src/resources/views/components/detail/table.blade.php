@@ -97,7 +97,6 @@
                                 <span class="detail-table__tilde">〜</span>
                                 <span class="time-display">{{ $row["value"][1] }}</span>
                             </div>
-                            {{-- {{ ($row["value"][0] ?? "") . " 〜 " . ($row["value"][1] ?? "") }} --}}
                         @else
                             {{ $row["value"] }}
                         @endif

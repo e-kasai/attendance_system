@@ -3,9 +3,7 @@
 
     {{-- 月日選択 --}}
     @if (! empty($calendarNav))
-        {{-- <div class="index-container__month"> --}}
         <div class="index-container__calendar">
-            {{-- {{ $monthNav }} --}}
             {{ $calendarNav }}
         </div>
     @endif
