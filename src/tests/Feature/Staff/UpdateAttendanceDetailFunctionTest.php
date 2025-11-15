@@ -247,7 +247,7 @@ class UpdateAttendanceDetailFunctionTest extends TestCase
         ]);
 
         //4. 管理者が承認したと想定（DB操作でステータス変更）
-        $updateRequest = \App\Models\UpdateRequest::first();
+        $updateRequest = UpdateRequest::first();
         $updateRequest->approval_status = 2;
         $updateRequest->approved_at = now();
         $updateRequest->save();
@@ -284,7 +284,7 @@ class UpdateAttendanceDetailFunctionTest extends TestCase
             'comment'   => 'comment',
         ]);
 
-        $updateRequest = \App\Models\UpdateRequest::first();
+        $updateRequest = UpdateRequest::first();
 
         //3. 申請一覧画面を開く
         $this->actingAs($user)->get(route('requests.index'))->assertStatus(200);
