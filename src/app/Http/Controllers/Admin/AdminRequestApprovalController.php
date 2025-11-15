@@ -35,23 +35,23 @@ class AdminRequestApprovalController extends Controller
             return $break;
         });
 
-        // 新規追加の休憩（break_time_idがnull）
+        // 新規休憩（まだDBに存在しない休憩）を表示用データに整形
         $newBreaks = $update->breakTimeUpdates->whereNull('break_time_id')->map(function ($breakUpdate) {
             return (object) [
                 'id'        => null,
-                'break_in'  => $breakUpdate->new_break_in,
-                'break_out' => $breakUpdate->new_break_out,
+                // 'break_in'  => $breakUpdate->new_break_in,
+                // 'break_out' => $breakUpdate->new_break_out,
                 'break_in'  => \Carbon\Carbon::parse($breakUpdate->new_break_in)->format('H:i'),
                 'break_out' => \Carbon\Carbon::parse($breakUpdate->new_break_out)->format('H:i'),
             ];
         });
 
-        //新規、既存休憩両方
+        // 既存休憩と新規休憩をまとめる（表示用）
         $allBreaks = $mergedBreaks->concat($newBreaks);
 
-        // フォーム入力は常に編集不可（修正申請承認画面ではフォームの編集は不可の仕様）
+        // 承認画面ではフォームは常に編集不可（管理者は表示のみ）
         $isEditable = false;
-        //承認ボタン切り替えフラグ
+        // 承認ボタンの表示制御（承認待ちのときだけボタン有効）
         if ($update->approval_status === UpdateRequest::STATUS_PENDING) {
             $btnActivate = true;
             $message = '*承認待ちのため修正はできません。';

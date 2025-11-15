@@ -123,7 +123,6 @@ class AttendanceService
         foreach ($breaks as $index => &$breakRow) {
             $breakRow['id'] = $ids[$index]['id'] ?? null;
         }
-
         return $breaks;
     }
 }
