@@ -26,22 +26,22 @@ class StaffAttendanceDetailController extends Controller
 
         // "update_id" => $updateRequest->id
         $updateId = $request->query('update_id');
-        $update = null;
+        $updateRequest = null;
 
         // Blade側のリンクで渡されたクエリパラメータ（from=request & update_id）を受け取る
         // 申請一覧から勤怠詳細を開いたときだけ、該当のUpdateRequestを取得する
         if ($request->query('from') === 'request' && $updateId) {
-            $update = UpdateRequest::find($updateId);
+            $updateRequest = UpdateRequest::find($updateId);
         }
 
-        if ($update) {
+        if ($updateRequest) {
             // 出退勤の修正をプレビュー表示（DB保存はしない）
-            $attendance->clock_in  = $update->new_clock_in  ?? $attendance->clock_in;
-            $attendance->clock_out = $update->new_clock_out ?? $attendance->clock_out;
+            $attendance->clock_in  = $updateRequest->new_clock_in  ?? $attendance->clock_in;
+            $attendance->clock_out = $updateRequest->new_clock_out ?? $attendance->clock_out;
 
             // 休憩の修正をプレビュー表示（DB保存はしない）
             foreach ($attendance->breakTimes as $break) {
-                $breakUpdate = $update->breakTimeUpdates
+                $breakUpdate = $updateRequest->breakTimeUpdates
                     ->firstWhere('break_time_id', $break->id);
 
                 if ($breakUpdate) {
@@ -50,7 +50,8 @@ class StaffAttendanceDetailController extends Controller
                 }
             }
             // break_time_id が null の休憩（新規追加）もプレビュー表示
-            $newBreaks = $update->breakTimeUpdates->whereNull('break_time_id');
+            $newBreaks = $updateRequest->breakTimeUpdates->whereNull('break_time_id');
+
             foreach ($newBreaks as $new) {
                 $attendance->breakTimes->push(
                     (object) [
@@ -68,13 +69,13 @@ class StaffAttendanceDetailController extends Controller
         $message = null;
 
         //詳細画面（申請一覧経由）：未承認の場合 = 編集不可&メッセージ表示
-        if ($update && $update->approval_status === UpdateRequest::STATUS_PENDING) {
+        if ($updateRequest && $updateRequest->approval_status === UpdateRequest::STATUS_PENDING) {
             $isEditable = false;
             $message = '*承認待ちのため修正はできません。';
         }
         //詳細画面（勤怠一覧経由）：修正申請済→未承認の場合：編集不可&メッセージ表示
         elseif (
-            ! $update && $attendance->updateRequests()
+            ! $updateRequest && $attendance->updateRequests()
             ->where('approval_status', UpdateRequest::STATUS_PENDING)
             ->exists()
         ) {
@@ -82,7 +83,7 @@ class StaffAttendanceDetailController extends Controller
             $message = '*承認待ちのため修正はできません。';
         }
 
-        return view('common.attendance_detail', compact('attendance', 'user', 'update', 'isEditable', 'message'));
+        return view('common.attendance_detail', compact('attendance', 'user', 'updateRequest', 'isEditable', 'message'));
     }
 
     public function updateAttendanceStatus(UpdateAttendanceRequest $request, $id)

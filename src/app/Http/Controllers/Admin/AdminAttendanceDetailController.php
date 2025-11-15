@@ -20,21 +20,21 @@ class AdminAttendanceDetailController extends Controller
             ->findOrFail($id);
 
         $updateId = $request->query('update_id');
-        $update = null;
+        $updateRequest = null;
 
         // 申請一覧から開いた場合のみ、修正申請データを読み込む
         if ($request->query('from') === 'request' && $updateId) {
-            $update = UpdateRequest::find($updateId);
+            $updateRequest = UpdateRequest::find($updateId);
         }
 
-        if ($update) {
+        if ($updateRequest) {
             // 出退勤プレビュー
-            $attendance->clock_in  = $update->new_clock_in  ?? $attendance->clock_in;
-            $attendance->clock_out = $update->new_clock_out ?? $attendance->clock_out;
+            $attendance->clock_in  = $updateRequest->new_clock_in  ?? $attendance->clock_in;
+            $attendance->clock_out = $updateRequest->new_clock_out ?? $attendance->clock_out;
 
             // 既存休憩プレビュー
             foreach ($attendance->breakTimes as $break) {
-                $breakUpdate = $update->breakTimeUpdates
+                $breakUpdate = $updateRequest->breakTimeUpdates
                     ->firstWhere('break_time_id', $break->id);
 
                 if ($breakUpdate) {
@@ -43,7 +43,7 @@ class AdminAttendanceDetailController extends Controller
                 }
             }
             // 新規追加された休憩のプレビュー
-            $newBreaks = $update->breakTimeUpdates->whereNull('break_time_id');
+            $newBreaks = $updateRequest->breakTimeUpdates->whereNull('break_time_id');
             foreach ($newBreaks as $new) {
                 $attendance->breakTimes->push(
                     (object) [
@@ -55,28 +55,30 @@ class AdminAttendanceDetailController extends Controller
             }
         }
 
-        //詳細画面（勤怠一覧経由）：修正申請未→編集可&メッセージなし
-        //詳細画面（勤怠一覧経由）：修正申請済→承認済みの場合：編集可&メッセージなし
+        // デフォルト：編集可能（例外条件でのみ編集不可になる）
         $isEditable = true;
         $message = null;
 
-        //詳細画面（申請一覧経由）：未承認の場合 = 編集不可
-        if ($update && $update->approval_status === UpdateRequest::STATUS_PENDING) {
+        //条件分岐フラグ
+        $isFromRequestList   = $updateRequest !== null;       // 「申請一覧 → 詳細画面」のパターンか？
+        $hasPendingUpdate = $attendance->updateRequests()     // この勤怠に「未承認の修正申請」が残っているか？
+            ->where('approval_status', UpdateRequest::STATUS_PENDING)
+            ->exists();
+
+
+        // 1: 申請一覧経由 ＆ 承認待ち → 編集不可（メッセージ表示なし）
+        if ($isFromRequestList && $updateRequest->approval_status === UpdateRequest::STATUS_PENDING) {
             $isEditable = false;
         }
 
-        //詳細画面（勤怠一覧経由）：修正申請済→未承認の場合：編集不可&メッセージ表示
-        elseif (
-            ! $update && $attendance->updateRequests()
-            ->where('approval_status', UpdateRequest::STATUS_PENDING)
-            ->exists()
-        ) {
+        // 2: 勤怠一覧経由 ＆ 未承認申請が存在 → 編集不可＋メッセージ
+        elseif (!$isFromRequestList && $hasPendingUpdate) {
             $isEditable = false;
-            $message = '*承認待ちのため修正はできません。';
+            $message    = '*承認待ちのため修正はできません。';
         }
 
         // スタッフと同じビューを使う
-        return view('common.attendance_detail', compact('attendance', 'update', 'isEditable', 'message'));
+        return view('common.attendance_detail', compact('attendance', 'updateRequest', 'isEditable', 'message'));
     }
 
 

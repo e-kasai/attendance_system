@@ -40,7 +40,7 @@
         }
 
         // 備考
-        $rows[] = ["label" => "備考", "name" => "comment", "type" => "textarea", "value" => $update->comment ?? ($attendance->comment ?? "")];
+        $rows[] = ["label" => "備考", "name" => "comment", "type" => "textarea", "value" => $updateRequest->comment ?? ($attendance->comment ?? "")];
     @endphp
 
     {{-- テーブル全体を1回で描画 --}}
