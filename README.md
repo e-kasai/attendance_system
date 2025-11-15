@@ -30,14 +30,13 @@ coachtech勤怠管理アプリ
 
 ```bash
 # git clone (cloneしたいディレクトリから実行)
-git clone git@github.com:e-kasai/attendance_system.git         # SSHの場合
-git clone https://github.com/e-kasai/attendance_system.git     # HTTPSの場合
+git clone git@github.com:e-kasai/attendance_system.git         # SSHの場合
+git clone https://github.com/e-kasai/attendance_system.git     # HTTPSの場合
 
 # 環境構築
 # プロジェクトルートに移動して make init 実行
 cd attendance_system
 make init
-
 ```
 
 ### コード整形（任意）
@@ -106,12 +105,12 @@ Blade を含む全ファイルは `prettier-plugin-blade` を使用して整形�
 Seeder により以下のユーザーが作成されます。
 
 - 管理者
-    - メール: admin@gmail.com
-    - パスワード: password
+  - メール：admin@gmail.com
+  - パスワード：password
 
 - スタッフ
-    - メール: staffx@gmail.com (x = 1～4のいずれか)
-    - パスワード: password
+  - メール：staffx@gmail.com（x = 1～4）
+  - パスワード：password
 
 `Seeder` 経由のユーザーはメール認証済みとして登録されます。
 
@@ -120,13 +119,13 @@ Seeder により以下のユーザーが作成されます。
 # テスト実行
 
 ```bash
-  docker compose exec php bash
-  php artisan test
+  docker compose exec php bash
+  php artisan test
 ```
 
 ## 補足：テストについて
 
-1. テスト6（出勤ボタンが正しく機能する）について
+## 1. テスト6（出勤ボタンが正しく機能する）について
 
 「出勤ボタンが正しく機能する」テストについて、Figma と要件書の整合性から、
 画面に「出勤中」と表示されるかどうか をテスト対象としています。
@@ -137,7 +136,7 @@ Seeder により以下のユーザーが作成されます。
 
 ---
 
-## 1. 基本設計書について
+## 1. 基本設計書
 
 スプレッドシートの既存タブ（生徒様入力用）は編集制限があり、情報整理が困難でした。
 そのため、同一内容を整理した 自作タブ を主資料として使用しています。
@@ -145,12 +144,12 @@ Seeder により以下のユーザーが作成されます。
 
 自作タブ構成
 
-- DBTable　 （`DB`仕様）
-- Route　　　（ルート、コントローラー、ミドルウェア仕様）
-- View （`Blade` & `Components` & `CSS`）
-- Validation（`FormRequest`仕様)
-- Model (`Model`仕様）
-- ダミーデータ（`Seeder`用構造）
+- DBTable　（`DB` 仕様）
+- Route　　（ルート、コントローラー、ミドルウェア仕様）
+- View　　 （`Blade` & `Components` & `CSS`）
+- Validation（`FormRequest` 仕様）
+- Model　 （`Model` 仕様）
+- ダミーデータ（`Seeder` 用構造）
 
 ## ２. レスポンシブ対応の基準設定
 
@@ -163,7 +162,7 @@ Seeder により以下のユーザーが作成されます。
 
 ---
 
-## 3. roleによるログイン画面分岐について
+## 3. roleによるログイン画面分岐
 
 本アプリでは、スタッフ / 管理者で ログイン画面を分離しています。
 理由: 画面内容・導線が異なり、URL 構造を `/admin/*` に統一することで保守性が高まるため。
