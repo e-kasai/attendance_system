@@ -59,8 +59,8 @@ class AttendanceDetailDisplayTest extends TestCase
 
         //3. 日付欄を確認する
         //期待：日付が選択した日付になっている
-        $today = Carbon::now()->isoFormat('YYYY年M月D日');
-        $response->assertSee($today);
+        $expected = Carbon::parse($attendance->date)->isoFormat('YYYY年M月D日');
+        $response->assertSee($expected);
     }
 
     //test:「出勤・退勤」にて記されている時間がログインユーザーの打刻と一致している
