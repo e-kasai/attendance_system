@@ -66,7 +66,7 @@ php artisan migrate:fresh --seed
 
 ### 2. arm環境用の設定について
 
-M1/M2 Mac など arm環境での互換性を考慮し、 主に MySQL 用に `platform: linux/x86_64` を指定しています。
+M1/M2 Mac など arm環境での互換性を考慮し、 主に MySQL 用に `platform: linux/x86_64` を指定しています。<br>
 必須ではありませんが、念のためMySQL以外のサービスにも指定しています。
 
 ### 3. ソースコードの整形ルール
