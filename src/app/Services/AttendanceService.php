@@ -6,7 +6,7 @@ use App\Models\User;
 
 class AttendanceService
 {
-    // 今日すでに出勤しているか?
+    // 今日すでに出勤しているか？
     public function hasClockedInToday(User $user)
     {
         return $user->attendances()
@@ -15,7 +15,7 @@ class AttendanceService
             ->exists();
     }
 
-    // 今日すでに退勤しているか?
+    // 今日すでに退勤しているか？
     public function hasClockedOutToday(User $user)
     {
         return $user->attendances()

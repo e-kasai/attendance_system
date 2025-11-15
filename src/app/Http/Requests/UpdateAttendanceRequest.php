@@ -25,6 +25,7 @@ class UpdateAttendanceRequest extends FormRequest
                 'nullable',
                 'date_format:H:i',
                 'required_with:breaks.*.break_out',
+                // 出勤〜退勤の範囲に収まる必要がある
                 'after_or_equal:clock_in',
                 'before:clock_out',
             ],
