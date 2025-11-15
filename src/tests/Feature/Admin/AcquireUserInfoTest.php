@@ -95,13 +95,7 @@ class AcquireUserInfoTest extends TestCase
             'clock_in'  => '09:00:00',
             'clock_out' => '18:00:00',
         ]);
-        // $attendances = Attendance::factory()->count(3)->sequence(
-        //     ['date' => now()->startOfMonth()->addDays(0)->toDateString()],
-        //     ['date' => now()->startOfMonth()->addDays(1)->toDateString()],
-        //     ['date' => now()->startOfMonth()->addDays(2)->toDateString()],
-        // )->create([
-        //     'user_id' => $staff->id,
-        // ]);
+
         //1. 管理者ユーザーにログインをする
         $admin = User::factory()->create(['role' => 'admin']);
         $this->actingAs($admin);
