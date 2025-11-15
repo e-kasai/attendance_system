@@ -26,8 +26,8 @@ class AdminStaffAttendanceController extends Controller
 
         //リクエストから表示月を受け取る、なければ今月
         $targetYm = $request->query('target_ym', now()->format('Y-m'));
+        // "2025/10" のような表記も受け取れるよう "-" に統一
         $normalizedYm = str_replace('/', '-', $targetYm);
-        // $carbonObj = Carbon::createFromFormat('Y-m', str_replace('/', '-', $targetYm));
         $carbonObj = Carbon::createFromFormat('Y-m', $normalizedYm);
 
         // 選択した月・前月・翌月 表示用は/で
@@ -57,7 +57,7 @@ class AdminStaffAttendanceController extends Controller
         ));
     }
 
-
+    //CSV出力
     public function exportCsv(Request $request, $id)
     {
         $user = User::findOrFail($id);
@@ -67,7 +67,7 @@ class AdminStaffAttendanceController extends Controller
         $startOfMonth = Carbon::parse($targetYm . '-01')->startOfMonth();
         $endOfMonth   = Carbon::parse($targetYm . '-01')->endOfMonth();
 
-        //ファイル名は上書きなどファイル重複防止のためHis形式を使用
+        // ファイル重複防止のため、生成日時(His)を付与
         $filename =  "{$user->name}_{$targetYm}_attendance_" . now()->format('Ymd_His') . '.csv';
 
         $attendances = Attendance::where('user_id', $id)
@@ -82,9 +82,10 @@ class AdminStaffAttendanceController extends Controller
             //OSによる文字化けを防止
             fputs($handle, "\xEF\xBB\xBF");
 
-            //csvファイルのヘッダー
+            //csvヘッダー
             fputcsv($handle, ['日付', '出勤', '退勤', '休憩', '合計']);
 
+            // 休憩時間（分→H:MM）0分なら "0:00"、null なら空欄
             foreach ($attendances as $attendance) {
                 if ($attendance->break_time === 0) {
                     $breakTime = '0:00';
@@ -103,7 +104,7 @@ class AdminStaffAttendanceController extends Controller
                 }
 
 
-                //出力用の１行データ
+                // 1行分のデータを書き込み
                 fputcsv($handle, [
                     Carbon::parse($attendance->date)->format('Y/m/d'),
                     $attendance->clock_in ? Carbon::parse($attendance->clock_in)->format('H:i') : '',
@@ -112,7 +113,7 @@ class AdminStaffAttendanceController extends Controller
                     $workTime,
                 ]);
             }
-            //php://output(ブラウザに直接出力する仮想ファイル)を閉じる
+            // php://output（仮想ファイル）を閉じる
             fclose($handle);
         };
         // ResponseFactoryを呼び出してその中のインスタンスメソッドstreamDownloadを呼び出す
