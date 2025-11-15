@@ -3,11 +3,10 @@
 namespace App\Services;
 
 use App\Models\User;
-use App\Models\Attendance;
 
 class AttendanceService
 {
-    // 今日すでに出勤しているかチェック
+    // 今日すでに出勤しているか?
     public function hasClockedInToday(User $user)
     {
         return $user->attendances()
@@ -16,7 +15,7 @@ class AttendanceService
             ->exists();
     }
 
-    // 今日すでに退勤しているかチェック
+    // 今日すでに退勤しているか?
     public function hasClockedOutToday(User $user)
     {
         return $user->attendances()
@@ -88,7 +87,6 @@ class AttendanceService
             $attendance->update(['status' => 3]);
         }
         return $attendance;
-
     }
 
 
@@ -112,5 +110,20 @@ class AttendanceService
             return $activeBreak;
         }
         return null;
+    }
+
+    //休憩の配列を1つにまとめる（idだけ配列が分かれてしまう為）
+    public function mergeBreakRows(array $rawBreaks): array
+    {
+        // idだけの要素と、break_in/outだけの要素を分ける
+        $ids = array_values(array_filter($rawBreaks, fn($row) => isset($row['id'])));
+        $breaks = array_values(array_filter($rawBreaks, fn($row) => isset($row['break_in'])));
+
+        // 既存休憩idをbreak順に結びつける
+        foreach ($breaks as $index => &$breakRow) {
+            $breakRow['id'] = $ids[$index]['id'] ?? null;
+        }
+
+        return $breaks;
     }
 }

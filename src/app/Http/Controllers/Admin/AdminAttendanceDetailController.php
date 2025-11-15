@@ -9,10 +9,20 @@ use App\Models\Attendance;
 use App\Models\UpdateRequest;
 use Illuminate\View\View;
 use App\Http\Requests\UpdateAttendanceRequest;
+use App\Services\AttendanceService;
 
 
 class AdminAttendanceDetailController extends Controller
 {
+    //サービスクラスをDI
+    protected AttendanceService $attendanceService;
+
+    public function __construct(AttendanceService $attendanceService)
+    {
+        $this->attendanceService = $attendanceService;
+    }
+
+
     public function showAttendanceDetail(Request $request, $id): View
     {
         // 管理者は全ユーザーの勤怠を参照できる
@@ -66,6 +76,7 @@ class AdminAttendanceDetailController extends Controller
             ->exists();
 
 
+        // 条件分岐
         // 1: 申請一覧経由 ＆ 承認待ち → 編集不可（メッセージ表示なし）
         if ($isFromRequestList && $updateRequest->approval_status === UpdateRequest::STATUS_PENDING) {
             $isEditable = false;
@@ -77,15 +88,14 @@ class AdminAttendanceDetailController extends Controller
             $message    = '*承認待ちのため修正はできません。';
         }
 
-        // スタッフと同じビューを使う
         return view('common.attendance_detail', compact('attendance', 'updateRequest', 'isEditable', 'message'));
     }
+
 
 
     //勤怠修正処理
     public function updateAttendanceStatus(UpdateAttendanceRequest $request, $id)
     {
-
         // 管理者は即時反映
         $validated = $request->validated();
 
@@ -103,35 +113,15 @@ class AdminAttendanceDetailController extends Controller
                 'comment'   => $validated['comment'] ?? $attendance->comment,
             ]);
 
-            //別々の配列を１つにまとめる（type=hiddenのbreak_time_idだけ配列が分かれてしまう為）
-            $rawBreaks = $validated['breaks'] ?? [];
-            // dd($rawBreaks);
-
-            // idだけの要素と、break_in/outだけの要素を分ける
-            $ids = array_values(array_filter($rawBreaks, fn($row) => isset($row['id'])));
-            $breaks = array_values(array_filter($rawBreaks, fn($row) => isset($row['break_in'])));
-            $mergedBreaks = [];
-
-            // 既存休憩idをbreak順に結びつける
-            foreach ($breaks as $i => $break) {
-                $break['id'] = $ids[$i]['id'] ?? null;
-                $mergedBreaks[] = $break;
-            }
-
-            // dd($mergedBreaks);
-
-            // 休憩更新（複数対応）
-            $breaks = $mergedBreaks;
+            // サービスクラスで休憩の配列結合処理
+            $breaks = $this->attendanceService->mergeBreakRows($validated['breaks'] ?? []);
 
             foreach ($breaks as $input) {
                 $breakTimeId = $input['id'] ?? null;
-                // dd($breakTimeId);
 
-                // 既存の休憩を更新
+                // 既存休憩更新
                 if ($breakTimeId) {
-                    // 既存休憩を更新
                     $break = $attendance->breakTimes()->find($breakTimeId);
-                    // dd($break);
                     if ($break) {
                         $break->update([
                             'break_in'  => $input['break_in'] !== null && $input['break_in'] !== ''
@@ -146,23 +136,18 @@ class AdminAttendanceDetailController extends Controller
                 // 新規休憩追加
                 elseif (!empty($input['break_in']) && !empty($input['break_out'])) {
                     // 予備の空行に入力があれば新規休憩レコードを追加
-                    // dd('here');
                     $newBreak = $attendance->breakTimes()->create([
                         'break_in'  => $input['break_in'],
                         'break_out' => $input['break_out'],
                     ]);
                     // 追加休憩にidを付与
                     $input['id'] = $newBreak->id;
-                    // dd($newBreak);
                 }
             }
             $attendance->save();
-            // dd($attendance);
             $attendance->load('breakTimes');
-            // dd($attendance);
         });
 
-        // $attendance->refresh();
         return redirect()
             ->route('admin.attendance.update', $attendance->id)
             ->with('message', '勤怠を更新しました。');

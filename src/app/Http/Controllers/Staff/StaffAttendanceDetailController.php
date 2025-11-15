@@ -11,9 +11,19 @@ use App\Models\BreakTimeUpdate;
 use App\Models\UpdateRequest;
 use Illuminate\View\View;
 use App\Http\Requests\UpdateAttendanceRequest;
+use App\Services\AttendanceService;
 
 class StaffAttendanceDetailController extends Controller
 {
+
+    //サービスクラスをDI
+    protected AttendanceService $attendanceService;
+
+    public function __construct(AttendanceService $attendanceService)
+    {
+        $this->attendanceService = $attendanceService;
+    }
+
     //勤怠詳細ページを表示
     public function showAttendanceDetail(Request $request, $id): View
     {
@@ -24,7 +34,6 @@ class StaffAttendanceDetailController extends Controller
             ->with(['breakTimes', 'updateRequests.breakTimeUpdates'])
             ->firstOrFail();
 
-        // "update_id" => $updateRequest->id
         $updateId = $request->query('update_id');
         $updateRequest = null;
 
@@ -63,22 +72,24 @@ class StaffAttendanceDetailController extends Controller
             }
         }
 
-        //詳細画面（勤怠一覧経由）：修正申請未→編集可&メッセージなし
-        //詳細画面（勤怠一覧経由）：修正申請済→承認済みの場合：編集可&メッセージなし
+        // デフォルト：編集可能（例外条件でのみ編集不可になる）
         $isEditable = true;
         $message = null;
 
-        //詳細画面（申請一覧経由）：未承認の場合 = 編集不可&メッセージ表示
-        if ($updateRequest && $updateRequest->approval_status === UpdateRequest::STATUS_PENDING) {
+        //条件分岐フラグ
+        $isFromRequestList   = $updateRequest !== null;               //「申請一覧 → 詳細画面」のパターンか？
+        $hasPendingUpdate = $attendance->updateRequests()
+            ->where('approval_status', UpdateRequest::STATUS_PENDING) // この勤怠に「未承認の修正申請」が残っているか？
+            ->exists();
+
+        //条件分岐
+        // 1: 申請一覧経由 ＆ その申請が未承認 → 編集不可（メッセージ表示有）
+        if ($isFromRequestList && $updateRequest->approval_status === UpdateRequest::STATUS_PENDING) {
             $isEditable = false;
             $message = '*承認待ちのため修正はできません。';
         }
-        //詳細画面（勤怠一覧経由）：修正申請済→未承認の場合：編集不可&メッセージ表示
-        elseif (
-            ! $updateRequest && $attendance->updateRequests()
-            ->where('approval_status', UpdateRequest::STATUS_PENDING)
-            ->exists()
-        ) {
+        // 2: 勤怠一覧経由 ＆ 未承認申請が存在 → 編集不可
+        elseif (!$isFromRequestList && $hasPendingUpdate) {
             $isEditable = false;
             $message = '*承認待ちのため修正はできません。';
         }
@@ -86,11 +97,11 @@ class StaffAttendanceDetailController extends Controller
         return view('common.attendance_detail', compact('attendance', 'user', 'updateRequest', 'isEditable', 'message'));
     }
 
+
+    //勤怠修正（出退勤・休憩）を申請
     public function updateAttendanceStatus(UpdateAttendanceRequest $request, $id)
     {
-        //勤怠修正（出退勤・休憩）を申請
         $user = Auth::user();
-
         $validated = $request->validated();
 
         // 自分の対象勤怠を取得
@@ -114,25 +125,8 @@ class StaffAttendanceDetailController extends Controller
             $updateRequest->save();
 
 
-            //別々の配列を１つにまとめる（type=hiddenのbreak_time_idだけ配列が分かれてしまう為）
-            $rawBreaks = $validated['breaks'] ?? [];
-            // dd($rawBreaks);
-
-            // idだけの要素と、break_in/outだけの要素を分ける
-            $ids = array_values(array_filter($rawBreaks, fn($row) => isset($row['id'])));
-            $breaks = array_values(array_filter($rawBreaks, fn($row) => isset($row['break_in'])));
-            $mergedBreaks = [];
-
-            // 既存休憩idをbreak順に結びつける
-            foreach ($breaks as $i => $break) {
-                $break['id'] = $ids[$i]['id'] ?? null;
-                $mergedBreaks[] = $break;
-            }
-
-            // dd($mergedBreaks);
-
-            // 休憩更新（複数対応）
-            $breaks = $mergedBreaks;
+            // サービスクラスで休憩の配列結合処理
+            $breaks = $this->attendanceService->mergeBreakRows($validated['breaks'] ?? []);
 
             foreach ($breaks as $input) {
                 if ($input['id']) {
@@ -153,11 +147,9 @@ class StaffAttendanceDetailController extends Controller
                     $breakUpdate->save();
                 }
             }
-            // $breakUpdate->save();
             $attendance->update(['is_approved' => false]);
         });
 
-        // リダイレクト
         return redirect()
             ->route('requests.index')
             ->with('message', '修正申請を送信しました。');
