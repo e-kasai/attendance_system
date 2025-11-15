@@ -31,8 +31,6 @@ class StaffAttendanceController extends Controller
         $action = $request->input('action');
         $this->attendanceService->handleAction($user, $action);
 
-
-
         // 更新後に再取得して表示
         $currentData = $this->getCurrentData();
         return view('staff.attendance_create', $currentData);
@@ -42,8 +40,9 @@ class StaffAttendanceController extends Controller
     //プライベートメソッド:日時やラベルなど、UI共通データをまとめる
     private function getCurrentData(): array
     {
-        $today = Carbon::now()->isoFormat('YYYY年M月D日(ddd)');
-        $time = Carbon::now()->format('H:i');
+        $now   = Carbon::now();
+        $today = $now->isoFormat('YYYY年M月D日(ddd)');
+        $time =  $now->format('H:i');
         $user = auth()->user();
         $attendance = $user->todayAttendance();
         $status = optional($attendance)->status ?? 1;
