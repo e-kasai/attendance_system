@@ -95,7 +95,7 @@ Blade を含む全ファイルは `prettier-plugin-blade` を使用して整形�
 
 # URL
 
-- アプリ本体：http://localhost/
+- アプリ本体：http://localhost/ (トップページアクセス時はlogin画面にリダイレクト)
 - phpMyAdmin：http://localhost:8080/
 
 ---
