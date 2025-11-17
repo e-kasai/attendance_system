@@ -36,7 +36,7 @@ class AttendanceFunctionTest extends TestCase
         // 期待：画面上に「出勤」ボタンが表示され、処理後に表示されるステータスが「出勤中」になる
         $response = $this->actingAs($user)->get(route('attendance.create'));
         $response->assertStatus(200);
-        $response->assertSee('出勤中');
+        $response->assertSeeText('出勤中');
     }
 
     //test: 出勤は一日一回のみできる
