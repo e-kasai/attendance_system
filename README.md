@@ -148,6 +148,7 @@ Seeder により以下のユーザーが作成されます。
 - Validation（`FormRequest` 仕様）
 - Model　 （`Model` 仕様）
 - ダミーデータ（`Seeder` 用構造）
+- ER図
 
 ## ２. レスポンシブ対応の基準設定
 
