@@ -35,7 +35,7 @@ git clone https://github.com/e-kasai/attendance_system.git     # HTTPSの場合
 
 # 環境構築
 # プロジェクトルートに移動して make init 実行
-cd attendance_app
+cd attendance_system
 make init
 ```
 
