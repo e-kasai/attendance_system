@@ -16,6 +16,11 @@ use App\Http\Controllers\Admin\AdminRequestApprovalController;
 use App\Http\Controllers\Admin\AdminStaffAttendanceController;
 
 
+// トップページはログインへリダイレクト
+Route::get('/', function () {
+    return redirect('/login');
+});
+
 //申請一覧画面（スタッフ、管理者で分岐）
 Route::get('/stamp_correction_request/list', function () {
     $user = auth()->user();
