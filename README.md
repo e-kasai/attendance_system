@@ -38,11 +38,21 @@ cd attendance_system
 make init
 ```
 
+### Makefile について
+
+本プロジェクトでは、**開発環境とテスト環境の完全自動構築** を Makefile にまとめています。<br>
+
+- `make init`：Docker 起動、composer install、`.env` 作成、APP_KEY生成、DB初期化、<br>
+  **`.env.testing` とテストDBのセットアップまで自動実行**<br>
+
+clone 直後でも `make init` の1コマンドで
+**開発環境 + テスト環境がすぐに利用可能**です。
+
 # 動作確認（テスト実行）
 
 ```bash
-  docker compose exec php bash
-  php artisan test
+docker compose exec php bash
+php artisan test
 ```
 
 ---
