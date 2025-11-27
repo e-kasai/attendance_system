@@ -1,6 +1,10 @@
 # アプリケーション名<br>
 
-### AttendLog（勤怠管理アプリ）
+### AttendLog
+
+**Laravel × Docker × MySQL で構築した、勤怠打刻・休憩管理・申請/承認・月次CSV出力を備えた勤怠管理アプリです。
+ビジネスロジックは Service 層と Model イベントへ分離し<br>
+可読性と保守性を重視した設計としています。**
 
 # 概要
 
@@ -27,27 +31,19 @@
 # 環境構築手順
 
 ```bash
-# git clone (cloneしたいディレクトリから実行)
 git clone git@github.com:e-kasai/attendance_system.git         # SSHの場合
 git clone https://github.com/e-kasai/attendance_system.git     # HTTPSの場合
 
-# 環境構築
-# プロジェクトルートに移動して make init 実行
 cd attendance_system
 make init
 ```
 
-### コード整形（任意）
-
-- 本プロジェクトは `Prettier` を利用しています。
-- 必須ではありませんが、次のコマンドで同じ整形ルールを適用できます。
+# 動作確認（テスト実行）
 
 ```bash
-npm install
-npx prettier --write .
+  docker compose exec php bash
+  php artisan test
 ```
-
-**環境構築は以上です。**
 
 ---
 
@@ -60,12 +56,7 @@ docker compose exec php bash
 php artisan migrate:fresh --seed
 ```
 
-### 2. arm環境用の設定について
-
-M1/M2 Mac など arm環境での互換性を考慮し、 主に MySQL 用に `platform: linux/x86_64` を指定しています。<br>
-必須ではありませんが、念のためMySQL以外のサービスにも指定しています。
-
-### 3. ソースコードの整形ルール
+### 2. ソースコードの整形ルール
 
 Blade を含む全ファイルは `prettier-plugin-blade` を使用して整形済みです。
 
@@ -91,7 +82,8 @@ Blade を含む全ファイルは `prettier-plugin-blade` を使用して整形�
 
 # URL
 
-- アプリ本体：http://localhost/ (トップページアクセス時はlogin画面にリダイレクト)
+- アプリ本体：http://localhost/ <br>
+  (トップページアクセス時はlogin画面にリダイレクト)
 - phpMyAdmin：http://localhost:8080/
 
 ---
@@ -99,26 +91,12 @@ Blade を含む全ファイルは `prettier-plugin-blade` を使用して整形�
 # 開発用ログイン情報
 
 Seeder により以下のユーザーが作成されます。<br>
-※以下は開発用のダミーアカウントであり、本番環境とは無関係です。
+※以下は開発用のダミーアカウントであり、本番環境とは無関係です。<br>
 
-- 管理者
-  - メール：admin@gmail.com
-  - パスワード：password
-
-- スタッフ
-  - メール：staffx@gmail.com（x = 1～4）
-  - パスワード：password
+- 管理者：admin@gmail.com / password
+- スタッフ：staff1〜4@gmail.com / password（メール認証済み）
 
 `Seeder` 経由のユーザーはメール認証済みとして登録されます。
-
----
-
-# テスト実行
-
-```bash
-  docker compose exec php bash
-  php artisan test
-```
 
 ---
 
@@ -174,28 +152,15 @@ Seeder により以下のユーザーが作成されます。<br>
 
 ---
 
-## 4. 勤怠ロジック概要
+## 4. 勤怠ロジック（Controller / Service / Model の3層設計）
 
-勤怠（出勤・退勤・休憩）の処理は、可読性と保守性を高めるため<br>
-`Controller` / `Service` / `Model イベント` の３層に責務を分割しています。
+勤怠処理は単一クラスに集約せず、以下の3層に責務を分離しています。<br>
 
-- `Controller`：
-  出勤・退勤・休憩開始など、どの操作を行うかを判断し、サービスへ処理を委譲
+- Controller：操作の判定とサービス呼び出しのみ
+- Service：出勤・退勤・休憩などのビジネスロジック
+- Model（Attendance）：savingイベントで勤務/休憩時間を自動計算
 
-- `Service（AttendanceService）`：
-  勤怠・休憩処理のビジネスロジックを担当
-  必要に応じて `Attendance` の作成`（create）`および更新`（update）`を行う
-
-- `Model（Attendance）イベント`：
-  `saving` イベントで勤務時間・休憩時間などを計算<br>
-  （分単位、マイナス防止、安全な計算処理）
-
-処理の流れ
-
-1. `Controller` → `Service` に処理を委譲
-2. `Service` が該当する処理（出勤・退勤・休憩）を実行
-3. `Model` イベントで勤務・休憩時間を自動計算
-4. `DB` に `work_time` / `break_time` を保存
+この3層により、可読性・テスト容易性・変更耐性が向上しています。
 
 ---
 
@@ -212,3 +177,13 @@ Seeder により以下のユーザーが作成されます。<br>
 - 勤怠詳細画面には表示せず、備考欄は常に空欄
 
 複数回申請時に過去のコメントが残ると混乱を招くため、この設計としています。
+
+---
+
+## 6. CSV 出力機能（月次勤怠のエクスポート）
+
+管理者はスタッフごとの「月次勤怠」を CSV としてダウンロードできます。
+
+- 対象年月の選択に対応
+- 勤務時間・休憩時間を分単位で正確に計算
+- 文字コードは `UTF-8` / `SJIS-win` の選択に対応（Excel 互換）
