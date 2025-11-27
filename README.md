@@ -1,10 +1,10 @@
 # アプリケーション名<br>
 
-### AttendLog
+## AttendLog
 
-**Laravel × Docker × MySQL で構築した、勤怠打刻・休憩管理・申請/承認・月次CSV出力を備えた勤怠管理アプリです。
-ビジネスロジックは Service 層と Model イベントへ分離し<br>
-可読性と保守性を重視した設計としています。**
+**Laravel × Docker × MySQL で構築した、勤怠打刻・休憩管理・申請/承認・月次CSV出力を備えた<br>
+勤怠管理アプリです。<br>
+ビジネスロジックは Service 層と Model イベントへ分離し、可読性と保守性を重視した設計としています。**
 
 # 概要
 
@@ -31,8 +31,8 @@
 # 環境構築手順
 
 ```bash
-git clone git@github.com:e-kasai/attendance_system.git         # SSHの場合
-git clone https://github.com/e-kasai/attendance_system.git     # HTTPSの場合
+git clone git@github.com:e-kasai/attendance_system.git
+git clone https://github.com/e-kasai/attendance_system.git
 
 cd attendance_system
 make init
@@ -83,7 +83,7 @@ Blade を含む全ファイルは `prettier-plugin-blade` を使用して整形�
 # URL
 
 - アプリ本体：http://localhost/ <br>
-  (トップページアクセス時はlogin画面にリダイレクト)
+  (トップページアクセス時はlogin画面にリダイレクト)<br>
 - phpMyAdmin：http://localhost:8080/
 
 ---
@@ -93,8 +93,10 @@ Blade を含む全ファイルは `prettier-plugin-blade` を使用して整形�
 Seeder により以下のユーザーが作成されます。<br>
 ※以下は開発用のダミーアカウントであり、本番環境とは無関係です。<br>
 
-- 管理者：admin@gmail.com / password
-- スタッフ：staff1〜4@gmail.com / password（メール認証済み）
+- 管理者<br>
+  admin@gmail.com / password
+- スタッフ<br>
+  staff1〜4@gmail.com / password（メール認証済み）
 
 `Seeder` 経由のユーザーはメール認証済みとして登録されます。
 
@@ -172,7 +174,7 @@ Seeder により以下のユーザーが作成されます。<br>
 
 承認後の動作：
 
-- 出勤・退勤・休憩時間などの 実際の勤怠データだけ が更新される
+- 出勤・退勤・休憩時間などの 実際の勤怠データだけが更新される
 - 備考欄（comment）は `update_requests.comment` に履歴として保存
 - 勤怠詳細画面には表示せず、備考欄は常に空欄
 
@@ -186,4 +188,4 @@ Seeder により以下のユーザーが作成されます。<br>
 
 - 対象年月の選択に対応
 - 勤務時間・休憩時間を分単位で正確に計算
-- 文字コードは `UTF-8` / `SJIS-win` の選択に対応（Excel 互換）
+- CSV 出力は UTF-8（BOM付き）で生成し、Excelでも文字化けしない形式で出力しています。
